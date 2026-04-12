@@ -24,10 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className="bg-background text-foreground dark:bg-black dark:text-zinc-50">
+      {children}
+
+All fawaz 0.....................
       </body>
     </html>
   );
