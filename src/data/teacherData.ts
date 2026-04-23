@@ -1,12 +1,11 @@
-
+import profileImg from "../assets/TeacherProfile/profileImg.jpg";
 export const teacherInfo = {
   id: 1,
   name: "أ. حسن علي عبدالله",
   subject: "الرياضيات",
   rating: 4.9,
   followers: 800,
-  image:
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&h=300&auto=format&fit=crop",
+  image: profileImg,
   bio: "مدرس رياضيات متخصص مع خبرة واسعة في تدريس جميع المراحل التعليمية. حاصل على دكتوراه في الرياضيات من جامعة القاهرة ولدي شغف كبير بتبسيط المفاهيم الرياضية المعقدة للطلاب. أؤمن بأن كل طالب قادر على التفوق في الرياضيات مع الطريقة الصحيحة والتوجيه المناسب.",
 };
 
