@@ -26,7 +26,6 @@ const Nav = () => {
         }
       };
 
-
       checkAuth();
 
       window.addEventListener("storage", checkAuth);
@@ -104,7 +103,6 @@ const Nav = () => {
             )}
           </div>
 
-         
           <button
             onClick={toggleMenu}
             className="lg:hidden p-2 text-slate-600 cursor-pointer hover:bg-slate-100 rounded-md transition-colors"
@@ -159,22 +157,28 @@ const Nav = () => {
           </ul>
 
           <div className="flex flex-col gap-4 pt-4">
-            <Link
-              href="/"
-              onClick={toggleMenu}
-              className="flex items-center justify-center gap-2 w-full py-4 border border-slate-200 rounded-xl font-bold"
-            >
-              <LogIn size={20} />
-              تسجيل الدخول
-            </Link>
-            <Link
-              href="/"
-              onClick={toggleMenu}
-              className="flex items-center justify-center gap-2 w-full py-4 bg-slate-600 text-white rounded-xl font-bold"
-            >
-              <UserPlus size={20} />
-              انضم الآن
-            </Link>
+            {isLoggedIn ? (
+              <UserMenu userName={userName} />
+            ) : (
+              <>
+                <Link
+                  href="/"
+                  onClick={toggleMenu}
+                  className="flex items-center justify-center gap-2 w-full py-4 border border-slate-200 rounded-xl font-bold"
+                >
+                  <LogIn size={20} />
+                  تسجيل الدخول
+                </Link>
+                <Link
+                  href="/"
+                  onClick={toggleMenu}
+                  className="flex items-center justify-center gap-2 w-full py-4 bg-slate-600 text-white rounded-xl font-bold"
+                >
+                  <UserPlus size={20} />
+                  انضم الآن
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
