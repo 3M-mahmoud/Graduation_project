@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bell,
   MessageSquare,
@@ -25,30 +25,43 @@ interface UserMenuProps {
 export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string>("student");
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
       await axios.post(
         `${DOMAIN}/auth/logout`,
         {},
         {
-          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true, // 🔥 لازم
         }
       );
 
-      localStorage.clear();
       toast.success("تم تسجيل الخروج بنجاح");
-
       router.push("/login");
     } catch (error: any) {
-      console.log(error);
       toast.error("حدث خطأ أثناء تسجيل الخروج");
-
-      localStorage.clear();
       router.push("/login");
     }
+    localStorage.clear();
     window.dispatchEvent(new Event("storage"));
   };
+  // دالة تحديد مسار لوحة التحكم بناءً على الرتبة
+  const getDashboardPath = () => {
+    switch (userRole) {
+      case "student":
+        return "/dashboard/student";
+      case "teacher":
+        return "/dashboard/teacher";
+      case "center":
+        return "/dashboard/center";
+      default:
+        return "/dashboard/student";
+    }
+  };
+  useEffect(() => {
+    const role = localStorage.getItem("role") || "student";
+    setUserRole(role);
+  }, []);
   return (
     <div className="flex items-center gap-3 md:gap-6">
       <div className="flex items-center gap-2 md:gap-4 border-l border-slate-200 pl-3 md:pl-6">
@@ -103,7 +116,7 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
                   />
                 </div>
                 <h3 className="text-xl font-black text-slate-800">
-                  د. أحمد محمد على
+                  {userName}
                 </h3>
                 <p className="text-red-500 font-bold text-lg mt-1">الرياضيات</p>
               </div>
@@ -136,7 +149,7 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
                 </Link>
 
                 <Link
-                  href="/dashboard"
+                  href={getDashboardPath()}
                   className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
                 >
                   <span className="text-xl font-bold text-slate-700">
