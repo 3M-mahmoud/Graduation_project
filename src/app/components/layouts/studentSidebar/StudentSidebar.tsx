@@ -17,10 +17,10 @@ const StudentSidebar = () => {
       active: pathname === "/dashboard/student",
     },
     {
-      name: "الإعدادات",
+      name: "تعديل الملف الشخصي",
       icon: Settings,
-      href: "/dashboard/student/settings",
-      active: pathname === "/dashboard/student/settings",
+      href: "/dashboard/student/editProfile",
+      active: pathname === "/dashboard/student/editProfile",
     },
   ];
 
@@ -37,7 +37,9 @@ const StudentSidebar = () => {
           />
         </div>
         <div className="flex flex-col items-start w-20 md:w-full">
-          <h2 className="text-sm md:text-xl font-medium text-black">محمد أحمد حسن</h2>
+          <h2 className="text-sm md:text-xl font-medium text-black">
+            محمد أحمد حسن
+          </h2>
           <p className="text-[#DD5A00] font-semibold text-xs md:text-sm mt-1">
             الصف الثالث الثانوي
           </p>
