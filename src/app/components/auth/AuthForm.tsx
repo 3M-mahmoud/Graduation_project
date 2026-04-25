@@ -10,7 +10,6 @@ import { authSchema, AuthFormData } from "@/lib/validation";
 import { AuthInput } from "./AuthInput";
 import { AuthResponse } from "@/types/auth";
 import { useRouter } from "next/navigation";
-
 interface AuthFormProps {
   mode: "login" | "signup";
 }
@@ -28,43 +27,44 @@ export default function AuthForm({ mode }: AuthFormProps) {
     defaultValues: { role: "student" },
   });
 
-  const onSubmit = async (values: AuthFormData) => {
-    setLoading(true);
-    const { terms, ...apiPayload } = values;
-    const endpoint = mode === "signup" ? "/auth/signup" : "/auth/login";
+    const onSubmit = async (values: AuthFormData) => {
+      setLoading(true);
+      const { terms, ...apiPayload } = values;
+      const endpoint = mode === "signup" ? "/auth/signup" : "/auth/login";
 
-    try {
-      const { data } = await axios.post<AuthResponse>(
-        `${DOMAIN}${endpoint}`,
-        apiPayload
-      );
+      try {
+        const { data } = await axios.post<AuthResponse>(
+          `${DOMAIN}${endpoint}`,
+          apiPayload,
+          {
+            withCredentials: true, // 🔥 أهم سطر
+          }
+        );
+        const { accessToken } = data.token;
+        const { name, imageUrl, role } = data.data;
 
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("role", role);
+        localStorage.setItem("userName", name);
+        localStorage.setItem("userImage", imageUrl || "");
 
-      localStorage.setItem("token", data.token);
-      const userData = data.data.user.newUser || data.data.user.user;
-      localStorage.setItem("userRole", userData?.role || "");
-      localStorage.setItem(
-        "profileId",
-        data.data.user.userTeacherOrCenterOrStudent.id
-      );
+        toast.success(data.message || "تمت العملية بنجاح");
+        window.dispatchEvent(new Event("storage"));
 
-      toast.success(data.message || "تمت العملية بنجاح");
-      window.dispatchEvent(new Event("storage"));
-    
-      setTimeout(() => {
-        router.push("/");
-      }, 500);
-    } catch (error: any) {
-      const apiErrors = error.response?.data?.errors;
-      if (Array.isArray(apiErrors)) {
-        apiErrors.forEach((err: any) => toast.error(err.message));
-      } else {
-        toast.error(error.response?.data?.message || "فشل الاتصال بالسيرفر");
+        setTimeout(() => {
+          router.push("/");
+        }, 500);
+      } catch (error: any) {
+        const apiErrors = error.response?.data?.errors;
+        if (Array.isArray(apiErrors)) {
+          apiErrors.forEach((err: any) => toast.error(err.message));
+        } else {
+          toast.error(error.response?.data?.message || "فشل الاتصال بالسيرفر");
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
   return (
     <div className="w-full max-w-xl animate-in fade-in zoom-in duration-500">
@@ -81,10 +81,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
         </p>
       </div>
 
-    
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="p-8 md:p-12">
-    
           <div className="mb-8 border-r-4 border-[#003F87] pr-4">
             <h2 className="text-xl font-bold text-[#191C1D]">
               {mode === "signup" ? "أدخل بيانات الحساب" : "مرحبا بعودتك"}
@@ -163,7 +161,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                     الخاصة بسنتر مصر.
                   </label>
                 </div>
-                
+
                 {errors.terms && (
                   <p className="text-red-500 text-xs text-right font-bold -mt-3 mb-4">
                     {errors.terms.message as string}
@@ -197,7 +195,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
             </button>
           </form>
 
-         
           <div className="mt-6 py-6 bg-[#F3F4F5] text-center ">
             <p className="text-[#424752] text-sm font-normal">
               {mode === "signup" ? "لديك حساب بالفعل؟" : "ليس لديك حساب؟"}
