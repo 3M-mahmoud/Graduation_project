@@ -5,6 +5,23 @@
   --foreground: #171717;
 }
 
+@theme {
+  --breakpoint-xxs: 375px;
+  --breakpoint-xs: 480px;
+  --breakpoint-ssx: 620px;
+  --breakpoint-ssxx: 760px;
+  /* --breakpoint-sm: 768px; */
+  --breakpoint-mdD: 860px;
+  /* --breakpoint-md: 1060px; */
+  /* --breakpoint-lg: 1200px; */
+  --breakpoint-lgg: 1500px;
+  /* --breakpoint-xl: 1700px; */
+}
+body {
+  user-select: none;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
