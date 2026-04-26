@@ -2,7 +2,6 @@
 import { forgetPassword } from "@/app/components/dashboardTeacher/constant/constant";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-// import { useRouter } from "next/navigation";
 
 type PasswordFields = "OldPassword" | "newPassword" | "confirmPassword";
 
@@ -15,12 +14,6 @@ const ChangePasswordPage = () => {
     newPassword: false,
     confirmPassword: false,
   });
-  // const [showPassword, setShowPassword] = useState({
-  //   OldPassword: false,
-  //   newPassword: false,
-  //   confirmPassword: false,
-  // });
-  //  const router = useRouter();
 
   const [form, setForm] = useState({
     OldPassword: "",
@@ -50,7 +43,6 @@ const ChangePasswordPage = () => {
     if (form.newPassword !== form.confirmPassword) {
       return console.log("0000000000000");
     }
-    //  handleLogin(form, router, setUserId, setLoading, setUserEmail);
   };
   return (
     <div className="bg-white max-w-[600px] min-h-[400px] rounded-lg p-5 max-lg:mx-auto sm:p-6 space-y-6">
@@ -94,75 +86,9 @@ const ChangePasswordPage = () => {
         <button className="bg-[#0a4a91] hover:bg-blue-900 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md cursor-pointer">
           تحديث كلمة المرور
         </button>
-        {/* <BtnCAEd loading={loading} title="Sign Up" NoCancel /> */}
       </form>
     </div>
   );
 };
 
 export default ChangePasswordPage;
-
-// import React from "react";
-
-// const SecuritySection = () => {
-//   return (
-//     <div className="max-w-3xl mx-auto mt-8" dir="rtl">
-//       <section className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-//         {/* العنوان الجانبي مع الخط الأزرق */}
-//         <div className="flex items-center gap-3 mb-8">
-//           <h3 className="text-blue-900 font-bold text-xl pr-3 border-r-4 border-blue-900">
-//             الامان وكلمة المرور
-//           </h3>
-//         </div>
-
-//         {/* نموذج إدخال البيانات */}
-//         <div className="space-y-6">
-//           {/* كلمة المرور الحالية */}
-//           <div className="flex flex-col gap-2">
-//             <label className="text-gray-600 text-sm font-medium mr-1">
-//               كلمة المرور الحالية
-//             </label>
-//             <input
-//               type="password"
-//               placeholder="******************"
-//               className="w-full p-4 border border-gray-200 rounded-xl bg-white text-left placeholder:text-right outline-none focus:border-blue-500 transition-all"
-//             />
-//           </div>
-
-//           {/* كلمة المرور الجديدة */}
-//           <div className="flex flex-col gap-2">
-//             <label className="text-gray-600 text-sm font-medium mr-1">
-//               كلمة المرور الجديدة
-//             </label>
-//             <input
-//               type="password"
-//               placeholder="******************"
-//               className="w-full p-4 border border-gray-200 rounded-xl bg-white text-left placeholder:text-right outline-none focus:border-blue-500 transition-all"
-//             />
-//           </div>
-
-//           {/* تأكيد كلمة المرور */}
-//           <div className="flex flex-col gap-2">
-//             <label className="text-gray-600 text-sm font-medium mr-1">
-//               تأكيد كلمة المرور
-//             </label>
-//             <input
-//               type="password"
-//               placeholder="******************"
-//               className="w-full p-4 border border-gray-200 rounded-xl bg-white text-left placeholder:text-right outline-none focus:border-blue-500 transition-all"
-//             />
-//           </div>
-
-//           {/* زر التحديث */}
-//           <div className="flex justify-end pt-4">
-//             <button className="bg-[#0a4a91] hover:bg-blue-900 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md">
-//               تحديث كلمة المرور
-//             </button>
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default SecuritySection;

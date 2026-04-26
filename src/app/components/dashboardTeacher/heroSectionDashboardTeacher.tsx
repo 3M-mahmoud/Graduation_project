@@ -10,7 +10,6 @@ const HeroSectionDashboardTeacher = ({
 }) => {
   const pathname = usePathname().slice(1);
   const data = heroSectioDashboardTeacher[pathname];
-  console.log(pathname);
 
   return (
     <div className="pb-5 mb-5">
