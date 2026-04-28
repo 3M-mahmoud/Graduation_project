@@ -20,17 +20,9 @@ export default function RootLayout({
   return (
     <html lang="ar">
       <body dir="rtl" className={`${cairo.className}`}>
-<<<<<<< HEAD
-        <ProgressLayOut>
-          <Nav />
-          {children}
-          <Footer />
-        </ProgressLayOut>
-=======
         <Nav />
         {children}
         <Footer />
->>>>>>> 4094b1ecfb66d4890e47fa9086e1ec501b4c6242
       </body>
     </html>
   );

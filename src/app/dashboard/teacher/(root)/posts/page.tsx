@@ -82,7 +82,7 @@ export default function PostsManagement() {
                   <Trash2 size={18} />
                 </button>
                 <Link
-                  href={`/dashboard-teacher/posts/edit/${post.id}`}
+                  href={`/dashboard/teacher/posts/edit/${post.id}`}
                   className="text-gray-300 hover:text-[#003F87] transition-colors cursor-pointer"
                 >
                   <PencilLine size={18} />

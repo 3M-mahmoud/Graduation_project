@@ -15,17 +15,17 @@ const dataTeacherDaashboardTeacher = {
 const sidebarDaashboardTeacher = [
   {
     name: "الدورات",
-    path: "/dashboard-teacher",
+    path: "/dashboard/teacher",
     icon: <BookOpen size={20} />,
   },
   {
     name: "الطلاب",
-    path: "/dashboard-teacher/students",
+    path: "/dashboard/teacher/students",
     icon: <UsersRound size={20} />,
   },
   {
     name: "المنشورات",
-    path: "/dashboard-teacher/posts",
+    path: "/dashboard/teacher/posts",
     icon: <MessageSquareText size={20} />,
   },
 ];
@@ -34,18 +34,18 @@ const settingSideBar = {
   name: "الإعدادات",
   icon: <Settings size={20} />,
   include: [
-    "/dashboard-teacher/settings/personal-data",
-    "/dashboard-teacher/settings/change-password",
+    "/dashboard/teacher/settings/personal-data",
+    "/dashboard/teacher/settings/change-password",
   ],
   list: [
     {
       name: "البيانات الشخصية",
-      path: "/dashboard-teacher/settings/personal-data",
+      path: "/dashboard/teacher/settings/personal-data",
       icon: <CircleUser />,
     },
     {
       name: "الأمان",
-      path: "/dashboard-teacher/settings/change-password",
+      path: "/dashboard/teacher/settings/change-password",
       icon: <KeyRound />,
     },
   ],
@@ -131,31 +131,31 @@ type HeroSection = {
 const heroSectioDashboardTeacher: {
   [key: string]: HeroSection;
 } = {
-  "dashboard-teacher": {
+  teacher: {
     nameBio: "لوحة التحكم",
     bio: "مرحباً بك، هنا نظرة",
   },
-  "dashboard-teacher/courses": {
+  "teacher/courses": {
     nameBio: "إدارة الدورات",
     bio: "إدارة وتنظيم دوراتك التعليمية",
   },
-  "dashboard-teacher/students": {
+  "teacher/students": {
     nameBio: "الطلاب المشتركون",
     bio: "متابعة الطلاب المشتركين في دوراتك",
   },
-  "dashboard-teacher/posts": {
+  "teacher/posts": {
     nameBio: "إدارة المنشورات",
     bio: "ادارة و انشاء منشوراتك التعليمية",
   },
-  "dashboard-teacher/settings": {
+  "teacher/settings": {
     nameBio: "إدارة الطلاب",
     bio: "ادارة االمنشورات",
   },
-  "dashboard-teacher/settings/personal-data": {
+  "teacher/settings/personal-data": {
     nameBio: "اعدادات الحساب",
     bio: "قم بتحديث معلوماتك الأكاديمية والمهنية لتظهر بشكل أفضل للطلاب",
   },
-  "dashboard-teacher/settings/change-password": {
+  "teacher/settings/change-password": {
     nameBio: "اعدادات الحساب",
     bio: "تغيير كلمة المرور",
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import HeroSectionDashboardTeacherCursers from "@/app/components/dashboardTeacher/HeroSectionDashboardTeacherCursers";
+import HeroSectionDashboardTeacherCursers from "@/app/components/dashboard/teacher/HeroSectionDashboardTeacherCursers";
 import { Trash, Pencil } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -228,7 +228,7 @@ const CoursesPage = () => {
                     </button>
 
                     <Link
-                      href={`/dashboard-teacher/edit/${course.id}`}
+                      href={`/dashboard/teacher/edit/${course.id}`}
                       className="bg-gray-100 p-2 rounded-lg hover:bg-gray-200"
                     >
                       <Pencil size={16} />

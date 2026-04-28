@@ -1,7 +1,7 @@
 import {
   classRoom,
   studyMaterial,
-} from "@/app/components/dashboardTeacher/constant/constant";
+} from "@/app/components/dashboard/teacher/constant/constant";
 import { StaticImageData } from "next/image";
 export interface BaseItem {
   id: number;

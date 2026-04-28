@@ -2,7 +2,7 @@
 import {
   HeroSectionDashboardTeacher,
   SideBarDashboardTeacher,
-} from "@/app/components/dashboardTeacher";
+} from "@/app/components/dashboard/teacher";
 import { useState } from "react";
 
 const LayoutDashboardTeacher = ({

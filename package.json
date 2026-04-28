@@ -17,12 +17,8 @@
     "next-nprogress-bar": "^2.4.7",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-<<<<<<< HEAD
     "react-hook-form": "^7.73.1",
-=======
-    "react-hook-form": "^7.72.1",
     "react-hot-toast": "^2.6.0",
->>>>>>> 4094b1ecfb66d4890e47fa9086e1ec501b4c6242
     "zod": "^4.3.6"
   },
   "devDependencies": {

@@ -1,3 +1,6 @@
+"use client";
+import Link from "next/link";
+
 const HeroSectionDashboardTeacherCursers = ({
   classRoom,
   filter,
@@ -20,9 +23,12 @@ const HeroSectionDashboardTeacherCursers = ({
       ))}
     </div>
 
-    <button className="lg:w-46 md:mx-auto xl:m-0 mt-5 w-[90%] bg-orange-500 text-white px-4 py-2 rounded-2xl cursor-pointer">
+    <Link
+      href="/dashboard/teacher/create"
+      className="lg:w-46 md:mx-auto xl:m-0 mt-5 w-[90%] bg-orange-500 text-white text-xl text-center px-4 py-2 rounded-2xl cursor-pointer block"
+    >
       + إضافة دورة
-    </button>
+    </Link>
   </div>
 );
 

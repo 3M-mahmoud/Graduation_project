@@ -8,7 +8,7 @@ import {
   classRoom,
   educationalStage,
   studyMaterial,
-} from "@/app/components/dashboardTeacher/constant/constant";
+} from "@/app/components/dashboard/teacher/constant/constant";
 import {
   ClassRoomDashboardTeacher,
   StudyMaterialDashboardTeacher,

@@ -13,9 +13,7 @@
   --breakpoint-mdD: 860px;
   --breakpoint-lgg: 1500px;
 }
-body {
-  user-select: none;
-}
+
 
 
 @theme inline {

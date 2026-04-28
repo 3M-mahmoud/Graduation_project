@@ -1,5 +1,5 @@
 "use client";
-import { forgetPassword } from "@/app/components/dashboardTeacher/constant/constant";
+import { forgetPassword } from "@/app/components/dashboard/teacher/constant/constant";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
