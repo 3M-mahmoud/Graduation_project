@@ -5,6 +5,9 @@ import { LogIn, UserPlus, GraduationCap, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserMenu } from "./UserMenu";
+import axios from "axios";
+import { DOMAIN } from "@/utils/constants";
+import Cookies from "js-cookie";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,8 +17,8 @@ const Nav = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const checkAuth = () => {
-        const token = localStorage.getItem("token");
+      const checkAuth = async () => {
+        const token = Cookies.get("token");
         const storedName = localStorage.getItem("userName");
 
         if (token) {

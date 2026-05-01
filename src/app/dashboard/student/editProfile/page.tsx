@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -8,8 +8,11 @@ import Image from "next/image";
 import { DOMAIN } from "@/utils/constants";
 import { profileSchema, ProfileFormValues } from "@/lib/ProfileSchema";
 import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
+import Cookies from "js-cookie";
+import { UserData } from "@/types/dashboard";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
-// رابط الـ API الخاص بك
 const API_URL = `${DOMAIN}/auth/me`;
 
 const EditProfilePage = () => {
@@ -21,26 +24,26 @@ const EditProfilePage = () => {
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
   });
-
-  // 1. جلب البيانات عند تحميل الصفحة
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [userDashboard, setUserDashboard] = useState<UserData | null>(null);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        const token = Cookies.get("token");
         const response = await axios.get(API_URL, {
-          withCredentials: true, // 🔥 لازم
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.data.status === "success") {
           const user = response.data.data;
-
-          // 2. توزيع البيانات على الحقول باستخدام reset
-          // قمنا بتقسيم الاسم (name) إلى أول وعائلة كمثال إذا كان الـ API يرسله مدمجاً
+          setUserDashboard(user);
           const nameParts = user.name.split(" ");
 
           reset({
             firstName: nameParts[0] || "",
             lastName: nameParts.slice(1).join(" ") || "",
-            email: user.email || "", // أضف الإيميل إذا كان موجوداً في التوكن أو الـ API
+            email: user.email || "",
             phoneNumber: user.phone || "",
             educationalStage: user.student?.educationalStage || "",
             academicYear: user.student?.classRoom || "",
@@ -55,13 +58,44 @@ const EditProfilePage = () => {
   }, [reset]);
 
   const onSubmit = async (data: ProfileFormValues) => {
+    setLoading(true);
     try {
-      await axios.patch(`${DOMAIN}/users`, data, {
-        withCredentials: true, // 🔥 لازم
-      });
+      const userId = localStorage.getItem("userId");
+      const token = Cookies.get("token");
+      const role = Cookies.get("role");
+
+      await axios.patch(
+        `${DOMAIN}/users/${userId}`,
+        {
+          role,
+          userData: {
+            name: data.firstName + data.lastName,
+            phone: data.phoneNumber,
+          },
+          profileData: {
+            // بيانات البروفايل الأساسية
+          },
+          extraProfileData: {
+            // teacher/center فقط
+          },
+          student: {
+            id: userDashboard?.student?.id,
+            educationalStage: data?.educationalStage,
+            classRoom: data?.academicYear,
+          },
+        },
+        {
+          headers: {Authorization: `Bearer ${token}`}
+        },
+      );
+
       toast.success("تم حفظ التعديلات بنجاح");
+      router.push("/dashboard/student");
     } catch (error) {
+      console.log(error);
       toast.error("حدث خطأ أثناء الحفظ");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -196,7 +230,7 @@ const EditProfilePage = () => {
               disabled={isSubmitting}
               className="px-16 py-4 bg-[#F59E0B] text-white font-black rounded-2xl hover:bg-[#db8c05] shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
             >
-              {isSubmitting ? "جاري الحفظ..." : "حفظ التغييرات"}
+              {isSubmitting ? <Loader2 className="animate-spin" size={24} /> : "حفظ التغييرات"}
             </button>
           </div>
         </form>

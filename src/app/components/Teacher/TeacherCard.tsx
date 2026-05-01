@@ -2,13 +2,14 @@ import Image from "next/image";
 import { Star, Globe, Clock, Pencil, Tags } from "lucide-react";
 import Badge from "../ui/Badge";
 import Link from "next/link";
-import { Teacher } from "@/types/listing";
+import { Teacher } from "@/types/teacher";
+
 type Props = {
   teacher: Teacher;
 };
 export default function TeacherCard({ teacher }: Props) {
   return (
-    <div className="bg-white rounded-[2rem] shadow-md border border-slate-50 p-6 flex flex-col text-right h-full transition-transform hover:scale-105 hover:shadow-xl">
+    <div data-aos="zoom-in" className="bg-white rounded-[2rem] shadow-md border border-slate-50 p-6 flex flex-col text-right h-full transition-transform hover:scale-105 hover:shadow-xl">
       <div className="flex flex-row items-center gap-3 mb-4">
         <div className="relative w-20 h-20 rounded-full overflow-hidden mb-2 border-2 border-slate-100">
           <Image

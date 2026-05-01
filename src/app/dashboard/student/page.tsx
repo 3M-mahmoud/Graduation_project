@@ -7,8 +7,6 @@ import MyLessons from "@/app/components/dashboard/student/tabs/MyLessons";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("الحصص الحالية");
-// خريطة المكونات (Component Map)
-  // تجعل الكود أنظف من استخدام Switch أو If
   const tabComponents: { [key: string]: React.ReactNode } = {
     "الحصص الحالية": <MySessions />,
     "الدروس": <MyLessons />,

@@ -10,6 +10,7 @@ import { authSchema, AuthFormData } from "@/lib/validation";
 import { AuthInput } from "./AuthInput";
 import { AuthResponse } from "@/types/auth";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 interface AuthFormProps {
   mode: "login" | "signup";
 }
@@ -27,44 +28,46 @@ export default function AuthForm({ mode }: AuthFormProps) {
     defaultValues: { role: "student" },
   });
 
-    const onSubmit = async (values: AuthFormData) => {
-      setLoading(true);
-      const { terms, ...apiPayload } = values;
-      const endpoint = mode === "signup" ? "/auth/signup" : "/auth/login";
+  const onSubmit = async (values: AuthFormData) => {
+    setLoading(true);
+    const { terms, ...apiPayload } = values;
+    const endpoint = mode === "signup" ? "/auth/signup" : "/auth/login";
 
-      try {
-        const { data } = await axios.post<AuthResponse>(
-          `${DOMAIN}${endpoint}`,
-          apiPayload,
-          {
-            withCredentials: true, // 🔥 أهم سطر
-          }
-        );
-        const { accessToken } = data.token;
-        const { name, imageUrl, role } = data.data;
+    try {
+      const { data } = await axios.post<AuthResponse>(
+        `${DOMAIN}${endpoint}`,
+        apiPayload,
+        {
+          withCredentials: true,
+        },
+      );
+      console.log(DOMAIN);
+      const { accessToken } = data.token;
+      const { name, imageUrl, role, id } = data.data;
+      Cookies.set("token", accessToken, { expires: 1 });
+      Cookies.set("role", role, { expires: 1 });
+      localStorage.setItem("userId", id);
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userImage", imageUrl || "");
 
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("role", role);
-        localStorage.setItem("userName", name);
-        localStorage.setItem("userImage", imageUrl || "");
+      toast.success(data.message || "تمت العملية بنجاح");
+      window.dispatchEvent(new Event("storage"));
 
-        toast.success(data.message || "تمت العملية بنجاح");
-        window.dispatchEvent(new Event("storage"));
-
-        setTimeout(() => {
-          router.push("/");
-        }, 500);
-      } catch (error: any) {
-        const apiErrors = error.response?.data?.errors;
-        if (Array.isArray(apiErrors)) {
-          apiErrors.forEach((err: any) => toast.error(err.message));
-        } else {
-          toast.error(error.response?.data?.message || "فشل الاتصال بالسيرفر");
-        }
-      } finally {
-        setLoading(false);
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
+    } catch (error: any) {
+      console.log(error);
+      const apiErrors = error.response?.data?.errors;
+      if (Array.isArray(apiErrors)) {
+        apiErrors.forEach((err: any) => toast.error(err.message));
+      } else {
+        toast.error(error.response?.data?.message || "فشل الاتصال بالسيرفر");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full max-w-xl animate-in fade-in zoom-in duration-500">

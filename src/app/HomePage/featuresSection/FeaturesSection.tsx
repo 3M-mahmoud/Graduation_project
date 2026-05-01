@@ -24,7 +24,7 @@ const FeatureCard = ({
   iconBg,
   iconColor,
 }: FeatureProps) => (
-  <div className="bg-white p-8 rounded-[2rem] shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center border border-slate-50">
+  <div  data-aos="flip-left" className="bg-white p-8 rounded-[2rem] shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center border border-slate-50">
     <div
       className={`w-14 h-14 ${iconBg} ${iconColor} rounded-2xl flex items-center justify-center mb-6`}
     >
