@@ -14,7 +14,7 @@ const OverviewTab = () => {
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-50">
+      <div data-aos="zoom-in" className="bg-white rounded-2xl p-8 shadow-sm border border-slate-50">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
             <User size={24} />
@@ -31,7 +31,7 @@ const OverviewTab = () => {
 
     
       <div className="max-w-6xl flex flex-col md:flex-row gap-6">
-        <div className="flex flex-col gap-6 w-full md:w-2/5">
+        <div data-aos="fade-left" className="flex flex-col gap-6 w-full md:w-2/5">
       
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">
             <div className="flex items-center gap-2 mb-4">
@@ -94,7 +94,7 @@ const OverviewTab = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-3 w-full md:w-3/5">
+        <div data-aos="fade-right" className="flex flex-col gap-3 w-full md:w-3/5">
         
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">
             <h3 className="text-2xl font-semibold mb-6 pb-2">إحصائيات سريعة</h3>
@@ -141,7 +141,7 @@ const OverviewTab = () => {
       </div>
 
    
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50">
+      <div data-aos="fade-up" className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <div className="p-2 shadow-lg shadow-[0px_1px_2px_rgba(0, 0, 0, 0.05)] rounded-lg">

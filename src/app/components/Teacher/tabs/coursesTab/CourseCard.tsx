@@ -26,7 +26,7 @@ const CourseCard = ({
     router.push(`/teachers/${teacherId}/courses/${title}`);
   };
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col p-5  transition-shadow">
+    <div data-aos="zoom-in" className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col p-5  transition-shadow">
      
       <div className="flex flex-col items-start mb-4">
         <h3 className="text-xl font-bold text-[#191C1D] mb-1">{title}</h3>

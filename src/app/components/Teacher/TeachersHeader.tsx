@@ -11,7 +11,7 @@ export default function TeachersHeader() {
       </div>
 
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-around gap-8">
-        <div className="text-right">
+        <div data-aos="fade-left" className="text-right">
           <h1 className="text-3xl md:text-4xl font-black text-black mb-6">
             المدرسين الأونلاين
           </h1>
@@ -20,7 +20,7 @@ export default function TeachersHeader() {
             المتخصصين فى مصر
           </p>
         </div>
-        <div className="relative w-64 h-48 md:w-96 md:h-72">
+        <div data-aos="fade-right" className="relative w-64 h-48 md:w-96 md:h-72">
           <Image
             src={imgHeroSection}
             alt="Centers"

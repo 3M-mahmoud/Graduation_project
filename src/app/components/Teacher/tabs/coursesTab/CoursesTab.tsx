@@ -99,7 +99,7 @@ const CoursesTab = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 bg-white rounded-lg">
-      <div className="p-4 shadow-sm border border-[#E5E6EC] mb-4 flex flex-col md:flex-row items-center gap-8 rounded-lg">
+      <div data-aos="fade-up" className="p-4 shadow-sm border border-[#E5E6EC] mb-4 flex flex-col md:flex-row items-center gap-8 rounded-lg">
         <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 order-2 md:order-1">
           {grades.map((grade) => (
             <button

@@ -12,7 +12,7 @@ import iconImage from "../../../assets/ceterProfile/icon.png";
 export const ProfileSidebar = ({ data }: any) => {
   return (
     <aside className="space-y-6 sticky top-16">
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div data-aos="fade-up" className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
         <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-2xl">
           <Info size={18} className="text-orange-500" /> عن السنتر
         </h3>
@@ -66,7 +66,7 @@ export const ProfileSidebar = ({ data }: any) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+      <div data-aos="fade-up" className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
         <h3 className="font-bold text-slate-800 mb-4">تواصل معنا</h3>
         <div className="space-y-4">
           <div className="flex items-center gap-3 group cursor-pointer">

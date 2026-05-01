@@ -25,7 +25,7 @@ export default function TeacherProfile() {
   };
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 md:px-8 flex gap-8 border-t border-[#B0B0B0] py-3 shadow-lg overflow-auto">
+      <div data-aos="fade-up" className="max-w-6xl mx-auto px-4 md:px-8 flex gap-8 border-t border-[#B0B0B0] py-3 shadow-lg overflow-auto">
         {["نظرة عامة", "المنشورات", "الدورات التعليمية", "التقييمات"].map(
           (tab) => (
             <button
