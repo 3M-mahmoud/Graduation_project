@@ -24,7 +24,7 @@ export default function RootLayout({
 
         <div className="max-w-6xl mx-auto px-4 md:px-8 pb-6">
           <div className="flex flex-col md:flex-row items-center gap-6 mt-12 relative z-10">
-            <div className="w-60 h-60 mb-3 rounded-full overflow-hidden">
+            <div data-aos="fade-up" className="w-60 h-60 mb-3 rounded-full overflow-hidden">
               <Image
                 src={teacherInfo.image}
                 className="w-full h-full object-cover"
@@ -32,7 +32,7 @@ export default function RootLayout({
               />
             </div>
 
-            <div className="flex-1 text-center md:text-right">
+            <div data-aos="fade-up" className="flex-1 text-center md:text-right">
               <h1 className="text-2xl md:text-3xl font-bold text-[#204658] mb-2">
                 {teacherInfo.name}
               </h1>

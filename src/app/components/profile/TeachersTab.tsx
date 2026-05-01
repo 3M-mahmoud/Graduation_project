@@ -44,7 +44,7 @@ export default function TeachersTab() {
 
   return (
     <div className="bg-[#f9fafb] min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-500">
-      <div className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4">
+      <div data-aos="fade-up" className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4">
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsStageOpen(!isStageOpen)}
@@ -121,6 +121,7 @@ export default function TeachersTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {filteredTeachers.map((teacher) => (
           <div
+          data-aos="flip-left"
             key={teacher.id}
             className="bg-white rounded-3xl p-8 border-[1.5px] border-[##BDBBBB] flex flex-col items-center group hover:translate-y-[-5px] transition-all duration-300"
           >

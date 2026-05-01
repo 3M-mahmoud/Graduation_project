@@ -5,6 +5,7 @@ export const ProfileFeed = ({ posts, logo }: any) => {
     <div className="space-y-6">
       {posts.map((post: any) => (
         <div
+          data-aos="fade-up"
           key={post.id}
           className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
         >

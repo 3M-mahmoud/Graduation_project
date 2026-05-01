@@ -10,7 +10,7 @@ export default function CentersHeader() {
       </div>
 
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-around gap-8">
-        <div className="text-right">
+        <div data-aos="fade-left" className="text-right">
           <h1 className="text-3xl md:text-4xl font-black text-black mb-6">
             السناتر التعليمية
           </h1>
@@ -18,7 +18,7 @@ export default function CentersHeader() {
             أكتشف أفضل السناتر التعليمية في <br /> مصر وأحجز حصصك أونلاين
           </p>
         </div>
-        <div className="relative w-64 h-48 md:w-96 md:h-72">
+        <div data-aos="fade-right" className="relative w-64 h-48 md:w-96 md:h-72">
           <Image
             src={imgHeroSection}
             alt="Centers"

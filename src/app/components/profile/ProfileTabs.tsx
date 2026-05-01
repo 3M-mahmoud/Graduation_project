@@ -14,7 +14,7 @@ export const ProfileTabs = ({ activeTab, setActiveTab }: ProfileTabsProps) => {
   ];
 
   return (
-    <div className="bg-white border-b sticky top-0 z-40 shadow-sm">
+    <div data-aos="fade-up" className="bg-white border-b sticky top-0 z-40 shadow-sm">
       <div className="max-w-7xl mx-auto px-6">
     
         <div className="grid sm:grid-cols-4 gap-8 overflow-x-auto no-scrollbar scroll-smooth">

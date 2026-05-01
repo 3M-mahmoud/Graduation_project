@@ -35,7 +35,7 @@ const ReviewsTab = () => {
      
       <div className="flex flex-col md:flex-row gap-6 mb-10">
       
-        <div className="bg-white rounded-2xl py-8 px-20 border border-slate-100 shadow-sm flex flex-col items-center justify-center">
+        <div data-aos="fade-left" className="bg-white rounded-2xl py-8 px-20 border border-slate-100 shadow-sm flex flex-col items-center justify-center">
           <h2 className="text-6xl font-bold text-[#4B5563] mb-2 tracking-tighter">
             4.9
           </h2>
@@ -48,7 +48,7 @@ const ReviewsTab = () => {
             بناءً على 1,240 تقييم حقيقي
           </p>
         </div>
-        <div className="p-8 bg-white rounded-2xl shadow-sm flex flex-col lg:flex-row">
+        <div data-aos="fade-right" className="p-8 bg-white rounded-2xl shadow-sm flex flex-col lg:flex-row">
           
           <div className="w-full flex flex-col justify-center ml-4">
             {[5, 4, 3, 2, 1].map((star, index) => (
@@ -91,7 +91,7 @@ const ReviewsTab = () => {
       </div>
 
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+      <div data-aos="fade-up" className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
       
         <div className="p-8 border-b border-slate-50 flex items-center justify-between">
           <div className="flex items-center gap-4">

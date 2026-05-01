@@ -82,7 +82,7 @@ const NotesTab = ({
   return (
     <div className="divide-y divide-[#F8FAFC]">
       {filtered.map((note) => (
-        <div key={note.id} className="p-8 flex flex-col md:flex-row items-center justify-between">
+        <div data-aos="zoom-in" key={note.id} className="p-8 flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center gap-8">
             <div className="text-center">
               <p className="text-[#9CA3AF] text-[10px] font-bold mb-1 uppercase">

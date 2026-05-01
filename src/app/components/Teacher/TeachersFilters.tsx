@@ -20,7 +20,7 @@ export default function TeachersFilters({
 }: any) {
   return (
     <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-10">
-      <div className="bg-white text-[#9CA3AF] rounded-2xl shadow-xl p-4 md:p-6 grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div data-aos="fade-up" className="bg-white text-[#9CA3AF] rounded-2xl shadow-xl p-4 md:p-6 grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="relative">
           <Search className="absolute right-3 top-3" size={20} />
           <input

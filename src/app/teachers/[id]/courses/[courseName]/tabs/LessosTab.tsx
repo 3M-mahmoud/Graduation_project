@@ -29,6 +29,7 @@ const LessonsTab = ({ searchQuery }: { searchQuery: string }) => {
     <div className="divide-y divide-[#F8FAFC]">
       {filtered.map((lesson) => (
         <div
+        data-aos="zoom-in"
           key={lesson.id}
           className="p-8 flex flex-col md:flex-row items-center justify-between group"
         >
