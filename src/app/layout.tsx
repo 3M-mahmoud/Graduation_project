@@ -3,6 +3,8 @@ import { Cairo } from "next/font/google";
 import Footer from "./components/layouts/footer/Footer";
 import Nav from "./components/layouts/nav/Nav";
 import "./globals.css";
+import Script from "next/script";
+import AOSProvider from "./AOSProvider";
 
 const cairo = Cairo({ subsets: ["arabic"] });
 
@@ -18,10 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+          rel="stylesheet"
+        ></link>
+      </head>
       <body dir="rtl" className={`${cairo.className}`}>
         <Nav />
         {children}
         <Footer />
+        <AOSProvider />
       </body>
     </html>
   );

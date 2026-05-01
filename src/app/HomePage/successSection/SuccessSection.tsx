@@ -1,26 +1,32 @@
+"use client";
+
 import { Building2, MonitorPlay, Users, Heart } from "lucide-react";
 import SectionHeader from "../../components/sectionHeader/SectionHeader";
-
+import CountUp from "react-countup";
 export default function SuccessSection() {
   const stats = [
     {
       label: "سنتر تعليمي",
-      value: "95 +",
+      value: 95,
+      suffix: "+",
       icon: <Building2 className="text-blue-500" size={32} />,
     },
     {
       label: "مدرس أونلاين",
-      value: "2,860 +",
+      value: 2860,
+      suffix: "+",
       icon: <MonitorPlay className="text-emerald-500" size={32} />,
     },
     {
       label: "طالب مسجل",
-      value: "15,420 +",
+      value: 15420,
+      suffix: "+",
       icon: <Users className="text-orange-500" size={32} />,
     },
     {
       label: "معدل الرضا",
-      value: "98%",
+      value: 98,
+      suffix: "%",
       icon: <Heart className="text-rose-500" size={32} />,
     },
   ];
@@ -40,7 +46,13 @@ export default function SuccessSection() {
                 {stat.icon}
               </div>
               <span className="text-2xl md:text-3xl font-black text-slate-800 mb-1">
-                {stat.value}
+                <CountUp
+                  redraw={true}
+                  end={stat.value}
+                  duration={3}
+                  separator=","
+                  suffix={stat.suffix}
+                />
               </span>
               <span className="text-slate-500 font-bold">{stat.label}</span>
             </div>

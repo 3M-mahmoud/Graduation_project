@@ -1,21 +1,19 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 export default function DashboardRedirect() {
   const router = useRouter();
 
   useEffect(() => {
-    // جلب الرتبة والتوكن من الكوكيز لضمان الدقة
-    const userRole = localStorage.getItem("role");
-    const token = localStorage.getItem("token");
+    const userRole = Cookies.get("role"); 
+    const token = Cookies.get("token");
 
-    // التحقق من وجود الجلسة أولاً
     if (!token || !userRole) {
       router.replace("/login");
       return;
     }
 
-    // التوجيه بناءً على الرتبة المسجلة
     switch (userRole) {
       case "student":
         router.replace("/dashboard/student");
@@ -27,7 +25,6 @@ export default function DashboardRedirect() {
         router.replace("/dashboard/center");
         break;
       default:
-        // في حال وجود رتبة غير معروفة أو خطأ في البيانات
         router.replace("/login");
         break;
     }

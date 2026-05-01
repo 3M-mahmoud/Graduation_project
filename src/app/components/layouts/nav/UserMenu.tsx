@@ -16,6 +16,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
 import { DOMAIN } from "@/utils/constants";
+import Cookies from "js-cookie";
 
 interface UserMenuProps {
   userName: string;
@@ -28,11 +29,12 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
   const [userRole, setUserRole] = useState<string>("student");
   const handleLogout = async () => {
     try {
+      const token = Cookies.get("token");
       await axios.post(
         `${DOMAIN}/auth/logout`,
         {},
         {
-          withCredentials: true, // 🔥 لازم
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
@@ -42,10 +44,11 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
       toast.error("حدث خطأ أثناء تسجيل الخروج");
       router.push("/login");
     }
+    Cookies.remove("token");
+    Cookies.remove("role");
     localStorage.clear();
     window.dispatchEvent(new Event("storage"));
   };
-  // دالة تحديد مسار لوحة التحكم بناءً على الرتبة
   const getDashboardPath = () => {
     switch (userRole) {
       case "student":
@@ -59,7 +62,7 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
     }
   };
   useEffect(() => {
-    const role = localStorage.getItem("role") || "student";
+    const role = Cookies.get("role") || "student";
     setUserRole(role);
   }, []);
   return (

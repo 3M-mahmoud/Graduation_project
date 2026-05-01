@@ -8,7 +8,7 @@ type Props = {
 };
 export default function CenterCard({ center }: Props) {
   return (
-    <div className="bg-white rounded-[2rem] shadow-md border border-slate-50 overflow-hidden flex flex-col h-full transition-transform hover:scale-105 hover:shadow-xl">
+    <div data-aos="zoom-out" className="bg-white rounded-[2rem] shadow-md border border-slate-50 overflow-hidden flex flex-col h-full transition-transform hover:scale-105 hover:shadow-xl">
       <div className="relative h-48 w-full">
         <Image
           src={center.image}

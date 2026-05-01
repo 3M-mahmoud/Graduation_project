@@ -3,16 +3,13 @@ import React, { useState, useMemo } from "react";
 import { MapPin, Calendar, Clock } from "lucide-react";
 
 const MyLessons = () => {
-  // 1. تحديد اليوم المختار (الافتراضي هو تاريخ اليوم)
   const [selectedDate, setSelectedDate] = useState(
     new Date().getDate().toString()
   );
 
-  // 2. توليد أيام الأسبوع الحالي ديناميكياً
   const weekDays = useMemo(() => {
     const now = new Date();
     const startOfWeek = new Date(now);
-    // ضبط البداية لتكون يوم السبت (بداية الأسبوع التعليمي في مصر)
     const dayDiff = now.getDay() === 6 ? 0 : now.getDay() + 1;
     startOfWeek.setDate(now.getDate() - dayDiff);
 
@@ -37,10 +34,8 @@ const MyLessons = () => {
     });
   }, []);
 
-  // 3. بيانات الدروس (مثال لمحتوى يتغير حسب اليوم)
   const lessonsData: { [key: string]: any[] } = {
     "25": [
-      // مثال ليوم 24 الموضح في الصورة
       {
         id: 1,
         subject: "الرياضيات - أ/ خالد",
@@ -54,7 +49,6 @@ const MyLessons = () => {
         time: "الساعة 8:00 مساءً",
       },
     ],
-    // باقي الأيام ستكون فارغة في هذا المثال
   };
 
   const currentLessons = lessonsData[selectedDate] || [];

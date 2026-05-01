@@ -5,8 +5,7 @@ export const profileSchema = z.object({
   lastName: z.string().min(2, "اسم العائلة يجب أن يكون حرفين على الأقل"),
   educationalStage: z.string().min(1, "يرجى اختيار المرحلة الدراسية"),
   academicYear: z.string().min(1, "يرجى اختيار الصف الدراسي"),
-  phoneNumber: z.string().regex(/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صحيح"),
-  email: z.string().email("البريد الإلكتروني غير صحيح"),
+  phoneNumber: z.string().regex(/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صحيح")
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;

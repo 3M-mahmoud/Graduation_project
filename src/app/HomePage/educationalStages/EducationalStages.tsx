@@ -46,7 +46,7 @@ const educationalStages: EducationalStage[] = [
 
 const StageCard: React.FC<{ stage: EducationalStage }> = ({ stage }) => {
   return (
-    <div className="bg-white rounded-3xl overflow-hidden shadow-lg transition-transform hover:scale-105">
+    <div data-aos="zoom-in-up" className="bg-white rounded-3xl overflow-hidden shadow-lg transition-transform hover:scale-105">
    
       <div className="relative aspect-video w-full">
         <Image

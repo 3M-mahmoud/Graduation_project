@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search, Atom, ChevronDown } from "lucide-react";
 
 const MyAssignments = () => {
-  // 1. البيانات الأصلية (مثال)
+  
   const allAssignments = [
     {
       id: 1,
@@ -56,12 +56,10 @@ const MyAssignments = () => {
     },
   ];
 
-  // 2. حالات التحكم (State)
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleAssignments, setVisibleAssignments] = useState(2);
   const [visibleExams, setVisibleExams] = useState(2);
 
-  // 3. منطق البحث والفلترة
   const filteredAssignments = allAssignments.filter((item) =>
     item.subject.toLowerCase().includes(searchTerm.toLowerCase())
   );
