@@ -31,11 +31,11 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
     try {
       const token = Cookies.get("token");
       await axios.post(
-        `${DOMAIN}/auth/logout`,
+        `${DOMAIN}auth/logout`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       toast.success("تم تسجيل الخروج بنجاح");

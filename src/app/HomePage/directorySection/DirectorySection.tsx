@@ -6,6 +6,7 @@ import TeacherCardImg from "../../../assets/TeacherCard/TeacherCardImg.png";
 import Link from "next/link";
 import CenterCard from "@/app/components/Center/CenterCard";
 import TeacherCard from "@/app/components/Teacher/TeacherCard";
+import { DOMAIN } from "@/utils/constants";
 
 const SectionHeader = ({ title }: { title: string }) => (
   <div className="bg-white rounded-2xl shadow-sm p-5 mb-8 flex items-center justify-between border border-slate-100">
@@ -21,29 +22,24 @@ const SectionHeader = ({ title }: { title: string }) => (
   </div>
 );
 
-export default function DirectorySection() {
+export default async function DirectorySection() {
+  const res = await fetch(`${DOMAIN}users/home-page`, {
+    // method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const data = await res.json();
+  console.log(data);
+
   return (
     <main className="bg-slate-50 min-h-screen py-12 px-4 md:px-16">
       <div className="max-w-7xl mx-auto">
         <section className="mb-20">
           <SectionHeader title="اكتشف أفضل السناتر التعليمية فى مصر" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <CenterCard
-              center={{
-                id: 1,
-                name: "سنتر النزهة التعليمي",
-                location: "حي النزهة، القاهرة",
-                rating: "4.8",
-                image: centerCard1,
-                stages: [
-                  "المرحلة الثانوية",
-                  "المرحلة الإعدادية",
-                  "المرحلة الإبتدائية",
-                ],
-                systems: ["عربي", "لغات"],
-              }}
-            />
-            <CenterCard
+            {data.data?.centers?.map((center: any, i) => (
+              <CenterCard key={i} center={center} />
+            ))}
+            {/* <CenterCard
               center={{
                 id: 2,
                 name: "سنتر المتألق التعليمي",
@@ -68,7 +64,7 @@ export default function DirectorySection() {
                 stages: ["المرحلة الثانوية"],
                 systems: ["عربي"],
               }}
-            />
+            /> */}
             {/* Repeat for other centers... */}
           </div>
         </section>
@@ -78,45 +74,9 @@ export default function DirectorySection() {
           <SectionHeader title="تعلم أونلاين مع نخبة من افضل المدرسين في مصر" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Example Teacher */}
-            <TeacherCard
-              teacher={{
-                id: 1,
-                name: "أ. فاطمه أحمد",
-                subject: "اللغة الإنجليزية",
-                rating: "4.8",
-                experience: "خبرة 8 سنين",
-                avatar: TeacherCardImg,
-                bio: "مدرسة متخصصة في تدريس اللغة الإنجليزية للمرحلة الابتدائية",
-                stages: ["الصف الأول حتى الرابع الابتدائي"],
-                systems: ["عربي"],
-              }}
-            />
-            <TeacherCard
-              teacher={{
-                id: 2,
-                name: "أ. فاطمه أحمد",
-                subject: "اللغة الإنجليزية",
-                rating: "4.8",
-                experience: "خبرة 8 سنين",
-                avatar: TeacherCardImg,
-                bio: "مدرسة متخصصة في تدريس اللغة الإنجليزية للمرحلة الابتدائية",
-                stages: ["الصف الأول حتى الرابع الابتدائي"],
-                systems: ["عربي"],
-              }}
-            />
-            <TeacherCard
-              teacher={{
-                id: 3,
-                name: "أ. فاطمه أحمد",
-                subject: "اللغة الإنجليزية",
-                rating: "4.8",
-                experience: "خبرة 8 سنين",
-                avatar: TeacherCardImg,
-                bio: "مدرسة متخصصة في تدريس اللغة الإنجليزية للمرحلة الابتدائية",
-                stages: ["الصف الأول حتى الرابع الابتدائي"],
-                systems: ["عربي"],
-              }}
-            />
+            {data.data?.teachers?.map((teacher: any, i) => (
+              <TeacherCard key={i} teacher={teacher} />
+            ))}
           </div>
         </section>
       </div>

@@ -6,26 +6,29 @@ import { ProfileFeed } from "@/app/components/profile/ProfileFeed";
 import CoursesTab from "@/app/components/Teacher/tabs/coursesTab/CoursesTab";
 import ReviewsTab from "@/app/components/Teacher/tabs/ReviewsTab";
 
-export default function TeacherProfile() {
+export default function TeacherProfile({ data }: any) {
   const [activeTab, setActiveTab] = useState("نظرة عامة");
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "نظرة عامة":
-        return <OverviewTab />;
+        return <OverviewTab data={data} />;
       case "المنشورات":
-        return <ProfileFeed posts={centerData.posts} logo={centerData.logo} />;
+        return <ProfileFeed teacherId={data.id} />;
       case "الدورات التعليمية":
-        return <CoursesTab />;
+        return <CoursesTab teacherId={data.id} />;
       case "التقييمات":
         return <ReviewsTab />;
       default:
-        return <OverviewTab />;
+        return <OverviewTab data={data} />;
     }
   };
   return (
     <>
-      <div data-aos="fade-up" className="max-w-6xl mx-auto px-4 md:px-8 flex gap-8 border-t border-[#B0B0B0] py-3 shadow-lg overflow-auto">
+      <div
+        data-aos="fade-up"
+        className="max-w-6xl mx-auto px-4 md:px-8 flex gap-8 border-t border-[#B0B0B0] py-3 shadow-lg overflow-auto"
+      >
         {["نظرة عامة", "المنشورات", "الدورات التعليمية", "التقييمات"].map(
           (tab) => (
             <button
@@ -42,7 +45,7 @@ export default function TeacherProfile() {
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 rounded-full" />
               )}
             </button>
-          )
+          ),
         )}
       </div>
 

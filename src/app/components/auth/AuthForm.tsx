@@ -31,7 +31,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const onSubmit = async (values: AuthFormData) => {
     setLoading(true);
     const { terms, ...apiPayload } = values;
-    const endpoint = mode === "signup" ? "/auth/signup" : "/auth/login";
+    const endpoint = mode === "signup" ? "auth/signup" : "auth/login";
 
     try {
       const { data } = await axios.post<AuthResponse>(

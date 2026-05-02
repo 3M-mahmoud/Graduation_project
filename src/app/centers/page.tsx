@@ -1,33 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CentersHeader from "../components/Center/CentersHeader";
 import CentersFilters from "../components/Center/CentersFilters";
 import CenterCard from "../components/Center/CenterCard";
-import { centersData } from "@/data/centers";
+// import { centersData } from "@/data/centers";
 import { ListFilter } from "lucide-react";
+import axios from "axios";
+import { DOMAIN } from "@/utils/constants";
 
 export default function CentersPage() {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [stage, setStage] = useState("");
 
-  const [filteredCenters, setFilteredCenters] = useState(centersData);
+  const [filteredCenters, setFilteredCenters] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
 
   const [isSorted, setIsSorted] = useState(false);
 
   const handleFilter = () => {
-    const result = centersData.filter((center) => {
-      const matchSearch = center.name
+    const result = filteredCenters.filter((center) => {
+      const matchSearch = center?.name
         .toLowerCase()
         .includes(search.toLowerCase());
 
       const matchLocation = location
-        ? center.location.includes(location)
+        ? center?.governorate?.includes(location)
         : true;
 
-      const matchStage = stage ? center.stages.includes(stage) : true;
+      const matchStage = stage ? center?.studeyMaterial.includes(stage) : true;
 
       return matchSearch && matchLocation && matchStage;
     });
@@ -41,14 +43,26 @@ export default function CentersPage() {
     setSearch("");
     setLocation("");
     setStage("");
-    setFilteredCenters(centersData);
+    setFilteredCenters(filteredCenters);
     setIsFiltered(false);
   };
+
+  const handleGetTeachers = async () => {
+    const {
+      data: { data },
+    } = await axios.get(`${DOMAIN}users?role=center`, {});
+    console.log(data);
+
+    setFilteredCenters(data);
+  };
+  useEffect(() => {
+    handleGetTeachers();
+  }, [search, stage, location]);
 
   const handleSort = () => {
     if (!isSorted) {
       const sorted = [...filteredCenters].sort(
-        (a, b) => Number(b.rating) - Number(a.rating)
+        (a, b) => Number(b.rating) - Number(a.rating),
       );
 
       setFilteredCenters(sorted);
@@ -143,7 +157,7 @@ export default function CentersPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCenters.map((center) => (
-            <CenterCard key={center.id} center={center} />
+            <CenterCard key={center.id} user={center} />
           ))}
         </div>
       </div>
