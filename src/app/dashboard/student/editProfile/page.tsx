@@ -65,7 +65,7 @@ const EditProfilePage = () => {
       const role = Cookies.get("role");
 
       await axios.patch(
-        `${DOMAIN}/users/${userId}`,
+        `${DOMAIN}users/${userId}`,
         {
           role,
           userData: {
@@ -85,7 +85,7 @@ const EditProfilePage = () => {
           },
         },
         {
-          headers: {Authorization: `Bearer ${token}`}
+          headers: { Authorization: `Bearer ${token}` },
         },
       );
 
@@ -230,7 +230,11 @@ const EditProfilePage = () => {
               disabled={isSubmitting}
               className="px-16 py-4 bg-[#F59E0B] text-white font-black rounded-2xl hover:bg-[#db8c05] shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
             >
-              {isSubmitting ? <Loader2 className="animate-spin" size={24} /> : "حفظ التغييرات"}
+              {isSubmitting ? (
+                <Loader2 className="animate-spin" size={24} />
+              ) : (
+                "حفظ التغييرات"
+              )}
             </button>
           </div>
         </form>

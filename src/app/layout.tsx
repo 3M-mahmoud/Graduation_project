@@ -3,8 +3,10 @@ import { Cairo } from "next/font/google";
 import Footer from "./components/layouts/footer/Footer";
 import Nav from "./components/layouts/nav/Nav";
 import "./globals.css";
+import "aos/dist/aos.css";
 import Script from "next/script";
 import AOSProvider from "./AOSProvider";
+import WsSocket from "@/context/WsSocket";
 
 const cairo = Cairo({ subsets: ["arabic"] });
 
@@ -28,7 +30,7 @@ export default function RootLayout({
       </head>
       <body dir="rtl" className={`${cairo.className}`}>
         <Nav />
-        {children}
+        <WsSocket>{children}</WsSocket>
         <Footer />
         <AOSProvider />
       </body>
