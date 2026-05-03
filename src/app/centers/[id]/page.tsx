@@ -11,16 +11,17 @@ import ScheduleTab from "@/app/components/profile/ScheduleTab";
 import LocationTab from "@/app/components/profile/LocationTap";
 import { DOMAIN } from "@/utils/constants";
 import { useParams } from "next/navigation";
+import { Center } from "@/types/listing";
 
 export default function CenterProfilePage() {
   const param = useParams() as { id: string };
-  const [centerData, setCenterData] = useState({});
+  const [centerData, setCenterData] = useState<Center | null>(null);
   const [activeTab, setActiveTab] = useState("الرئيسية");
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "الرئيسية":
-        return <ProfileFeed centerId={centerData?.center?.id} />;
+        return <ProfileFeed centerId={centerData?.id} />;
       case "المدرسين":
         return <TeachersTab />;
       case "جدول الحصص":
@@ -28,7 +29,7 @@ export default function CenterProfilePage() {
       case "الموقع الجغرافي":
         return <LocationTab />;
       default:
-        return <ProfileFeed centerId={centerData?.center?.id} />;
+        return <ProfileFeed centerId={centerData?.id} />;
     }
   };
 

@@ -1,8 +1,6 @@
-"use client";
-import StudentSidebar from "@/app/components/layouts/sidebar/studentSidebar/StudentSidebar";
-import React from "react";
+import CenterSidebar from "@/app/components/layouts/sidebar/DashboardSidebar";
 
-export default function StudentLayout({
+export default function CenterDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -13,10 +11,9 @@ export default function StudentLayout({
         <div className="flex gap-4 md:gap-8">
           {/* السايد بار مخصص للطالب بتصميمه الفريد */}
           <aside className="w-fit lg:w-80">
-            <StudentSidebar />
+            <CenterSidebar />
           </aside>
           <main className="flex-1 mt-6 overflow-hidden">{children}</main>
-
         </div>
       </div>
     </div>

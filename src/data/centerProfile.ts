@@ -219,5 +219,4 @@ export const scheduleData = [
       },
     ],
   },
-  // أضف باقي الأيام...
 ];

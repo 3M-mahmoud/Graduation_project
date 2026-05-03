@@ -73,10 +73,8 @@ const EditProfilePage = () => {
             phone: data.phoneNumber,
           },
           profileData: {
-            // بيانات البروفايل الأساسية
           },
           extraProfileData: {
-            // teacher/center فقط
           },
           student: {
             id: userDashboard?.student?.id,
@@ -110,7 +108,6 @@ const EditProfilePage = () => {
         dir="rtl"
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-          {/* الصورة الشخصية */}
           <div className="flex flex-col md:flex-row gap-4 items-center relative">
             <div className="relative w-28 h-28 rounded-full overflow-hidden">
               <Image

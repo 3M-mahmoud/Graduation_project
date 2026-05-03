@@ -47,7 +47,6 @@ export default function SuccessSection() {
               </div>
               <span className="text-2xl md:text-3xl font-black text-slate-800 mb-1">
                 <CountUp
-                  redraw={true}
                   end={stat.value}
                   duration={3}
                   separator=","

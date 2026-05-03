@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Settings } from "lucide-react";
-import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
+import avatarImage from "../../../../../assets/ceterProfile/teacherTap1.jpeg";
 import Image from "next/image";
 
 const StudentSidebar = () => {
