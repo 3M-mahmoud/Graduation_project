@@ -7,10 +7,13 @@ import { useParams } from "next/navigation";
 import TeacherProfile from "./page";
 import ButtonFollow from "@/app/components/button/ButtonFollow";
 import { DOMAIN } from "@/utils/constants";
+import { useSocket } from "@/context/WsSocket";
 
 export default function RootLayout() {
   const param = useParams() as { id: string };
+  const { socket } = useSocket();
   const [data, setData] = useState({});
+  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,9 +24,40 @@ export default function RootLayout() {
       const json = await res.json();
       setData(json.data);
     };
-
     if (param?.id) getData();
+
+    if (!socket || !param.id) return;
+    socket.send(
+      JSON.stringify({
+        type: "get_user_presence",
+        payload: {
+          userId: param.id,
+        },
+      }),
+    );
   }, [param?.id]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === "status") {
+        if (String(data.payload.userId) === String(param.id)) {
+          setIsOnline(data.payload.isOnline);
+        }
+      }
+    };
+
+    socket.addEventListener("message", handleMessage);
+
+    return () => {
+      socket.removeEventListener("message", handleMessage);
+    };
+  }, [socket, param.id]);
+
+  console.log(isOnline);
 
   console.log(data);
   if (!data?.id)
@@ -58,14 +92,16 @@ export default function RootLayout() {
             </p>
 
             <div className="flex justify-center md:justify-start items-center gap-1 text-[#204658] mb-6">
-              <span className="ml-2 text-xl">{data?.followerCounts} متابع</span>
+              <span className="ml-2 text-xl">
+                {data?.teacher?.followerCounts} متابع
+              </span>
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, index) => (
                   <Star
                     key={index}
                     size={16}
                     className={
-                      index < Math.floor(data.teacher?.star || 0)
+                      index < Math.floor(data?.teacher?.star || 0)
                         ? "text-[#FFC700] fill-[#FFC700]"
                         : "text-slate-200 fill-slate-200"
                     }

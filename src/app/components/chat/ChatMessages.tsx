@@ -430,7 +430,7 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
             </div>
           );
         })}
-        <div className="relative w-full">
+        {/* <div className="relative w-full">
           {typing && (
             <div className="absolute bottom-full left-6 mb-2 transition-all duration-500 ease-in-out z-10">
               <div className="bg-white/90 backdrop-blur-md border border-gray-100 p-2 px-4 rounded-[20px] rounded-bl-none flex items-center gap-2 shadow-lg ring-1 ring-black/5">
@@ -454,11 +454,34 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
-      <footer className="p-4 bg-white border-t border-gray-100">
+      <footer className="relative p-4 bg-white border-t border-gray-100">
         <div className="flex items-center gap-2 max-w-4xl mx-auto bg-[#F8F9FA] p-1.5 rounded-[24px] border border-gray-200 focus-within:bg-white focus-within:border-[#204658] focus-within:ring-4 focus-within:ring-[#204658]/5 transition-all duration-300">
+          {typing && (
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 transition-all duration-500 ease-in-out z-20">
+              <div className="bg-white/95 backdrop-blur-md border border-gray-200 p-2 px-5 rounded-full flex items-center gap-3 shadow-xl ring-1 ring-black/5">
+                <div className="flex gap-1.5">
+                  <span
+                    className="size-1.5 bg-[#204658] rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  ></span>
+                  <span
+                    className="size-1.5 bg-[#204658] rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  ></span>
+                  <span
+                    className="size-1.5 bg-[#204658] rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  ></span>
+                </div>
+                <span className="text-[13px] text-[#204658] font-medium tracking-tight border-r pr-3 border-gray-200">
+                  {dataHeader?.name} يكتب الآن...
+                </span>
+              </div>
+            </div>
+          )}
           <input
             ref={inputRef}
             value={inputValue}

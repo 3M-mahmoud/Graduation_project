@@ -157,7 +157,7 @@ export default function CentersPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCenters.map((center) => (
-            <CenterCard key={center.id} user={center} />
+            <CenterCard key={center.id} center={center} />
           ))}
         </div>
       </div>

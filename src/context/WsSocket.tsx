@@ -223,7 +223,10 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
     if (!senderId) return;
 
     // تغيير الرابط حسب إعدادات السيرفر عندك
-    const ws = new WebSocket(`ws://localhost:3001?userId=${senderId}`);
+    const ws = new WebSocket(
+      `ws://centermasrbackendgraduationproject-production-92c6.up.railway.app/api/v1/ws?userId=${senderId}`,
+    );
+    // const ws = new WebSocket(`ws://localhost:3001?userId=${senderId}`);
     setSocket(ws);
 
     ws.onopen = () => console.log("✅ Connected to Socket");
@@ -233,18 +236,52 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
 
       switch (data.type) {
         // حالة الـ Presence (أونلاين / أوفلاين)
-        case "presence":
         case "AllPresence": {
-          const targetId = data.payload.senderId || data.payload.receiverId;
+          const targetId = data.payload.receiverId;
           const isOnline = data.payload.isOnline;
 
-          setAllOnline((prev) => {
-            const newSet = new Set(prev);
-            isOnline ? newSet.add(targetId) : newSet.delete(targetId);
-            return newSet;
-          });
+          if (data.payload.senderId === senderId) {
+            setAllOnline((prevSet) => {
+              const newSet = new Set(prevSet);
+              if (isOnline) {
+                newSet.add(targetId);
+              } else {
+                newSet.delete(targetId);
+              }
+              return newSet;
+            });
+          }
           break;
         }
+        case "presence": {
+          const targetId = data.payload.senderId;
+          const isOnline = data.payload.isOnline;
+
+          if (data.payload.receiverId === senderId) {
+            setAllOnline((prevSet) => {
+              const newSet = new Set(prevSet);
+              if (isOnline) {
+                newSet.add(targetId);
+              } else {
+                newSet.delete(targetId);
+              }
+              return newSet;
+            });
+          }
+          break;
+        }
+        // case "presence":
+        // case "AllPresence": {
+        //   const targetId = data.payload.senderId || data.payload.receiverId;
+        //   const isOnline = data.payload.isOnline;
+
+        //   setAllOnline((prev) => {
+        //     const newSet = new Set(prev);
+        //     isOnline ? newSet.add(targetId) : newSet.delete(targetId);
+        //     return newSet;
+        //   });
+        //   break;
+        // }
 
         // تحديث قائمة المحادثات عند وصول رسالة جديدة
         case "message": {

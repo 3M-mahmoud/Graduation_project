@@ -7,6 +7,7 @@ import Link from "next/link";
 import CenterCard from "@/app/components/Center/CenterCard";
 import TeacherCard from "@/app/components/Teacher/TeacherCard";
 import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 
 const SectionHeader = ({ title }: { title: string }) => (
   <div className="bg-white rounded-2xl shadow-sm p-5 mb-8 flex items-center justify-between border border-slate-100">
@@ -23,11 +24,11 @@ const SectionHeader = ({ title }: { title: string }) => (
 );
 
 export default async function DirectorySection() {
-  const res = await fetch(`${DOMAIN}users/home-page`, {
+  const { data } = await axios.get(`${DOMAIN}users/home-page`, {
     // method: "GET",
     headers: { "Content-Type": "application/json" },
   });
-  const data = await res.json();
+  // const data = await res.json();
   console.log(data);
 
   return (
