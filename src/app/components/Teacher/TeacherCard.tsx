@@ -8,8 +8,8 @@ type Props = {
   teacher: Teacher;
 };
 
-export default function TeacherCard({ teacher }: { teacher: Teacher }) {
-  if (!teacher?.id) return <div>loading...</div>;
+export default function TeacherCard({ teacher }: any) {
+  console.log(teacher, "000000000");
   return (
     <div
       data-aos="zoom-in"
@@ -18,20 +18,20 @@ export default function TeacherCard({ teacher }: { teacher: Teacher }) {
       <div className="flex flex-row items-center gap-3 mb-4">
         <div className="relative w-20 h-20 rounded-full overflow-hidden mb-2 border-2 border-slate-100">
           <Image
-            src={teacher.imageUrl || ""}
-            alt={teacher.name}
+            src={teacher?.imageUrl || ""}
+            alt={teacher?.name}
             fill
             className="object-cover"
           />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-800">{teacher.name}</h3>
+          <h3 className="text-lg font-bold text-slate-800">{teacher?.name}</h3>
           <p className="text-orange-500 font-bold">
-            {teacher.teacher?.studyMaterial}
+            {teacher?.teacher?.studyMaterial}
           </p>
           <div className="flex items-center gap-1 text-[#D09539] font-bold text-sm">
             <Star size={14} fill="currentColor" />
-            <span className="text-[#5F5F60]">{teacher.teacher?.star}</span>
+            <span className="text-[#5F5F60]">{teacher?.teacher?.star}</span>
           </div>
         </div>
       </div>
@@ -39,11 +39,11 @@ export default function TeacherCard({ teacher }: { teacher: Teacher }) {
       <div className="space-y-3 mb-6">
         <div className="flex items-center gap-2 text-slate-500 text-sm">
           <Clock size={16} />
-          <span>{teacher.teacher?.experienceYear}</span>
+          <span>{teacher?.teacher?.experienceYear}</span>
         </div>
         <div className="flex items-start gap-2 text-slate-500 text-sm leading-relaxed">
           <Pencil size={16} className="mt-1 shrink-0" />
-          <span className="text-right">{teacher.teacher?.bio}</span>
+          <span className="text-right">{teacher?.teacher?.bio}</span>
         </div>
 
         <div>
@@ -51,7 +51,7 @@ export default function TeacherCard({ teacher }: { teacher: Teacher }) {
             <Tags size={14} /> المراحل التعليمية:
           </p>
           <div className="flex flex-wrap gap-2">
-            {teacher.teacher?.classRoom?.map((s: string) => (
+            {teacher?.teacher?.classRoom?.map((s: string) => (
               <Badge key={s}>{s}</Badge>
             ))}
           </div>
@@ -61,7 +61,7 @@ export default function TeacherCard({ teacher }: { teacher: Teacher }) {
             <Globe size={14} /> النظام الدراسي:
           </p>
           <div className="flex flex-wrap gap-2">
-            {teacher.teacher?.studySystem?.map((s: string) => (
+            {teacher?.teacher?.studySystem?.map((s: string) => (
               <Badge key={s}>{s}</Badge>
             ))}
           </div>
@@ -72,7 +72,7 @@ export default function TeacherCard({ teacher }: { teacher: Teacher }) {
         <button className="flex-1 py-2 bg-[#204658] text-white rounded-lg text-sm font-bold hover:bg-slate-700">
           <Link
             className="flex items-center justify-center"
-            href={`/teachers/${teacher?.user?.id}`}
+            href={`/teachers/${teacher?.id}`}
           >
             عرض الصفحة الشخصية
           </Link>

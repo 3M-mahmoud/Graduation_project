@@ -44,12 +44,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
       console.log(DOMAIN);
       const { accessToken } = data.token;
       const { name, imageUrl, role, id } = data.data;
-      Cookies.set("token", accessToken, { expires: 1 });
-      Cookies.set("role", role, { expires: 1 });
+      localStorage.setItem("token", accessToken);
       localStorage.setItem("userId", id);
       localStorage.setItem("userName", name);
       localStorage.setItem("userImage", imageUrl || "");
 
+      Cookies.set("token", accessToken, { expires: 1 });
+      Cookies.set("role", role, { expires: 1 });
       toast.success(data.message || "تمت العملية بنجاح");
       window.dispatchEvent(new Event("storage"));
 

@@ -187,9 +187,7 @@ export default function TeachersPage() {
   };
 
   const handleGetTeachers = async () => {
-    const {
-      data: { data },
-    } = await axios.get(
+    const { data } = await axios.get(
       `${DOMAIN}users?role=teacher`,
       {},
       // {
@@ -198,7 +196,7 @@ export default function TeachersPage() {
     );
     console.log(data);
 
-    setFilteredTeachers(data);
+    setFilteredTeachers(data.data);
   };
   useEffect(() => {
     handleGetTeachers();
@@ -283,7 +281,11 @@ export default function TeachersPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredTeachers?.map((teacher) => (
-            <TeacherCard key={teacher?.id} teacher={teacher} />
+            <TeacherCard
+              key={teacher?.id}
+              teacher={teacher}
+              // user={teacher}
+            />
           ))}
         </div>
 
