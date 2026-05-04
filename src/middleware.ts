@@ -7,8 +7,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 🟢 حماية صفحة عرض المحتوى
-  const isCourseContent =
-    pathname.startsWith("/teachers/") && pathname.includes("/courses/");
+  const isCourseContent = pathname.includes("/courses/");
 
   if (isCourseContent && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -35,4 +34,4 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-export const config = { matcher: ["/teachers/:path*", "/dashboard/:path*"] };
+export const config = { matcher: ["/courses/:path*", "/dashboard/:path*"] };
