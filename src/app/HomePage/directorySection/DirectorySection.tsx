@@ -15,7 +15,10 @@ const SectionHeader = ({ title, role }: { title: string; role: string }) => (
       {title}
     </h2>
     <button className="flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors font-medium">
-      <Link className="flex items-center justify-center gap-2" href={`/${role}`}>
+      <Link
+        className="flex items-center justify-center gap-2"
+        href={`/${role}`}
+      >
         <span>عرض الكل</span>
         <ArrowLeft size={18} />
       </Link>
@@ -43,39 +46,14 @@ export default async function DirectorySection() {
             {data.data?.centers?.map((center: any, i) => (
               <CenterCard key={i} center={center} />
             ))}
-            {/* <CenterCard
-              center={{
-                id: 2,
-                name: "سنتر المتألق التعليمي",
-                location: "فيصل, القاهرة",
-                rating: "4.9",
-                image: centerCard2,
-                stages: [
-                  "المرحلة الثانوية",
-                  "المرحلة الإعدادية",
-                  "المرحلة الإبتدائية",
-                ],
-                systems: ["عربي"],
-              }}
-            />
-            <CenterCard
-              center={{
-                id: 3,
-                name: "سنتر النزهة التعليمي",
-                location: "العبودي, الفيوم",
-                rating: "4.6",
-                image: centerCard3,
-                stages: ["المرحلة الثانوية"],
-                systems: ["عربي"],
-              }}
-            /> */}
-            {/* Repeat for other centers... */}
           </div>
         </section>
 
-        {/* Teachers Section */}
         <section className="mb-20">
-          <SectionHeader title="تعلم أونلاين مع نخبة من افضل المدرسين في مصر" role="teachers" />
+          <SectionHeader
+            title="تعلم أونلاين مع نخبة من افضل المدرسين في مصر"
+            role="teachers"
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Example Teacher */}
             {data.data?.teachers?.map((teacher: any, i) => (
