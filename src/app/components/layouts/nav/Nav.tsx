@@ -42,10 +42,13 @@ const Nav = () => {
   return (
     <nav className="relative bg-white text-[#204658] shadow-sm z-50">
       <div className="flex items-center justify-between px-6 py-4 md:px-16">
-        <div className="flex items-center gap-2 text-2xl font-bold text-[#204658] shrink-0">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-2xl font-bold text-[#204658] shrink-0"
+        >
           <span className="order-2">سنتر مصر</span>
           <GraduationCap className="order-1 text-[#204658]" size={32} />
-        </div>
+        </Link>
 
         <ul className="hidden lg:flex items-center gap-8 text-[#204658]">
           <li>
@@ -165,7 +168,7 @@ const Nav = () => {
             ) : (
               <>
                 <Link
-                  href="/"
+                  href="/login"
                   onClick={toggleMenu}
                   className="flex items-center justify-center gap-2 w-full py-4 border border-slate-200 rounded-xl font-bold"
                 >
@@ -173,7 +176,7 @@ const Nav = () => {
                   تسجيل الدخول
                 </Link>
                 <Link
-                  href="/"
+                  href="/signup"
                   onClick={toggleMenu}
                   className="flex items-center justify-center gap-2 w-full py-4 bg-slate-600 text-white rounded-xl font-bold"
                 >

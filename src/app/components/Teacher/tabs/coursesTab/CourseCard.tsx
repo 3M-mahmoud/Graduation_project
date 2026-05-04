@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { Calendar, Clock, Users, BookOpen, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 // interface CourseCardProps {
@@ -41,7 +42,12 @@ const CourseCard = ({
   if (!course) return <div>loading...</div>;
 
   const handleNavigation = () => {
-    router.push(`/teachers/${teacherId}/courses/${studyMaterial}`);
+    const token = Cookies.get("token");
+    if (token) {
+      router.push(`/teachers/${teacherId}/courses/${studyMaterial}`);
+    } else {
+      router.push(`/login`);
+    }
   };
   return (
     <div

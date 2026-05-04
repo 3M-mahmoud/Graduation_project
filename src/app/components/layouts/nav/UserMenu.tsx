@@ -26,6 +26,7 @@ interface UserMenuProps {
 export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
+  const role = Cookies.get("role") || "student";
   const [userRole, setUserRole] = useState<string>("student");
   const handleLogout = async () => {
     try {
@@ -62,7 +63,6 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
     }
   };
   useEffect(() => {
-    const role = Cookies.get("role") || "student";
     setUserRole(role);
   }, []);
   return (
@@ -139,7 +139,7 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
                 </Link>
 
                 <Link
-                  href="/settings"
+                  href={`/dashboard/${role}/settings`}
                   className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
                 >
                   <span className="text-xl font-bold text-slate-700">
