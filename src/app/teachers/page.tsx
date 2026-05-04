@@ -191,7 +191,7 @@ export default function TeachersPage() {
       `${DOMAIN}users?role=teacher`,
       {},
       // {
-      //   withCredentials: true, // 🔥 أهم سطر
+      //   withCredentials: true,
       // },
     );
     console.log(data);
