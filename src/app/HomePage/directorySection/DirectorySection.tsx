@@ -9,13 +9,13 @@ import TeacherCard from "@/app/components/Teacher/TeacherCard";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
 
-const SectionHeader = ({ title }: { title: string }) => (
+const SectionHeader = ({ title, role }: { title: string; role: string }) => (
   <div className="bg-white rounded-2xl shadow-sm p-5 mb-8 flex items-center justify-between border border-slate-100">
     <h2 className="text-sm sm:xl md:text-2xl font-bold text-slate-800">
       {title}
     </h2>
     <button className="flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors font-medium">
-      <Link className="flex items-center justify-center gap-2" href="/">
+      <Link className="flex items-center justify-center gap-2" href={`/${role}`}>
         <span>عرض الكل</span>
         <ArrowLeft size={18} />
       </Link>
@@ -35,7 +35,10 @@ export default async function DirectorySection() {
     <main className="bg-slate-50 min-h-screen py-12 px-4 md:px-16">
       <div className="max-w-7xl mx-auto">
         <section className="mb-20">
-          <SectionHeader title="اكتشف أفضل السناتر التعليمية فى مصر" />
+          <SectionHeader
+            title="اكتشف أفضل السناتر التعليمية فى مصر"
+            role="centers"
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {data.data?.centers?.map((center: any, i) => (
               <CenterCard key={i} center={center} />
@@ -72,7 +75,7 @@ export default async function DirectorySection() {
 
         {/* Teachers Section */}
         <section className="mb-20">
-          <SectionHeader title="تعلم أونلاين مع نخبة من افضل المدرسين في مصر" />
+          <SectionHeader title="تعلم أونلاين مع نخبة من افضل المدرسين في مصر" role="teachers" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Example Teacher */}
             {data.data?.teachers?.map((teacher: any, i) => (

@@ -72,7 +72,7 @@ const StageCard: React.FC<{ stage: EducationalStage }> = ({ stage }) => {
           <button className=" rounded-xl bg-[#3770AC] text-white font-medium text-sm w-full sm:w-auto hover:bg-[#306298] transition-colors">
             {/* Custom SVG combined from Monitor and User Cog for detailed representation */}
             <Link
-              href={"/"}
+              href={"/teachers"}
               className="flex items-center justify-center gap-2.5 px-6 py-3"
             >
               <span className="flex items-center gap-1.5">
@@ -84,7 +84,7 @@ const StageCard: React.FC<{ stage: EducationalStage }> = ({ stage }) => {
 
           <button className="rounded-xl bg-[#2C7F58] text-white font-medium text-sm w-full sm:w-auto hover:bg-emerald-700 transition-colors">
             <Link
-              href="/"
+              href="/centers"
               className="flex items-center justify-center gap-2.5 px-6 py-3"
             >
               <span className="flex items-center gap-1.5">

@@ -6,6 +6,14 @@ export function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
+  // 🟢 حماية صفحة عرض المحتوى
+  const isCourseContent =
+    pathname.startsWith("/teachers/") && pathname.includes("/courses/");
+
+  if (isCourseContent && !token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   if (pathname.startsWith("/dashboard") && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -27,4 +35,4 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-export const config = { matcher: ["/dashboard/:path*"] };
+export const config = { matcher: ["/teachers/:path*", "/dashboard/:path*"] };
