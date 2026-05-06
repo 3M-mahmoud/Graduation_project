@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import DirectorySection from "./HomePage/directorySection/DirectorySection";
 import EducationalStagesSection from "./HomePage/educationalStages/EducationalStages";
 import FeaturesSection from "./HomePage/featuresSection/FeaturesSection";
 import HeroSection from "./HomePage/heroSection/HeroSection";
 import SuccessSection from "./HomePage/successSection/SuccessSection";
+import DirectorySkeleton from "./HomePage/directorySection/DirectorySkeleton";
 
 const page = () => {
   return (
@@ -10,7 +12,9 @@ const page = () => {
       <HeroSection />
       <FeaturesSection />
       <EducationalStagesSection />
-      <DirectorySection />
+      <Suspense fallback={<DirectorySkeleton />}>
+        <DirectorySection />
+      </Suspense>
       <SuccessSection />
     </div>
   );

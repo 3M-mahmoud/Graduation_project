@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { Search, Plus, MoreVertical } from "lucide-react";
+import AddTeacherModal from "@/app/components/dashboard/center/AddTeacherModal";
 
 const INITIAL_TEACHERS = [
   {
@@ -52,6 +53,7 @@ const INITIAL_TEACHERS = [
 const TeachersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("الكل");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredTeachers = useMemo(() => {
     return INITIAL_TEACHERS.filter((teacher) => {
@@ -104,7 +106,10 @@ const TeachersPage = () => {
               {cat}
             </button>
           ))}
-          <button className="bg-[#F97216] text-white px-5 py-2 rounded-lg font-normal text-[15px] flex items-center gap-2 mr-4 hover:bg-orange-600 transition-all shadow-lg shadow-orange-100 cursor-pointer">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-[#F97216] text-white px-5 py-2 rounded-lg font-normal text-[15px] flex items-center gap-2 mr-4 hover:bg-orange-600 transition-all shadow-lg shadow-orange-100 cursor-pointer"
+          >
             إضافة مدرس <Plus size={18} />
           </button>
         </div>
@@ -198,6 +203,10 @@ const TeachersPage = () => {
           </p>
         </div>
       )}
+      <AddTeacherModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
