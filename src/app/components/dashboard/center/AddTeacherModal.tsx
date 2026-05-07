@@ -39,35 +39,25 @@ const AddTeacherModal = ({
 
   if (!isOpen) return null;
 
-  const handleAddTeacher = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+const handleAddTeacher = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const token = localStorage.getItem("token"); // جلب التوكن لإرساله في الهيدر
+  try {
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("token")
+        : null;
 
-      // هنا تضع رابط الـ API الذي أعطاه لك الـ Back-end
-      const response = await axios.post(
-        `YOUR_BACKEND_API_URL/teachers`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const response = await axios.post(
+      `YOUR_BACKEND_API_URL/teachers`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        toast.success("تم إضافة المدرس بنجاح");
-        onSuccess(); // تحديث القائمة في الصفحة الرئيسية
-        onClose(); // إغلاق النافذة
       }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "حدث خطأ أثناء الإضافة");
-    } finally {
-      setLoading(false);
-    }
-  };
+    );
 
   return (
 // الجزء الخاص بالحاوية داخل الـ Modal
