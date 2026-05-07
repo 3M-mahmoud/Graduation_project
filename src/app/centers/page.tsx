@@ -7,14 +7,14 @@ import CenterCard from "../components/Center/CenterCard";
 import { ListFilter } from "lucide-react";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
+import CenterCardSkeleton from "../components/Center/CenterCardSkeleton";
 
 export default function CentersPage() {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [stage, setStage] = useState("");
 
-  const [data, setData] = useState([]);
-  const [filteredCenters, setFilteredCenters] = useState(data);
+  const [filteredCenters, setFilteredCenters] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
 
@@ -49,14 +49,14 @@ export default function CentersPage() {
   const handleGetTeachers = async () => {
     const {
       data: { data },
-    } = await axios.get(`${DOMAIN}users?role=center&`, {});
+    } = await axios.get(`${DOMAIN}users?role=center`, {});
+    console.log(data);
 
-    setData(data);
     setFilteredCenters(data);
   };
   useEffect(() => {
     handleGetTeachers();
-  }, [search]);
+  }, [search, stage, location]);
 
   const handleSort = () => {
     if (!isSorted) {
@@ -155,8 +155,8 @@ export default function CentersPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredCenters?.map((center) => (
-            <CenterCard key={center?.id} center={center} />
+          {filteredCenters.map((center) => (
+            <CenterCard key={center.id} center={center} />
           ))}
         </div>
       </div>

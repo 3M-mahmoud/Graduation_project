@@ -7,6 +7,7 @@ import TeachersFilters from "../components/Teacher/TeachersFilters";
 import TeacherCard from "../components/Teacher/TeacherCard";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
+import CenterCardSkeleton from "../components/Center/CenterCardSkeleton";
 
 export default function TeachersPage() {
   const [search, setSearch] = useState("");
@@ -14,8 +15,7 @@ export default function TeachersPage() {
   const [grade, setGrade] = useState("");
   const [subject, setSubject] = useState("");
 
-  const [data, setData] = useState([]);
-  const [filteredTeachers, setFilteredTeachers] = useState(data);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
 
@@ -68,9 +68,15 @@ export default function TeachersPage() {
   };
 
   const handleGetTeachers = async () => {
-    const { data } = await axios.get(`${DOMAIN}users?role=teacher`, {});
+    const { data } = await axios.get(
+      `${DOMAIN}users?role=teacher`,
+      {},
+      // {
+      //   withCredentials: true, // 🔥 أهم سطر
+      // },
+    );
+    console.log(data);
 
-    setData(data.data);
     setFilteredTeachers(data.data);
   };
   useEffect(() => {
@@ -156,7 +162,11 @@ export default function TeachersPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredTeachers?.map((teacher) => (
-            <TeacherCard key={teacher?.id} teacher={teacher} />
+            <TeacherCard
+              key={teacher?.id}
+              teacher={teacher}
+              // user={teacher}
+            />
           ))}
         </div>
 

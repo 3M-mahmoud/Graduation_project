@@ -2,11 +2,10 @@
 import { Plus, SlidersHorizontal } from "lucide-react";
 import centerLogo from "@/assets/ceterProfile/teacherTap1.jpeg";
 import { Post } from "@/app/components/dashboard/center/Post";
-import { useSocket } from "@/context/WsSocket";
 
 const PostsPage = () => {
   // معرف السنتر (يمكنك جلبه من الـ Auth context أو الـ LocalStorage)
-  const { senderId } = useSocket();
+  const centerId = "YOUR_CENTER_ID";
 
   return (
     <div className="max-w-[1000px] mx-auto pb-10">
@@ -24,7 +23,7 @@ const PostsPage = () => {
           {/* لوجو السنتر الصغير */}
           <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-100 shrink-0 relative">
             <img
-              src={centerLogo?.src}
+              src={centerLogo.src}
               alt="Center Logo"
               className="w-full h-full object-cover"
             />
@@ -45,7 +44,7 @@ const PostsPage = () => {
 
       {/* استدعاء مكون التغذية الذي قمنا بتعديله */}
       {/* سيتولى هذا المكون عملية الـ Fetch والـ Mapping تلقائياً */}
-      {senderId && <Post centerId={senderId} />}
+      <Post centerId={centerId} />
     </div>
   );
 };
