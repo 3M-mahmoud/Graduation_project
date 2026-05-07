@@ -33,41 +33,41 @@ export default function AuthForm({ mode }: AuthFormProps) {
     const { terms, ...apiPayload } = values;
     const endpoint = mode === "signup" ? "auth/signup" : "auth/login";
 
-    // try {
-    //   const { data } = await axios.post<AuthResponse>(
-    //     `${DOMAIN}${endpoint}`,
-    //     apiPayload,
-    //     {
-    //       withCredentials: true,
-    //     },
-    //   );
-    //   console.log(DOMAIN);
-    //   const { accessToken } = data.token;
-    //   const { name, imageUrl, role, id } = data.data;
-    //   localStorage.setItem("token", accessToken);
-    //   localStorage.setItem("userId", id);
-    //   localStorage.setItem("userName", name);
-    //   localStorage.setItem("userImage", imageUrl || "");
+    try {
+      const { data } = await axios.post<AuthResponse>(
+        `${DOMAIN}${endpoint}`,
+        apiPayload,
+        {
+          withCredentials: true,
+        },
+      );
+      console.log(DOMAIN);
+      const { accessToken } = data.token;
+      const { name, imageUrl, role, id } = data.data;
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("userId", id);
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userImage", imageUrl || "");
 
-    //   Cookies.set("token", accessToken, { expires: 1 });
-    //   Cookies.set("role", role, { expires: 1 });
-    //   toast.success(data.message || "تمت العملية بنجاح");
-    //   window.dispatchEvent(new Event("storage"));
+      Cookies.set("token", accessToken, { expires: 1 });
+      Cookies.set("role", role, { expires: 1 });
+      toast.success(data.message || "تمت العملية بنجاح");
+      window.dispatchEvent(new Event("storage"));
 
-    //   setTimeout(() => {
-    //     router.push("/");
-    //   }, 500);
-    // } catch (error: any) {
-    //   console.log(error);
-    //   const apiErrors = error.response?.data?.errors;
-    //   if (Array.isArray(apiErrors)) {
-    //     apiErrors.forEach((err: any) => toast.error(err.message));
-    //   } else {
-    //     toast.error(error.response?.data?.message || "فشل الاتصال بالسيرفر");
-    //   }
-    // } finally {
-    //   setLoading(false);
-    // }
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
+    } catch (error: any) {
+      console.log(error);
+      const apiErrors = error.response?.data?.errors;
+      if (Array.isArray(apiErrors)) {
+        apiErrors.forEach((err: any) => toast.error(err.message));
+      } else {
+        toast.error(error.response?.data?.message || "فشل الاتصال بالسيرفر");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
