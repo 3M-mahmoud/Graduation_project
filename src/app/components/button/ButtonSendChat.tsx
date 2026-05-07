@@ -16,7 +16,10 @@ const ButtonSendChat = ({ id }: { id: string }) => {
     socket,
   }: any = useSocket();
   const createConversation = async () => {
-    console.log(id, senderId);
+    if (id === senderId) {
+      setDataHeader(null);
+      return router.push("/chat");
+    }
     const res = await fetch(`${DOMAIN}conversations`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,8 +34,6 @@ const ButtonSendChat = ({ id }: { id: string }) => {
       setConversations((prev) => [...prev, data.data]);
     }
     setDataHeader(data.data);
-    // setDataHeader(data.data);
-    console.log("0000000000000", data);
 
     const emitEvent = (type: string) => {
       socket?.send(
@@ -47,27 +48,27 @@ const ButtonSendChat = ({ id }: { id: string }) => {
     };
     emitEvent("join");
     emitEvent("open_chat");
-    console.log(data.data, "8888888888888888888");
     router.push("/chat");
   };
 
-  useEffect(() => {
-    const handleGetContacts = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const {
-          data: { data },
-        } = await axios.get(`${DOMAIN}conversations`, {
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setConversations(data);
-      } catch (error) {
-        console.error("Error fetching conversations:", error);
-      }
-    };
-    handleGetContacts();
-  }, [setConversations]);
+  // useEffect(() => {
+  //   const handleGetContacts = async () => {
+  //     const token = localStorage.getItem("token");
+  //     try {
+  //       const {
+  //         data: { data },
+  //       } = await axios.get(`${DOMAIN}conversations`, {
+  //         withCredentials: true,
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       });
+  //       setConversations(data);
+  //     } catch (error) {
+  //       console.error("Error fetching conversations:", error);
+  //     }
+  //   };
+  //   handleGetContacts();
+  // }, [setConversations]);
+
   return (
     <button
       onClick={() => {

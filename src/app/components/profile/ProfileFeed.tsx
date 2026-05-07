@@ -3,14 +3,20 @@ import { DOMAIN } from "@/utils/constants";
 import { MessageCircle, Clock, Heart } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-export const ProfileFeed = ({ teacherId }: any) => {
-  const [posts, setPosts] = useState<any>([]);
-  console.log(teacherId);
+import ButtonLikes from "../button/ButtonLike";
+export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (cachePosts?.length > 0)
+      return setCachePosts((pre) => ({
+        ...pre,
+        posts: cachePosts,
+      }));
+
     const getData = async () => {
+      if (!teacherId) return;
       const res = await fetch(
         `${DOMAIN}posts?userId=${teacherId}&role=teacher&page=${page}`,
         {
@@ -20,18 +26,20 @@ export const ProfileFeed = ({ teacherId }: any) => {
         },
       );
       const json = await res.json();
-      console.log(json?.data);
 
-      setPosts(json?.data?.posts);
+      setCachePosts({
+        meta: json?.data?.meta,
+        data: json?.data?.data,
+      });
     };
     getData();
   }, [teacherId]);
 
   return (
     <>
-      {posts?.length > 0 ? (
+      {cachePosts?.data?.length > 0 ? (
         <div className="space-y-6">
-          {posts?.map((post: any) => (
+          {cachePosts?.data?.map((post: any) => (
             <div
               data-aos="fade-up"
               key={post.id}
@@ -75,11 +83,11 @@ export const ProfileFeed = ({ teacherId }: any) => {
 
               <div className="px-4 py-3 border-t flex justify-between">
                 <div className=" flex items-center gap-6">
-                  <button className="flex items-center gap-2 text-slate-500 text-sm font-bold hover:text-blue-500 transition cursor-pointer">
-                    <Heart size={18} /> 9
-                  </button>
+                  <ButtonLikes likesCount={post.likeCounts} id={post.id} />
+
                   <button className="flex items-center gap-2 text-slate-500 text-sm font-bold hover:text-orange-500 transition cursor-pointer">
-                    <MessageCircle size={18} /> 12
+                    <MessageCircle size={18} />
+                    <span>{post.commentCounts}</span>
                   </button>
                 </div>
                 <button className="py-2 px-4 bg-[#E2F5FE] text-sm rounded-xl text-[#0F3D2E] hover:bg-[#c1e1f0] cursor-pointer">

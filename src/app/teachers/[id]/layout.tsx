@@ -1,6 +1,5 @@
 "use client";
 import { Star } from "lucide-react";
-import Image from "next/image";
 import ButtonSendChat from "@/app/components/button/ButtonSendChat";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -13,7 +12,6 @@ export default function RootLayout() {
   const param = useParams() as { id: string };
   const { socket } = useSocket();
   const [data, setData] = useState({});
-  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,29 +35,6 @@ export default function RootLayout() {
     );
   }, [param?.id]);
 
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleMessage = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
-
-      if (data.type === "status") {
-        if (String(data.payload.userId) === String(param.id)) {
-          setIsOnline(data.payload.isOnline);
-        }
-      }
-    };
-
-    socket.addEventListener("message", handleMessage);
-
-    return () => {
-      socket.removeEventListener("message", handleMessage);
-    };
-  }, [socket, param.id]);
-
-  console.log(isOnline);
-
-  console.log(data);
   if (!data?.id)
     return <div className="flex items-center justify-center">loading...</div>;
 
@@ -92,9 +67,7 @@ export default function RootLayout() {
             </p>
 
             <div className="flex justify-center md:justify-start items-center gap-1 text-[#204658] mb-6">
-              <span className="ml-2 text-xl">
-                {data?.teacher?.followerCounts} متابع
-              </span>
+              <span className="ml-2 text-xl">{data?.followerCounts} متابع</span>
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, index) => (
                   <Star
@@ -111,8 +84,8 @@ export default function RootLayout() {
             </div>
 
             <div className="flex gap-3 mb-2 justify-center md:justify-start">
-              <ButtonFollow id={param.id} data={data} setData={setData} />
-              <ButtonSendChat id={param.id} />
+              <ButtonFollow id={data.id} data={data} setData={setData} />
+              <ButtonSendChat id={data.id} />
             </div>
           </div>
         </div>

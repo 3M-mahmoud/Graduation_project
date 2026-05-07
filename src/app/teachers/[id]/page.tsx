@@ -8,17 +8,42 @@ import ReviewsTab from "@/app/components/Teacher/tabs/ReviewsTab";
 
 export default function TeacherProfile({ data }: any) {
   const [activeTab, setActiveTab] = useState("نظرة عامة");
+  const [cachePosts, setCachePosts] = useState({
+    meta: {},
+    data: [],
+  });
+  const [cashCourses, setCacheCourse] = useState([]);
+  const [cacheReviews, setCacheReviews] = useState([]);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "نظرة عامة":
         return <OverviewTab data={data} />;
       case "المنشورات":
-        return <ProfileFeed teacherId={data.id} />;
+        return (
+          <ProfileFeed
+            teacherId={data?.id}
+            setCachePosts={setCachePosts}
+            cachePosts={cachePosts || []}
+          />
+        );
       case "الدورات التعليمية":
-        return <CoursesTab teacherId={data.id} />;
+        return (
+          <CoursesTab
+            userId={data?.id}
+            teacherId={data?.teacher?.id}
+            setCacheCourse={setCacheCourse}
+            cashCourses={cashCourses || []}
+          />
+        );
       case "التقييمات":
-        return <ReviewsTab />;
+        return (
+          <ReviewsTab
+            teacherId={data?.id}
+            setCacheReviews={setCacheReviews}
+            cacheReviews={cacheReviews || []}
+          />
+        );
       default:
         return <OverviewTab data={data} />;
     }

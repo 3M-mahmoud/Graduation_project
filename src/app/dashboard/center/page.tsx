@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, Plus, MoreVertical } from "lucide-react";
 import AddTeacherModal from "@/app/components/dashboard/center/AddTeacherModal";
 
@@ -11,8 +11,6 @@ const INITIAL_TEACHERS = [
     price: "100 ج",
     system: "عربي",
     level: "الثالث الثانوي",
-    day: "الاثنين - الخميس",
-    time: "09:00 ص",
     category: "ثانوي",
   },
   {
@@ -22,8 +20,6 @@ const INITIAL_TEACHERS = [
     price: "150 ج",
     system: "عربي",
     level: "الثالث الثانوي",
-    day: "الأربعاء",
-    time: "09:00 ص",
     category: "ثانوي",
   },
   {
@@ -33,8 +29,6 @@ const INITIAL_TEACHERS = [
     price: "120 ج",
     system: "لغات",
     level: "الثاني الثانوي",
-    day: "السبت",
-    time: "05:00 م",
     category: "ثانوي",
   },
   {
@@ -44,8 +38,6 @@ const INITIAL_TEACHERS = [
     price: "100 ج",
     system: "عربي",
     level: "الأول الثانوي",
-    day: "الأحد",
-    time: "09:00 ص",
     category: "ثانوي",
   },
 ];
@@ -55,16 +47,37 @@ const TeachersPage = () => {
   const [activeCategory, setActiveCategory] = useState("الكل");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredTeachers = useMemo(() => {
-    return INITIAL_TEACHERS.filter((teacher) => {
-      const matchesSearch =
-        teacher.name.includes(searchTerm) ||
-        teacher.subject.includes(searchTerm);
-      const matchesCategory =
-        activeCategory === "الكل" || teacher.category === activeCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchTerm, activeCategory]);
+  // const filteredTeachers = useMemo(() => {
+  //   return INITIAL_TEACHERS.filter((teacher) => {
+  //     const matchesSearch =
+  //       teacher.name.includes(searchTerm) ||
+  //       teacher.subject.includes(searchTerm);
+  //     const matchesCategory =
+  //       activeCategory === "الكل" || teacher.category === activeCategory;
+  //     return setData(matchesSearch && matchesCategory);
+  //   });
+  // }, [searchTerm, activeCategory]);
+
+  const handleGetAllTeachers = async () => {
+    let category = activeCategory;
+
+    if (activeCategory === "الكل") category = "";
+    const token = localStorage.getItem("token");
+    const res = await axios.get(
+      `${DOMAIN}center-dashboard/teachers?name=${searchTerm}&educationalStage=${category}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    setData(res?.data?.data || []);
+  };
+
+  useEffect(() => {
+    handleGetAllTeachers();
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl">
@@ -91,9 +104,13 @@ const TeachersPage = () => {
             size={18}
           />
         </div>
-
         <div className="flex items-center gap-2 overflow-x-auto pb-2 w-full md:w-auto">
-          {["الكل", "ابتدائي", "اعدادي", "ثانوي"].map((cat) => (
+          {[
+            "الكل",
+            "المرحلة الأبتدائية",
+            "المرحلة الأعدادية",
+            "المرحلة الثانوية",
+          ].map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -117,7 +134,7 @@ const TeachersPage = () => {
 
       {/* Teachers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTeachers.map((teacher) => (
+        {data?.map((teacher) => (
           <div
             key={teacher.id}
             className="bg-white rounded-[2.5rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all group animate-in zoom-in duration-300"
@@ -135,7 +152,7 @@ const TeachersPage = () => {
                     {teacher.name}
                   </h4>
                   <p className="text-[#DD5A00] text-base font-semibold">
-                    {teacher.subject}
+                    {teacher.studeyMaterial}
                   </p>
                 </div>
               </div>
@@ -170,7 +187,7 @@ const TeachersPage = () => {
                   {teacher.price}
                 </p>
               </div>
-              <div className="text-center border-l border-slate-50">
+              {/* <div className="text-center border-l border-slate-50">
                 <p className="text-[10px] text-slate-400 font-bold mb-1">
                   اليوم
                 </p>
@@ -185,7 +202,7 @@ const TeachersPage = () => {
                 <p className="text-[10px] font-black text-slate-500">
                   {teacher.time}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             <button className="w-full py-3.5 bg-white border border-slate-100 rounded-2xl text-slate-400 font-black text-xs hover:bg-[#062D27] hover:text-white hover:border-[#062D27] transition-all duration-300">
@@ -196,7 +213,7 @@ const TeachersPage = () => {
       </div>
 
       {/* Empty State */}
-      {filteredTeachers.length === 0 && (
+      {data?.length === 0 && (
         <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
           <p className="text-slate-400 font-bold">
             لا يوجد مدرسين يطابقون بحثك

@@ -3,6 +3,7 @@ import { DOMAIN } from "@/utils/constants";
 import { MessageSquare, Clock, Heart, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import ButtonLikes from "../../button/ButtonLike";
 
 export const Post = ({ centerId }: any) => {
   const [posts, setPosts] = useState<any>([]);
@@ -20,7 +21,7 @@ export const Post = ({ centerId }: any) => {
         },
       );
       const json = await res.json();
-      setPosts(json?.data?.posts);
+      setPosts(json?.data?.posts || []);
     };
     getData();
   }, [centerId, page]);
@@ -57,7 +58,7 @@ export const Post = ({ centerId }: any) => {
                   </div>
                   <div className="w-11 h-11 rounded-full bg-slate-100 border border-slate-50 overflow-hidden relative">
                     <Image
-                      src={post.imageUrl || "/default-avatar.png"} // تأكد من وجود صورة افتراضية
+                      src={post.imageUrl || "/default-avatar.png"}
                       alt={post.author}
                       fill
                       className="object-cover"
@@ -65,14 +66,12 @@ export const Post = ({ centerId }: any) => {
                   </div>
                 </div>
 
-                {/* محتوى المنشور */}
                 <div className="text-right">
                   <p className="text-slate-600 text-xs leading-relaxed font-medium whitespace-pre-wrap">
                     {post.content}
                   </p>
                 </div>
 
-                {/* صورة مرفقة إن وجدت */}
                 {post.image && (
                   <div className="w-full mt-2 rounded-xl overflow-hidden border border-slate-50">
                     <Image
@@ -87,12 +86,7 @@ export const Post = ({ centerId }: any) => {
 
                 {/* التفاعلات - تصميم مطابق للصورة */}
                 <div className="flex items-center gap-6 pt-4 border-t border-slate-50 mt-2">
-                  <div className="flex items-center gap-2 text-slate-400 hover:text-red-500 cursor-pointer transition-colors">
-                    <span className="text-[11px] font-black">
-                      {post.likesCount || 0}
-                    </span>
-                    <Heart size={16} />
-                  </div>
+                  <ButtonLikes likesCount={post.likesCount} id={post.id} />
                   <div className="flex items-center gap-2 text-slate-400 hover:text-blue-500 cursor-pointer transition-colors">
                     <span className="text-[11px] font-black">
                       {post.commentsCount || 0} تعليق

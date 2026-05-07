@@ -1,20 +1,11 @@
+import { formatDate, getCurrentTime } from "@/app/components/helper";
 import Cookies from "js-cookie";
 import { Calendar, Clock, Users, BookOpen, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
-// interface CourseCardProps {
-//   title: string;
-//   grade: string;
-//   day: string;
-//   time: string;
-//   students: number;
-//   lessons: number;
-//   rating: number;
-//   teacherId: number;
-// }
-
 interface CourseCardProps {
   id: string;
   teacherId: string;
+  day: string;
   time: string;
   classRoom: string;
   studyMaterial: string;
@@ -24,17 +15,12 @@ interface CourseCardProps {
 
 const CourseCard = ({
   course,
-  teacherId,
+  userId,
 }: {
   course: CourseCardProps;
-  teacherId: string;
+  userId: string;
 }) => {
-  // const router = useRouter();
-  // const handleNavigation = () => {
-  //   router.push(`/teachers/${teacherId}/courses/${title}`);
-  // };
-
-  const { time, classRoom, studyMaterial, lessonCounts, studentCounts } =
+  const { time, classRoom, day, studyMaterial, lessonCounts, studentCounts } =
     course;
 
   const router = useRouter();
@@ -44,7 +30,9 @@ const CourseCard = ({
   const handleNavigation = () => {
     const token = Cookies.get("token");
     if (token) {
-      router.push(`/teachers/${teacherId}/courses/${studyMaterial}`);
+      router.push(
+        `/teachers/${userId}/courses/${course?.id}?studyMaterial=${studyMaterial}`,
+      );
     } else {
       router.push(`/login`);
     }
@@ -67,11 +55,11 @@ const CourseCard = ({
       <div className="bg-[#a6a6a624] rounded-lg p-4 mb-4 flex flex-col gap-2 border border-[#C4C4C4]">
         <div className="flex items-center gap-2 text-[#424752] text-sm">
           <Calendar size={16} />
-          <span className="font-normal">{time}</span>
+          <span className="font-normal">{day}</span>
         </div>
         <div className="flex items-center gap-2 text-[#424752] text-sm">
           <Clock size={16} />
-          <span className="font-bold">{time}</span>
+          <span className="font-bold">{getCurrentTime(time)}</span>
         </div>
       </div>
 

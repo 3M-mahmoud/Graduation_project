@@ -37,6 +37,7 @@ export default function RootLayout({
         <WsSocket>{children}</WsSocket>
         <Footer />
         <AOSProvider />
+        <Toaster position="top-center" />
       </body>
     </html>
   );

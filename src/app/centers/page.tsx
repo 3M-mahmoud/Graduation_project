@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import CentersHeader from "../components/Center/CentersHeader";
 import CentersFilters from "../components/Center/CentersFilters";
 import CenterCard from "../components/Center/CenterCard";
-// import { centersData } from "@/data/centers";
 import { ListFilter } from "lucide-react";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
@@ -17,7 +16,6 @@ export default function CentersPage() {
   const [loading, setLoading] = useState(true);
   const [filteredCenters, setFilteredCenters] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
-
   const [isSorted, setIsSorted] = useState(false);
 
   const handleFilter = () => {
@@ -26,11 +24,11 @@ export default function CentersPage() {
         .toLowerCase()
         .includes(search.toLowerCase());
 
-      const matchLocation = location
-        ? center?.governorate?.includes(location)
-        : true;
+      const matchLocation = location ? center.location === location : true;
 
-      const matchStage = stage ? center?.studeyMaterial.includes(stage) : true;
+      const matchStage = stage
+        ? center?.center?.educationalStage.includes(stage)
+        : true;
 
       return matchSearch && matchLocation && matchStage;
     });
@@ -44,7 +42,7 @@ export default function CentersPage() {
     setSearch("");
     setLocation("");
     setStage("");
-    setFilteredCenters(filteredCenters);
+    setFilteredCenters(data);
     setIsFiltered(false);
   };
 
@@ -76,7 +74,7 @@ export default function CentersPage() {
       setFilteredCenters(sorted);
       setIsSorted(true);
     } else {
-      setFilteredCenters(centersData);
+      setFilteredCenters(data);
       setIsSorted(false);
     }
   };

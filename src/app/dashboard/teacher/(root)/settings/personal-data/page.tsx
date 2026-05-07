@@ -3,65 +3,111 @@ import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import image from "@/../public/boys-profile-pic.webp";
 import {
   classRoom,
   educationalStage,
   studyMaterial,
 } from "@/app/components/dashboard/teacher/constant/constant";
+import { openCloudinaryWidget } from "@/lib/cloudinary/widget";
+import { useEffect, useState } from "react";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 
-const profileSchema = z.object({
-  name: z.string().min(5, "الاسم يجب أن يكون أكثر من 5 أحرف"),
-  nickName: z.string().min(1, "يرجى اختيار المسمى الوظيفي"),
-  educationalStage: z.string().min(1, "يرجى اختيار المرحلة الدراسية"),
-  grade: z.string().min(1, "يرجى اختيار الصف الدراسي"),
-  imageUrl: z.string().url("الصورة غير صحيحة"),
-  email: z.string().email("البريد الإلكتروني غير صحيح"),
-  studyMaterial: z.string().min(1, "يرجى اختيار المادة"),
-  qualification: z
-    .string()
-    .min(10, "يرجى كتابة المؤهل بالتفصيل (10 أحرف على الأقل)"),
-  experience: z.string().min(1, "يرجى تحديد سنوات الخبرة"),
-  bio: z
-    .string()
-    .min(50, "النبذة يجب ألا تقل عن 50 حرفاً")
-    .max(500, "النبذة يجب ألا تتجاوز 500 حرف"),
-});
-
-type ProfileFormData = z.infer<typeof profileSchema>;
+import toast from "react-hot-toast";
+import {
+  ProfileTeacherFormData,
+  profileTeacherSchema,
+} from "@/lib/schema/schema";
 
 const sectionHeaderCss =
   "text-xl pr-3 border-r-4 border-[#003F87] text-[#003F87] font-bold mb-6";
 const labelCss = "text-sm font-bold mr-1 block";
 
 const PersonalDataPage = () => {
+  const [userId, setUserId] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
-  } = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
+  } = useForm<ProfileTeacherFormData>({
+    resolver: zodResolver(profileTeacherSchema),
     defaultValues: {
-      name: "أ. حسن علي عبدالله",
-      nickName: "أ.",
-      email: "Alaa.el.khalil@gmail.com",
+      name: "",
       imageUrl: "",
-      educationalStage: "المرحلة الثانوية",
-      grade: "الصف الثالث الثانوي",
-      studyMaterial: "اللغة العربية",
-      qualification: "بكالوريوس رياضيات - جامعة القاهرة",
-      experience: "15",
-      bio: "مدرس رياضيات متخصص مع خبرة واسعة في تدريس جميع المراحل التعليمية حاصل على دكتوراة في الرياضيات من جامعة القاهرة ولدي شغف كبير بتبسيط المفاهيم الرياضية الصعبة للطلاب..",
+      email: "",
+      educationalStage: "",
+      classRoom: "",
+      studyMaterial: "",
+      qualification: "",
+      experience: "",
+      bio: "",
     },
   });
 
+  useEffect(() => {
+    const getmedata = async () => {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(`${DOMAIN}auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const user = res.data.data;
+
+      setUserId(user.id);
+      setValue("name", user.name);
+      // setValue("imageUrl", user.imageUrl);
+      setValue("email", user.email);
+      setValue("educationalStage", user.teacher.educationalStage);
+      setValue("classRoom", user.teacher.classRoom[0]);
+      setValue("studyMaterial", user.teacher.studyMaterial);
+      setValue("qualification", user.teacher.educationalQualification);
+      setValue("experience", Number(user.teacher.experienceYear));
+      setValue("bio", user.teacher.bio);
+    };
+
+    getmedata();
+  }, []);
   const watchedStage = watch("educationalStage");
 
-  const onSubmit = (data: ProfileFormData) => {
-    console.log("Form Data:", data);
-    alert("تم حفظ البيانات بنجاح!");
+  const onSubmit = async (formData: ProfileTeacherFormData) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.patch(
+        `${DOMAIN}users/${userId}`,
+        {
+          user: {
+            name: formData.name,
+            imageUrl: formData?.imageUrl || "",
+          },
+          teacher: {
+            bio: formData?.bio || "",
+            classRoom: [formData?.classRoom] || [],
+            educationalStage: formData?.educationalStage || "",
+            studyMaterial: formData?.studyMaterial || "",
+            educationalQualification: formData?.qualification || "",
+            experienceYear: Number(formData?.experience) || 0,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      toast.success("تم حفظ البيانات بنجاح!");
+    } catch (err) {
+      toast.error("حدث خطأ أثناء الحفظ");
+      console.error("ERROR:", err.response?.data || err.message);
+    }
   };
 
   return (
@@ -70,13 +116,27 @@ const PersonalDataPage = () => {
         <div className="flex items-center gap-3">
           <div className="relative">
             <Image
-              src={watch("imageUrl") || image}
+              width={80}
+              height={80}
+              src=""
+              // src={watch("imageUrl") || ""}
               alt={watch("name")}
               className="rounded-full size-20 object-cover"
             />
-            <button className="absolute bottom-0 left-0 p-0.5 rounded-sm bg-[#003F87] cursor-pointer">
-              <Camera size={14} color="white" className="" />
-            </button>
+            <div className="flex flex-col">
+              <button
+                type="button"
+                onClick={() =>
+                  openCloudinaryWidget((url) => {
+                    // setImageValue(url); // 👈 يحط الصورة في الفورم
+                    // setValue("imageUrl", url);
+                  })
+                }
+                className="absolute bottom-0 left-0 p-0.5 rounded-sm bg-[#003F87] cursor-pointer"
+              >
+                <Camera size={14} color="white" />
+              </button>
+            </div>
           </div>
           <div className="space-y-1">
             <div className="text-[#204658] font-bold text-2xl">
@@ -92,7 +152,7 @@ const PersonalDataPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <section className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
             <h3 className={sectionHeaderCss}>المعلومات الشخصية</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <div className="space-y-2">
                 <label className={labelCss}>الأسم بالكامل</label>
                 <input
@@ -105,7 +165,7 @@ const PersonalDataPage = () => {
                   </span>
                 )}
               </div>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className={labelCss}>اللقب / المسمى الوظيفي</label>
                 <select
                   {...register("nickName")}
@@ -119,7 +179,7 @@ const PersonalDataPage = () => {
                     {errors.nickName.message}
                   </span>
                 )}
-              </div>
+              </div> */}
             </div>
           </section>
 
@@ -130,6 +190,7 @@ const PersonalDataPage = () => {
                 <label className={labelCss}>المرحلة الدراسية</label>
                 <select
                   {...register("educationalStage")}
+                  value={watch("educationalStage")}
                   className="w-full p-3 border border-gray-200 rounded-xl outline-none bg-white"
                 >
                   {educationalStage.map((item) => (
@@ -143,19 +204,20 @@ const PersonalDataPage = () => {
               <div className="space-y-2">
                 <label className={labelCss}>الصف الدراسي</label>
                 <select
-                  {...register("grade")}
+                  {...register("classRoom")}
+                  value={watch("classRoom")}
                   className="w-full p-3 border border-gray-200 rounded-xl outline-none bg-white"
                 >
                   {/* {classRoom[watchedStage as ClassRoomDashboardTeacher]?.map( */}
-                  {classRoom[watchedStage]?.map((item) => (
+                  {(classRoom[watchedStage] || [])?.map((item) => (
                     <option key={item} value={item}>
                       {item}
                     </option>
                   ))}
                 </select>
-                {errors.grade && (
+                {errors.classRoom && (
                   <span className="text-red-500 text-xs pr-1">
-                    {errors.grade.message}
+                    {errors.classRoom.message}
                   </span>
                 )}
               </div>
@@ -164,9 +226,10 @@ const PersonalDataPage = () => {
                 <label className={labelCss}>المادة العلمية</label>
                 <select
                   {...register("studyMaterial")}
+                  value={watch("studyMaterial")}
                   className="w-full p-3 border border-gray-200 rounded-xl outline-none bg-white"
                 >
-                  {studyMaterial[watchedStage]?.map((item) => (
+                  {(studyMaterial[watchedStage] || [])?.map((item) => (
                     <option key={item} value={item}>
                       {item}
                     </option>
@@ -243,7 +306,7 @@ const PersonalDataPage = () => {
           <div className="flex justify-start pt-4">
             <button
               type="submit"
-              className="bg-[#003F87] text-white px-12 py-3 rounded-lg font-bold hover:bg-[#002d61] transition-all shadow-lg active:scale-95"
+              className="bg-[#003F87] text-white px-12 py-3 rounded-lg font-bold hover:bg-[#002d61] transition-all shadow-lg active:scale-95 cursor-pointer"
             >
               حفظ التعديلات
             </button>

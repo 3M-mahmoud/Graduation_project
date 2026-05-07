@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Search,
   MoreVertical,
@@ -7,6 +7,8 @@ import {
   ChevronLeft,
   Users,
 } from "lucide-react";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 
 // بيانات تجريبية موسعة لاختبار الـ Pagination
 const ALL_STUDENTS = [
@@ -88,6 +90,8 @@ const ITEMS_PER_PAGE = 8; // عدد الطلاب في كل صفحة
 const StudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [studentCounts, setStudentCounts] = useState(0);
+  const [bookings, setBookings] = useState([]);
 
   // 1. منطق البحث: تصفية البيانات بناءً على الاسم أو المادة أو المدرس
   const filteredData = useMemo(() => {
@@ -100,11 +104,11 @@ const StudentsPage = () => {
   }, [searchTerm]);
 
   // 2. منطق الترقيم: حساب البيانات التي ستظهر في الصفحة الحالية فقط
-  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(bookings?.length / ITEMS_PER_PAGE);
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const lastPageIndex = firstPageIndex + ITEMS_PER_PAGE;
-    return filteredData.slice(firstPageIndex, lastPageIndex);
+    return setBookings(bookings?.slice(firstPageIndex, lastPageIndex));
   }, [currentPage, filteredData]);
 
   // إعادة الترقيم للصفحة الأولى عند البحث
@@ -112,6 +116,22 @@ const StudentsPage = () => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
+
+  const handleGetAllTeachers = async () => {
+    const token = localStorage.getItem("token");
+    const res = await axios.get(`${DOMAIN}center-dashboard/students`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setStudentCounts(res.data?.studentCounts || 0);
+    setBookings(res.data?.bookings || []);
+  };
+
+  useEffect(() => {
+    handleGetAllTeachers();
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto pb-10 bg-white rounded-xl p-4" dir="rtl">
@@ -134,7 +154,7 @@ const StudentsPage = () => {
               إجمالي الطلاب
             </p>
             <p className="text-base font-bold text-[#424752]">
-              {filteredData.length}
+              {studentCounts}
             </p>
           </div>
         </div>
@@ -179,7 +199,7 @@ const StudentsPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {currentTableData.map((student) => (
+              {bookings?.map((student) => (
                 <tr
                   key={student.id}
                   className="hover:bg-slate-50 transition-colors group animate-in fade-in duration-300"
@@ -223,7 +243,7 @@ const StudentsPage = () => {
             </tbody>
           </table>
 
-          {currentTableData.length === 0 && (
+          {bookings?.length === 0 && (
             <div className="p-20 text-center text-slate-400 font-bold">
               لا توجد نتائج تطابق بحثك
             </div>
@@ -231,44 +251,48 @@ const StudentsPage = () => {
         </div>
 
         {/* الترقيم (Pagination) - مطابق للصورة تماماً */}
-        <div className="p-6 flex items-center justify-between border-t border-slate-50 bg-white">
-          <p className="text-slate-400 text-xs font-bold">
-            عرض {currentTableData.length} من أصل {filteredData.length} طالب
-          </p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="p-2 rounded-lg bg-slate-50 text-slate-400 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronLeft size={16} />
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+        {totalPages > 0 && (
+          <div className="p-6 flex items-center justify-between border-t border-slate-50 bg-white">
+            <p className="text-slate-400 text-xs font-bold">
+              عرض {bookings?.length} من أصل {studentCounts} طالب
+            </p>
+            <div className="flex items-center gap-2">
               <button
-                key={num}
-                onClick={() => setCurrentPage(num)}
-                className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all ${
-                  currentPage === num
-                    ? "bg-[#062D27] text-white shadow-lg shadow-emerald-900/20"
-                    : "bg-white border border-slate-100 text-slate-400 hover:bg-slate-50"
-                }`}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg bg-slate-50 text-slate-400 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
-                {num}
+                <ChevronLeft size={16} />
               </button>
-            ))}
 
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages || totalPages === 0}
-              className="p-2 rounded-lg bg-slate-50 text-slate-400 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronRight size={16} />
-            </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (num) => (
+                  <button
+                    key={num}
+                    onClick={() => setCurrentPage(num)}
+                    className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all ${
+                      currentPage === num
+                        ? "bg-[#062D27] text-white shadow-lg shadow-emerald-900/20"
+                        : "bg-white border border-slate-100 text-slate-400 hover:bg-slate-50"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ),
+              )}
+
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages || totalPages === 0}
+                className="p-2 rounded-lg bg-slate-50 text-slate-400 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -72,8 +72,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   return (
     <div className="w-full max-w-xl animate-in fade-in zoom-in duration-500">
-      <Toaster position="top-center" />
-
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-[#003F87] mb-3">
           {mode === "signup" ? "إنشاء حساب جديد" : "تسجيل الدخول"}

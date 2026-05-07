@@ -1,10 +1,10 @@
 interface CourseCardProps {
-  subject: string;
+  title: string;
   teacher: string;
   icon: string;
 }
 
-const CourseCard = ({ subject, teacher, icon }: CourseCardProps) => {
+const CourseCard = ({ title, teacher, icon }: CourseCardProps) => {
   return (
     <div className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group">
       {/* أيقونة المادة */}
@@ -13,7 +13,7 @@ const CourseCard = ({ subject, teacher, icon }: CourseCardProps) => {
       </div>
 
       {/* تفاصيل المادة */}
-      <h3 className="text-lg font-black text-slate-800 mb-1">{subject}</h3>
+      <h3 className="text-lg font-black text-slate-800 mb-1">{title}</h3>
       <p className="text-slate-400 font-bold text-sm mb-6">{teacher}</p>
 
       {/* زر الاستكمال */}
