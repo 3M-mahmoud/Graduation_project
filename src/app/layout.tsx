@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 import AOSProvider from "./AOSProvider";
 import WsSocket from "@/context/WsSocket";
 import TopLoader from "./components/ui/TopLoader";
+import { Suspense } from "react";
 
 const cairo = Cairo({ subsets: ["arabic"] });
 
@@ -29,7 +30,9 @@ export default function RootLayout({
         ></link>
       </head>
       <body dir="rtl" className={`${cairo.className}`}>
-        <TopLoader />
+        <Suspense fallback={null}>
+          <TopLoader />
+        </Suspense>
         <Nav />
         <WsSocket>{children}</WsSocket>
         <Footer />

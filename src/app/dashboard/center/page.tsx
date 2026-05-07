@@ -65,11 +65,7 @@ const TeachersPage = () => {
       return matchesSearch && matchesCategory;
     });
   }, [searchTerm, activeCategory]);
-// دالة لجلب البيانات من الـ Back-end بعد الإضافة الناجحة
-  const fetchTeachers = async () => {
-    // كود جلب المدرسين لتحديث الصفحة
-    console.log("Fetching fresh data from API...");
-  };
+
   return (
     <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl">
       {/* Header */}
@@ -207,10 +203,9 @@ const TeachersPage = () => {
           </p>
         </div>
       )}
-      <AddTeacherModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSuccess={fetchTeachers}
+      <AddTeacherModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </div>
   );
