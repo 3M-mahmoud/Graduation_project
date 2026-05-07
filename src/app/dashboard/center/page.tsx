@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
 import { Search, Plus, MoreVertical } from "lucide-react";
+import AddTeacherModal from "@/app/components/dashboard/center/AddTeacherModal";
 
 const INITIAL_TEACHERS = [
   {
@@ -44,6 +45,7 @@ const INITIAL_TEACHERS = [
 const TeachersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("الكل");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // const filteredTeachers = useMemo(() => {
   //   return INITIAL_TEACHERS.filter((teacher) => {

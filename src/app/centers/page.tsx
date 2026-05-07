@@ -13,7 +13,7 @@ export default function CentersPage() {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [stage, setStage] = useState("");
-
+  const [loading, setLoading] = useState(true);
   const [filteredCenters, setFilteredCenters] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
@@ -46,16 +46,23 @@ export default function CentersPage() {
     setIsFiltered(false);
   };
 
-  const handleGetTeachers = async () => {
-    const {
-      data: { data },
-    } = await axios.get(`${DOMAIN}users?role=center`, {});
-    console.log(data);
+  const handleGetCenters = async () => {
+    try {
+      setLoading(true);
 
-    setFilteredCenters(data);
+      const {
+        data: { data },
+      } = await axios.get(`${DOMAIN}users?role=center`);
+
+      setFilteredCenters(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
-    handleGetTeachers();
+    handleGetCenters();
   }, [search, stage, location]);
 
   const handleSort = () => {
@@ -153,12 +160,15 @@ export default function CentersPage() {
             <ListFilter size={18} />
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredCenters.map((center) => (
-            <CenterCard key={center.id} center={center} />
-          ))}
-        </div>
+        {loading ? (
+          <CenterCardSkeleton />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredCenters.map((center) => (
+              <CenterCard key={center.id} center={center} />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );
