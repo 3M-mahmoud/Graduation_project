@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import { centerData } from "@/data/centerProfile";
 import { ProfileFeed } from "@/app/components/profile/ProfileFeed";
 import { ProfileHeader } from "@/app/components/profile/ProfileHeader";
 import { ProfileTabs } from "@/app/components/profile/ProfileTabs";
@@ -11,25 +10,47 @@ import ScheduleTab from "@/app/components/profile/ScheduleTab";
 import LocationTab from "@/app/components/profile/LocationTap";
 import { DOMAIN } from "@/utils/constants";
 import { useParams } from "next/navigation";
-import { Center } from "@/types/listing";
 
 export default function CenterProfilePage() {
   const param = useParams() as { id: string };
-  const [centerData, setCenterData] = useState<Center | null>(null);
+  const [centerData, setCenterData] = useState({});
+  const [cash, setCash] = useState({
+    posts: [],
+    reviews: [],
+    courses: [],
+  });
   const [activeTab, setActiveTab] = useState("الرئيسية");
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "الرئيسية":
-        return <ProfileFeed centerId={centerData?.id} />;
+        return (
+          <ProfileFeed
+            centerId={centerData?.id}
+            setCash={setCash}
+            cashPosts={cash.posts || []}
+          />
+        );
       case "المدرسين":
         return <TeachersTab />;
       case "جدول الحصص":
-        return <ScheduleTab />;
+        return (
+          <ScheduleTab
+            centerId={centerData?.id}
+            setCash={setCash}
+            cashCourses={cash.courses || []}
+          />
+        );
       case "الموقع الجغرافي":
-        return <LocationTab />;
+        return <LocationTab geography={centerData?.geography || ""} />;
       default:
-        return <ProfileFeed centerId={centerData?.id} />;
+        return (
+          <ProfileFeed
+            centerId={centerData?.id}
+            setCash={setCash}
+            cashPosts={cash.posts || []}
+          />
+        );
     }
   };
 
@@ -43,12 +64,8 @@ export default function CenterProfilePage() {
       setCenterData(json.data);
     };
 
-    if (param?.id) getData();
-  }, [param?.id]);
-
-  console.log(centerData);
-  if (!centerData?.id)
-    return <div className="flex items-center justify-center">loading...</div>;
+    if (param) getData();
+  }, [param]);
 
   return (
     <main className="bg-[#F3F4F6] min-h-screen pb-20" dir="rtl">

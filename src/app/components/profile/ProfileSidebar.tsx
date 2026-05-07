@@ -20,7 +20,7 @@ export const ProfileSidebar = ({ data }: any) => {
           <Info size={18} className="text-orange-500" /> عن السنتر
         </h3>
         <p className="text-[#4B5563] text-sm leading-relaxed mb-6">
-          {data.bio}
+          {data?.bio}
         </p>
 
         <div className="space-y-4 pt-4 border-t border-slate-50">
@@ -29,7 +29,7 @@ export const ProfileSidebar = ({ data }: any) => {
             <p className="text-xl">المواد التعليمية :</p>
           </div>
           <div className="flex flex-wrap gap-1">
-            {data.studyMaterials?.map((s: string) => (
+            {data?.studyMaterials?.map((s: string) => (
               <span
                 key={s}
                 className="bg-[#E2F5FE] text-[#0F3D2E] text-[12px] px-3 py-1 rounded-full"
@@ -43,7 +43,7 @@ export const ProfileSidebar = ({ data }: any) => {
             <p className="text-xl">المراحل التعليمية</p>
           </div>
           <div className="flex flex-wrap gap-1">
-            {data?.center.educationalStage?.map((s: string) => (
+            {data?.center?.educationalStage?.map((s: string) => (
               <span
                 key={s}
                 className="bg-[#E2F5FE] text-[#0F3D2E] text-[12px] px-3 py-1 rounded-full"

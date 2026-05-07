@@ -18,20 +18,18 @@ type Props = {
   };
 };
 export default function CenterCard({ center }: Props) {
-  console.log(center);
-
   return (
     <div
       data-aos="zoom-out"
       className="bg-white rounded-[2rem] shadow-md border border-slate-50 overflow-hidden flex flex-col h-full transition-transform hover:scale-105 hover:shadow-xl"
     >
       <div className="relative h-48 w-full">
-        <Image
+        {/* <Image
           src={center?.image || ""}
           alt={center?.name}
           fill
           className="object-center"
-        />
+        /> */}
       </div>
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-2">

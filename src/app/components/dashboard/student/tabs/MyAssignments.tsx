@@ -1,71 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Atom, ChevronDown } from "lucide-react";
+const allAssignments = [
+  {
+    id: 1,
+    title: "الواجب المنزلى:",
+    subject: "فيزياء",
+    deadline: "25 أكتوبر - 10:00م",
+  },
+  {
+    id: 2,
+    title: "الواجب المنزلى:",
+    subject: "كيمياء",
+    deadline: "26 أكتوبر - 09:00م",
+  },
+  {
+    id: 3,
+    title: "الواجب المنزلى:",
+    subject: "رياضيات",
+    deadline: "27 أكتوبر - 08:00م",
+  },
+  {
+    id: 4,
+    title: "الواجب المنزلى:",
+    subject: "أحياء",
+    deadline: "28 أكتوبر - 07:00م",
+  },
+];
 
-const MyAssignments = () => {
-  
-  const allAssignments = [
-    {
-      id: 1,
-      title: "الواجب المنزلى:",
-      subject: "فيزياء",
-      deadline: "25 أكتوبر - 10:00م",
-    },
-    {
-      id: 2,
-      title: "الواجب المنزلى:",
-      subject: "كيمياء",
-      deadline: "26 أكتوبر - 09:00م",
-    },
-    {
-      id: 3,
-      title: "الواجب المنزلى:",
-      subject: "رياضيات",
-      deadline: "27 أكتوبر - 08:00م",
-    },
-    {
-      id: 4,
-      title: "الواجب المنزلى:",
-      subject: "أحياء",
-      deadline: "28 أكتوبر - 07:00م",
-    },
-  ];
+const allExams = [
+  {
+    id: 1,
+    title: "امتحان نصف الترم:",
+    subject: "فيزياء",
+    date: "20 أكتوبر - 9:00",
+    duration: "60 دقيقة",
+  },
+  {
+    id: 2,
+    title: "امتحان شهرى:",
+    subject: "كيمياء",
+    date: "21 أكتوبر - 10:00",
+    duration: "45 دقيقة",
+  },
+  {
+    id: 3,
+    title: "امتحان تجريبى:",
+    subject: "لغة عربية",
+    date: "22 أكتوبر - 11:00",
+    duration: "90 دقيقة",
+  },
+];
 
-  const allExams = [
-    {
-      id: 1,
-      title: "امتحان نصف الترم:",
-      subject: "فيزياء",
-      date: "20 أكتوبر - 9:00",
-      duration: "60 دقيقة",
-    },
-    {
-      id: 2,
-      title: "امتحان شهرى:",
-      subject: "كيمياء",
-      date: "21 أكتوبر - 10:00",
-      duration: "45 دقيقة",
-    },
-    {
-      id: 3,
-      title: "امتحان تجريبى:",
-      subject: "لغة عربية",
-      date: "22 أكتوبر - 11:00",
-      duration: "90 دقيقة",
-    },
-  ];
-
+const MyAssignments = ({ handleGetAssignments, cash }: any) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleAssignments, setVisibleAssignments] = useState(2);
   const [visibleExams, setVisibleExams] = useState(2);
 
-  const filteredAssignments = allAssignments.filter((item) =>
-    item.subject.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    if (cash.length > 0) return;
+    handleGetAssignments();
+  }, []);
+
+  const filteredAssignments = cash?.homework?.filter((item) =>
+    item.subject.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const filteredExams = allExams.filter((item) =>
-    item.subject.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredExams = cash?.exam?.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -91,7 +94,7 @@ const MyAssignments = () => {
           الواجبات
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredAssignments.slice(0, visibleAssignments).map((item) => (
+          {filteredAssignments?.slice(0, visibleAssignments)?.map((item) => (
             <div
               key={item.id}
               className="bg-white p-8 rounded-xl border border-slate-100 shadow-sm flex flex-col items-start text-start animate-in fade-in duration-300"
@@ -117,7 +120,7 @@ const MyAssignments = () => {
         </div>
 
         {/* زر عرض المزيد للواجبات */}
-        {visibleAssignments < filteredAssignments.length && (
+        {visibleAssignments < filteredAssignments?.length && (
           <button
             onClick={() => setVisibleAssignments((prev) => prev + 2)}
             className="mx-auto mt-6 flex items-center gap-2 px-6 py-2 bg-[#003F87] text-white rounded-lg text-[22px] font-semibold hover:bg-[#003f87c8] transition-colors cursor-pointer"
@@ -133,7 +136,7 @@ const MyAssignments = () => {
           الامتحانات
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredExams.slice(0, visibleExams).map((item) => (
+          {filteredExams?.slice(0, visibleExams)?.map((item) => (
             <div
               key={item.id}
               className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col items-start text-start animate-in fade-in duration-300"
@@ -161,7 +164,7 @@ const MyAssignments = () => {
         </div>
 
         {/* زر عرض المزيد للامتحانات */}
-        {visibleExams < filteredExams.length && (
+        {visibleExams < filteredExams?.length && (
           <button
             onClick={() => setVisibleExams((prev) => prev + 2)}
             className="mx-auto mt-6 flex items-center gap-2 px-6 py-2 bg-[#003F87] text-white rounded-lg text-[22px] font-semibold hover:bg-[#003f87c8] transition-colors cursor-pointer"

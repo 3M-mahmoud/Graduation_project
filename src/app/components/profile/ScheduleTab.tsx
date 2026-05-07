@@ -20,6 +20,15 @@ const stageConfig: Record<string, string[]> = {
     "الصف السادس الابتدائي",
   ],
 };
+const days = [
+  "السبت",
+  "الأحد",
+  "الإثنين",
+  "الثلاثاء",
+  "الأربعاء",
+  "الخميس",
+  "الجمعة",
+];
 
 export default function ScheduleTab() {
   const [selectedStage, setSelectedStage] = useState("المرحلة التعليمية");
@@ -33,23 +42,13 @@ export default function ScheduleTab() {
     setIsStageOpen(false);
   };
 
-  const days = [
-    "السبت",
-    "الأحد",
-    "الإثنين",
-    "الثلاثاء",
-    "الأربعاء",
-    "الخميس",
-    "الجمعة",
-  ];
-
   const filteredSchedule = useMemo(() => {
     if (selectedGrade === "الصف التعليمي") return [];
 
     return scheduleData.map((dayGroup) => ({
       ...dayGroup,
       lessons: dayGroup.lessons.filter(
-        (lesson: any) => lesson.grade === selectedGrade
+        (lesson: any) => lesson.grade === selectedGrade,
       ),
     }));
   }, [selectedGrade]);
@@ -58,7 +57,10 @@ export default function ScheduleTab() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500" dir="rtl">
-      <div data-aos="fade-up" className="max-w-6xl mx-auto bg-white p-4 rounded-xl border border-[#eee] flex items-center justify-between gap-4 shadow-sm">
+      <div
+        data-aos="fade-up"
+        className="max-w-6xl mx-auto bg-white p-4 rounded-xl border border-[#eee] flex items-center justify-between gap-4 shadow-sm"
+      >
         <div className="relative md:flex-none">
           <button
             onClick={() => {
@@ -132,7 +134,10 @@ export default function ScheduleTab() {
         </div>
       </div>
 
-      <div data-aos="fade-up" className="bg-[#22432D] rounded-2xl p-4 md:p-8 shadow-2xl min-h-[500px]">
+      <div
+        data-aos="fade-up"
+        className="bg-[#22432D] rounded-2xl p-4 md:p-8 shadow-2xl min-h-[500px]"
+      >
         <div className="border rounded-2xl p-2">
           <div className="text-center my-6">
             <h3 className="text-white font-bold text-lg md:text-xl pb-4 inline-block">

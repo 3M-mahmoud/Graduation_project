@@ -1,132 +1,34 @@
 import { Search, ListFilter } from "lucide-react";
 import { useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
-import { useParams } from "next/navigation";
 import { DOMAIN } from "@/utils/constants";
 
-const CoursesTab = ({ teacherId }: { teacherId: string }) => {
+const CoursesTab = ({
+  userId,
+  teacherId,
+  setCacheCourse,
+  cashCourses,
+}: any) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeGrade, setActiveGrade] = useState("الثالث الثانوي");
-  const [courses, setCourses] = useState([]);
-  // const params = useParams();
-  // const teacherId = params.id;
 
-  useEffect(() => {
+  const getData = async () => {
     const token = localStorage.getItem("token");
+    const res = await fetch(`${DOMAIN}courses?id=${teacherId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    const getData = async () => {
-      const res = await fetch(
-        `${DOMAIN}courses?id=${teacherId}&classRoom=${activeGrade}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+    const json = await res.json();
 
-      const json = await res.json();
-      setCourses(json.data);
-    };
-
+    setCacheCourse(json.data);
+  };
+  useEffect(() => {
     getData();
-  }, [searchQuery]);
-  console.log(courses);
+  }, []);
 
   const studeMaterial = ["الثالث الثانوي", "الثاني الثانوي", "الأول الثانوي"];
-
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [activeGrade, setActiveGrade] = useState("الثالث الثانوي");
-  // const params = useParams();
-  // const teacherId = params.id;
-
-  // // const allCourses = [
-  // //   {
-  // //     title: "الجبر",
-  // //     grade: "الثالث الثانوي",
-  // //     day: "الاثنين",
-  // //     time: "09:00 صباحاً",
-  // //     students: 72,
-  // //     lessons: 6,
-  // //     rating: 4.8,
-  // //   },
-  // //   {
-  // //     title: "التفاضل",
-  // //     grade: "الثالث الثانوي",
-  // //     day: "الاثنين",
-  // //     time: "09:00 صباحاً",
-  // //     students: 48,
-  // //     lessons: 4,
-  // //     rating: 4.5,
-  // //   },
-  // //   {
-  // //     title: "التكامل",
-  // //     grade: "الثالث الثانوي",
-  // //     day: "الاثنين",
-  // //     time: "09:00 صباحاً",
-  // //     students: 16,
-  // //     lessons: 1,
-  // //     rating: 3.1,
-  // //   },
-  // //   {
-  // //     title: "استاتيكا",
-  // //     grade: "الثالث الثانوي",
-  // //     day: "الاثنين",
-  // //     time: "09:00 صباحاً",
-  // //     students: 21,
-  // //     lessons: 4,
-  // //     rating: 3.9,
-  // //   },
-  // //   {
-  // //     title: "ديناميكا",
-  // //     grade: "الثالث الثانوي",
-  // //     day: "الاثنين",
-  // //     time: "09:00 صباحاً",
-  // //     students: 31,
-  // //     lessons: 2,
-  // //     rating: 3.7,
-  // //   },
-  // //   {
-  // //     title: "هندسة فراغية",
-  // //     grade: "الثالث الثانوي",
-  // //     day: "الاثنين",
-  // //     time: "09:00 صباحاً",
-  // //     students: 1,
-  // //     lessons: 1,
-  // //     rating: 4.6,
-  // //   },
-
-  // //   {
-  // //     title: "فيزياء",
-  // //     grade: "الثاني الثانوي",
-  // //     day: "الثلاثاء",
-  // //     time: "10:00 صباحاً",
-  // //     students: 100,
-  // //     lessons: 10,
-  // //     rating: 4.9,
-  // //   },
-  // //   {
-  // //     title: "كيمياء",
-  // //     grade: "الأول الثانوي",
-  // //     day: "الأربعاء",
-  // //     time: "12:00 مساءً",
-  // //     students: 150,
-  // //     lessons: 8,
-  // //     rating: 4.2,
-  // //   },
-  // // ];
-
-  // const filteredCourses = useMemo(() => {
-  //   return allCourses.filter((course) => {
-  //     const matchesGrade = course.grade === activeGrade;
-  //     const matchesSearch = course.title
-  //       .toLowerCase()
-  //       .includes(searchQuery.toLowerCase());
-  //     return matchesGrade && matchesSearch;
-  //   });
-  // }, [searchQuery, activeGrade]);
-
-  // const grades = ["الثالث الثانوي", "الثاني الثانوي", "الأول الثانوي"];
-
   return (
     <div className="max-w-6xl mx-auto p-4 bg-white rounded-lg">
       <div
@@ -167,10 +69,10 @@ const CoursesTab = ({ teacherId }: { teacherId: string }) => {
         </div>
       </div>
 
-      {courses?.length > 0 ? (
+      {cashCourses?.courses?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
-          {courses.map((course, index) => (
-            <CourseCard key={index} course={course} teacherId={teacherId} />
+          {cashCourses?.courses?.map((course) => (
+            <CourseCard key={course?.id} course={course} userId={userId} />
           ))}
         </div>
       ) : (

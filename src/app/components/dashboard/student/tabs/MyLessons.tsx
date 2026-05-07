@@ -1,10 +1,37 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { MapPin, Calendar, Clock } from "lucide-react";
 
-const MyLessons = () => {
+const lessonsData: { [key: string]: any[] } = {
+  "5": [
+    {
+      id: 1,
+      subject: "الرياضيات - أ/ خالد",
+      center: "سنتر النور - الدقى",
+      time: "الساعة 4:00 عصراً",
+    },
+    {
+      id: 2,
+      subject: "الفيزياء - أ/ محمود",
+      center: "أونلاين",
+      time: "الساعة 8:00 مساءً",
+    },
+  ],
+};
+
+const daysNameAr = [
+  "السبت",
+  "الأحد",
+  "الاثنين",
+  "الثلاثاء",
+  "الأربعاء",
+  "الخميس",
+  "الجمعة",
+];
+
+const MyLessons = ({ handleGetLessons, cash }: any) => {
   const [selectedDate, setSelectedDate] = useState(
-    new Date().getDate().toString()
+    new Date().getDate().toString(),
   );
 
   const weekDays = useMemo(() => {
@@ -12,16 +39,6 @@ const MyLessons = () => {
     const startOfWeek = new Date(now);
     const dayDiff = now.getDay() === 6 ? 0 : now.getDay() + 1;
     startOfWeek.setDate(now.getDate() - dayDiff);
-
-    const daysNameAr = [
-      "السبت",
-      "الأحد",
-      "الاثنين",
-      "الثلاثاء",
-      "الأربعاء",
-      "الخميس",
-      "الجمعة",
-    ];
 
     return daysNameAr.map((name, index) => {
       const date = new Date(startOfWeek);
@@ -34,22 +51,10 @@ const MyLessons = () => {
     });
   }, []);
 
-  const lessonsData: { [key: string]: any[] } = {
-    "3": [
-      {
-        id: 1,
-        subject: "الرياضيات - أ/ خالد",
-        center: "سنتر النور - الدقى",
-        time: "الساعة 4:00 عصراً",
-      },
-      {
-        id: 2,
-        subject: "الفيزياء - أ/ محمود",
-        center: "أونلاين",
-        time: "الساعة 8:00 مساءً",
-      },
-    ],
-  };
+  useEffect(() => {
+    if (cash.length > 0) return;
+    handleGetLessons();
+  }, []);
 
   const currentLessons = lessonsData[selectedDate] || [];
 

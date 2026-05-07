@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function TeacherCard({ teacher }: any) {
-  console.log(teacher, "000000000");
   return (
     <div
       data-aos="zoom-in"

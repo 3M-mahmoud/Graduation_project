@@ -2,31 +2,34 @@
 import { UserData } from "@/types/dashboard";
 import { MapPin, UserPlus, MessageCircle, Share2, Plus } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonFollow from "../button/ButtonFollow";
 import ButtonSendChat from "../button/ButtonSendChat";
 
 export const ProfileHeader = ({ data }: any) => {
   const [dataHeader, setDataHeader] = useState<UserData>(data);
+  useEffect(() => {
+    setDataHeader(data);
+  }, [data]);
   return (
     <div className="relative bg-white shadow-sm pb-4">
       <div className="h-48 md:h-72 w-full overflow-hidden">
-        <Image
+        {/* <Image
           src={dataHeader?.imageUrl || ""}
           alt="Cover"
           className="w-full h-full object-cover"
-        />
+        /> */}
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative">
         <div className="flex flex-col md:flex-row items-center md:items-end gap-6 -mt-16 md:-mt-20">
           <div data-aos="zoom-in" className="relative group">
             <div className="w-32 h-32 md:w-44 md:h-44 rounded-full border-4 border-white bg-white shadow-md overflow-hidden z-20">
-              <Image
-                src={data?.imageUrl || ""}
+              {/* <Image
+                src={dataHeader?.imageUrl || ""}
                 alt="Center Logo"
                 className="w-full h-full object-cover"
-              />
+              /> */}
             </div>
           </div>
 

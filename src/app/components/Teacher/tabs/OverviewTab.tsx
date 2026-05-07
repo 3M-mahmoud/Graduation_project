@@ -13,7 +13,6 @@ import { formatDate } from "../../helper";
 
 const OverviewTab = ({ data }: any) => {
   if (!data?.id) return <div>loading...</div>;
-  console.log(data);
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       <div
@@ -66,7 +65,7 @@ const OverviewTab = ({ data }: any) => {
               <h3 className="text-2xl font-semibold ">التخصصات</h3>
             </div>
 
-            <div className="flex flex-wrap gap-4 justify-center mb-6">
+            <div className="flex flex-wrap gap-4 mb-6">
               <span className="px-3 py-1 bg-white text-[#003F87] rounded-md text-[16px] font-semibold border border-[#003F870D]">
                 {data.teacher.educationalStage}
               </span>

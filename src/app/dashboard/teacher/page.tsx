@@ -1,9 +1,12 @@
 "use client";
 
 import HeroSectionDashboardTeacherCursers from "@/app/components/dashboard/teacher/HeroSectionDashboardTeacherCursers";
+import { useSocket } from "@/context/WsSocket";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 import { Trash, Pencil } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Course = {
   id: number;
@@ -145,7 +148,7 @@ const coursesData: Course[] = [
 ];
 
 const minWidthHeaders = "min-w-[100px] text-center";
-const ITEMS_PER_PAGE = 5;
+const LIMIT_PER_PAGE = 5;
 const classRooms = [
   "الكل",
   "الأول الثانوي",
@@ -154,22 +157,43 @@ const classRooms = [
 ];
 
 const CoursesPage = () => {
+  const { senderId } = useSocket();
   const [filter, setFilter] = useState<string>("الكل");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [coursesData, setCoursesData] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const filteredCourses = useMemo(() => {
-    if (filter === "الكل") return coursesData;
-
-    return coursesData.filter((c) =>
-      c.grade.toLowerCase().includes(filter.toLowerCase()),
+  const handleGetTeachers = async () => {
+    if (filter === "الكل") return;
+    const token = localStorage.getItem("token");
+    const { data } = await axios.get(
+      `${DOMAIN}courses?id=${senderId}&classRoom=الصف ${filter}&role=center`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
+    setCoursesData(data.data.courses);
+  };
+
+  useEffect(() => {
+    handleGetTeachers();
   }, [filter]);
 
-  const totalPages = Math.ceil(filteredCourses.length / ITEMS_PER_PAGE);
+  // const filteredCourses = useMemo(() => {
+  //   if (filter === "الكل") return coursesData;
+
+  //   return coursesData.filter((c) =>
+  //     c.grade.toLowerCase().includes(filter.toLowerCase()),
+  //   );
+  // }, [filter]);
+
+  const totalPages = Math.ceil(coursesData.length / LIMIT_PER_PAGE);
 
   return (
-    <main className="w-full">
-      <div className="py-4 lg:sticky top-0 z-20 bg-white text-black">
+    <main className="w-full max-w-7xl mx-auto">
+      <div className="py-4 pl-4 lg:sticky top-0 z-20 bg-white text-black">
         <HeroSectionDashboardTeacherCursers
           classRoom={classRooms}
           filter={filter}
@@ -193,7 +217,7 @@ const CoursesPage = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-50">
-              {filteredCourses.map((course) => (
+              {coursesData.map((course) => (
                 <tr
                   key={course.id}
                   className="hover:bg-gray-50 transition-colors group"
@@ -223,9 +247,9 @@ const CoursesPage = () => {
                   </td>
 
                   <td className="flex gap-2 p-3 justify-center">
-                    <button className="bg-gray-100 px-3 py-1 rounded-lg text-sm hover:bg-gray-200 font-bold">
+                    {/* <button className="bg-gray-100 px-3 py-1 rounded-lg text-sm hover:bg-gray-200 font-bold">
                       المحتوى
-                    </button>
+                    </button> */}
 
                     <Link
                       href={`/dashboard/teacher/edit/${course.id}`}
@@ -241,7 +265,7 @@ const CoursesPage = () => {
                 </tr>
               ))}
 
-              {filteredCourses.length === 0 && (
+              {coursesData.length === 0 && (
                 <tr>
                   <td colSpan={7} className="text-center py-10 text-gray-400">
                     لا توجد بيانات

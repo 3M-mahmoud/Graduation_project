@@ -1,102 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import { DOMAIN } from "@/utils/constants";
-import { profileSchema, ProfileFormValues } from "@/lib/ProfileSchema";
 import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
-import Cookies from "js-cookie";
-import { UserData } from "@/types/dashboard";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-
-const API_URL = `${DOMAIN}/auth/me`;
 
 const EditProfilePage = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema),
-  });
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const [userDashboard, setUserDashboard] = useState<UserData | null>(null);
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = Cookies.get("token");
-        const response = await axios.get(API_URL, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (response.data.status === "success") {
-          const user = response.data.data;
-          setUserDashboard(user);
-          const nameParts = user.name.split(" ");
-
-          reset({
-            firstName: nameParts[0] || "",
-            lastName: nameParts.slice(1).join(" ") || "",
-            email: user.email || "",
-            phoneNumber: user.phone || "",
-            educationalStage: user.student?.educationalStage || "",
-            academicYear: user.student?.classRoom || "",
-          });
-        }
-      } catch (error) {
-        toast.error("فشل في جلب بيانات المستخدم");
-      }
-    };
-
-    fetchUserData();
-  }, [reset]);
-
-  const onSubmit = async (data: ProfileFormValues) => {
-    setLoading(true);
-    try {
-      const userId = localStorage.getItem("userId");
-      const token = Cookies.get("token");
-      const role = Cookies.get("role");
-
-      await axios.patch(
-        `${DOMAIN}users/${userId}`,
-        {
-          role,
-          userData: {
-            name: data.firstName + data.lastName,
-            phone: data.phoneNumber,
-          },
-          profileData: {
-          },
-          extraProfileData: {
-          },
-          student: {
-            id: userDashboard?.student?.id,
-            educationalStage: data?.educationalStage,
-            classRoom: data?.academicYear,
-          },
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-
-      toast.success("تم حفظ التعديلات بنجاح");
-      router.push("/dashboard/student");
-    } catch (error) {
-      console.log(error);
-      toast.error("حدث خطأ أثناء الحفظ");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div>
       <div className="text-right mb-6 font-normal text-black">
@@ -107,7 +14,8 @@ const EditProfilePage = () => {
         className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-sm"
         dir="rtl"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+        <form className="space-y-10">
+          {/* الصورة الشخصية */}
           <div className="flex flex-col md:flex-row gap-4 items-center relative">
             <div className="relative w-28 h-28 rounded-full overflow-hidden">
               <Image
@@ -131,23 +39,23 @@ const EditProfilePage = () => {
             <h2 className="text-xl font-bold text-black border-r-4 border-[#062D27] pr-3">
               المعلومات الشخصية
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="font-medium text-black pr-2 text-[16px]">
-                  الاسم الأول
+                  الاسم
                 </label>
                 <input
-                  {...register("firstName")}
-                  placeholder="جاري التحميل..."
+                  {...register("name")}
+                  placeholder="الاسم"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
                 />
-                {errors.firstName && (
+                {errors.name && (
                   <span className="text-red-500 text-xs pr-2">
-                    {errors.firstName.message}
+                    {errors.name.message}
                   </span>
                 )}
               </div>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 <label className="font-medium text-black pr-2 text-[16px]">
                   اسم العائلة
                 </label>
@@ -156,7 +64,7 @@ const EditProfilePage = () => {
                   placeholder="جاري التحميل..."
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -181,7 +89,7 @@ const EditProfilePage = () => {
                   الصف الدراسي
                 </label>
                 <input
-                  {...register("academicYear")}
+                  {...register("classRoom")}
                   placeholder="مثال: الثالث الثانوي"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
                 />
@@ -200,7 +108,7 @@ const EditProfilePage = () => {
                   رقم الهاتف
                 </label>
                 <input
-                  {...register("phoneNumber")}
+                  {...register("phone")}
                   dir="ltr"
                   placeholder="+20*** **** ***"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
