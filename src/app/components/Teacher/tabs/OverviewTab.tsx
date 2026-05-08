@@ -160,15 +160,15 @@ const OverviewTab = ({ data }: any) => {
         data-aos="fade-up"
         className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50"
       >
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+          <div className="flex items-center gap-4 mb-4 md:mb-0">
             <div className="p-2 shadow-lg shadow-[0px_1px_2px_rgba(0, 0, 0, 0.05)] rounded-lg">
               <Star
                 className="text-yellow-400 fill-yellow-400"
                 size={24}
               />{" "}
             </div>
-            <h3 className="text-2xl font-semibold text-[#191C1D]">
+            <h3 className="text-lg md:text-2xl font-semibold text-[#191C1D]">
               تقييمات الطلاب
             </h3>
           </div>
@@ -225,13 +225,13 @@ const ContentItem = ({ icon, label, count, color }: any) => (
 
 const ReviewItem = ({ name, role, text, initials }: any) => (
   <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-    <div className="flex justify-between items-start mb-4">
-      <div className="flex gap-4">
-        <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">
+    <div className="flex flex-col md:flex-row justify-between items-center md:items-start mb-4">
+      <div className="flex gap-4 mb-3">
+        <div className="w-12 h-12 bg-blue-100 text-blue-600 whitespace-nowrap rounded-xl flex items-center justify-center font-black">
           {initials}
         </div>
         <div>
-          <h4 className="font-black text-slate-800">{name}</h4>
+          <h4 className="font-black text-slate-800 whitespace-nowrap">{name}</h4>
           <p className="text-xs text-slate-400 font-bold">{role}</p>
         </div>
       </div>
