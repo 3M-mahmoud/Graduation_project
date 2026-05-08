@@ -43,10 +43,7 @@ export default function TeachersTab() {
 
   return (
     <div className="bg-[#f9fafb] min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-500">
-      <div
-        data-aos="fade-up"
-        className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4"
-      >
+      <div className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4">
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsStageOpen(!isStageOpen)}

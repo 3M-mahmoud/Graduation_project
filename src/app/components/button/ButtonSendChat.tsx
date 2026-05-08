@@ -20,11 +20,13 @@ const ButtonSendChat = ({ id }: { id: string }) => {
       setDataHeader(null);
       return router.push("/chat");
     }
-    const res = await fetch(`${DOMAIN}conversations`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ senderId: senderId, receiverId: id }),
-    });
+    const res = await fetch(
+      `${DOMAIN}conversations?senderId=${senderId}&receiverId=${id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
     const data = await res.json();
 
     if (
@@ -50,7 +52,6 @@ const ButtonSendChat = ({ id }: { id: string }) => {
     emitEvent("open_chat");
     router.push("/chat");
   };
-
   // useEffect(() => {
   //   const handleGetContacts = async () => {
   //     const token = localStorage.getItem("token");

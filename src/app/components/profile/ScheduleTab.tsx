@@ -57,10 +57,7 @@ export default function ScheduleTab() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500" dir="rtl">
-      <div
-        data-aos="fade-up"
-        className="max-w-6xl mx-auto bg-white p-4 rounded-xl border border-[#eee] flex items-center justify-between gap-4 shadow-sm"
-      >
+      <div className="max-w-6xl mx-auto bg-white p-4 rounded-xl border border-[#eee] flex items-center justify-between gap-4 shadow-sm">
         <div className="relative md:flex-none">
           <button
             onClick={() => {
