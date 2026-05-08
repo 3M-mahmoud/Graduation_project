@@ -10,6 +10,7 @@ import ScheduleTab from "@/app/components/profile/ScheduleTab";
 import LocationTab from "@/app/components/profile/LocationTap";
 import { DOMAIN } from "@/utils/constants";
 import { useParams } from "next/navigation";
+import CenterProfileSkeleton from "@/app/components/profile/CenterProfileSkeleton";
 
 export default function CenterProfilePage() {
   const param = useParams() as { id: string };
@@ -66,7 +67,9 @@ export default function CenterProfilePage() {
 
     if (param) getData();
   }, [param]);
-
+  if (!centerData?.id) {
+    return <CenterProfileSkeleton />;
+  }
   return (
     <main className="bg-[#F3F4F6] min-h-screen pb-20" dir="rtl">
       <ProfileHeader data={centerData} />

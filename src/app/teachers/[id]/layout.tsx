@@ -7,8 +7,13 @@ import TeacherProfile from "./page";
 import ButtonFollow from "@/app/components/button/ButtonFollow";
 import { DOMAIN } from "@/utils/constants";
 import { useSocket } from "@/context/WsSocket";
+import { OverviewSkeleton } from "@/app/components/Teacher/tabs/OverviewSkeleton";
 
-export default function RootLayout() {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const param = useParams() as { id: string };
   const { socket } = useSocket();
   const [data, setData] = useState({});
@@ -35,8 +40,7 @@ export default function RootLayout() {
     );
   }, [param?.id]);
 
-  if (!data?.id)
-    return <div className="flex items-center justify-center">loading...</div>;
+  if (!data?.id) return <OverviewSkeleton />;
 
   return (
     <main className="bg-[#F8FAFC] min-h-screen pb-20" dir="rtl">

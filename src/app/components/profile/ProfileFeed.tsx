@@ -99,9 +99,7 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
         </div>
       ) : (
         <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
-          <p className="text-slate-400 font-bold text-lg">
-            لا توجد منشورات تطابق بحثك في هذا الصف.
-          </p>
+          <p className="text-slate-400 font-bold text-lg">لا توجد منشورات .</p>
         </div>
       )}
     </>

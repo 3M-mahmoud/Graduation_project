@@ -10,9 +10,10 @@ import {
   ArrowBigLeft,
 } from "lucide-react";
 import { formatDate } from "../../helper";
+import { OverviewSkeleton } from "./OverviewSkeleton";
 
 const OverviewTab = ({ data }: any) => {
-  if (!data?.id) return <div>loading...</div>;
+  if (!data?.id) return <OverviewSkeleton />;
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       <div
