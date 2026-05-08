@@ -1,12 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OverviewTab from "@/app/components/Teacher/tabs/OverviewTab";
 import { centerData } from "@/data/centerProfile";
 import { ProfileFeed } from "@/app/components/profile/ProfileFeed";
 import CoursesTab from "@/app/components/Teacher/tabs/coursesTab/CoursesTab";
 import ReviewsTab from "@/app/components/Teacher/tabs/ReviewsTab";
+import { OverviewSkeleton } from "@/app/components/Teacher/tabs/OverviewSkeleton";
+import { DOMAIN } from "@/utils/constants";
+import { useParams } from "next/navigation";
+import { useSocket } from "@/context/WsSocket";
 
-export default function TeacherProfile({ data }: any) {
+export default function TeacherProfile() {
   const [activeTab, setActiveTab] = useState("نظرة عامة");
   const [cachePosts, setCachePosts] = useState({
     meta: {},
@@ -14,6 +18,9 @@ export default function TeacherProfile({ data }: any) {
   });
   const [cashCourses, setCacheCourse] = useState([]);
   const [cacheReviews, setCacheReviews] = useState([]);
+  const param = useParams() as { id: string };
+  const { socket } = useSocket();
+  const [data, setData] = useState({});
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -48,6 +55,29 @@ export default function TeacherProfile({ data }: any) {
         return <OverviewTab data={data} />;
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const getData = async () => {
+      const res = await fetch(`${DOMAIN}users/${param.id}?role=teacher`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const json = await res.json();
+      setData(json.data);
+    };
+    if (param?.id) getData();
+
+    if (!socket || !param.id) return;
+    socket.send(
+      JSON.stringify({
+        type: "get_user_presence",
+        payload: {
+          userId: param.id,
+        },
+      }),
+    );
+  }, [param?.id]);
+  if (!data?.id) return <OverviewSkeleton />;
+
   return (
     <>
       <div
