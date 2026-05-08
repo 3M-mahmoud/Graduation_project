@@ -41,7 +41,7 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
         <div className="space-y-6">
           {cachePosts?.data?.map((post: any) => (
             <div
-              data-aos="fade-up"
+              data-aos="zoom-in"
               key={post.id}
               className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
             >

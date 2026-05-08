@@ -13,7 +13,7 @@ export const ProfileSidebar = ({ data }: any) => {
   return (
     <aside className="space-y-6 sticky top-16">
       <div
-        data-aos="fade-up"
+        data-aos="zoom-in"
         className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100"
       >
         <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-2xl">

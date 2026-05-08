@@ -42,6 +42,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
         },
       );
 
+      closeMenu();
       toast.success("تم تسجيل الخروج بنجاح");
       router.push("/login");
     } catch (error: any) {
@@ -75,10 +76,13 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
     return () => window.removeEventListener("resize", check);
   }, []);
   return (
-    <div className="flex items-center gap-3 md:gap-6">
-      <div className="flex items-center gap-2 md:gap-4 border-l border-slate-200 pl-3 md:pl-6">
+    <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6">
+      <div className="flex items-center gap-4 md:border-l border-slate-200 pl-3 md:pl-6">
         <Link
           href="/chat"
+             onClick={() => {
+              closeMenu();
+            }}
           className="relative p-2.5 bg-orange-50 rounded-full text-orange-500 cursor-pointer hover:bg-orange-100 transition-colors"
         >
           <MessageSquare size={22} />
@@ -227,7 +231,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
 
           <Link
             href={`/dashboard/${role}/settings`}
-               onClick={() => {
+            onClick={() => {
               closeMenu();
             }}
             className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
@@ -239,7 +243,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
 
           <Link
             href={getDashboardPath()}
-               onClick={() => {
+            onClick={() => {
               closeMenu();
             }}
             className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"

@@ -121,8 +121,8 @@ const Nav = () => {
 
       <div
         className={`
-          fixed inset-0 top-[72px] bg-white z-40 transition-transform duration-300 ease-in-out lg:hidden
-          ${isOpen ? "translate-x-0" : "translate-x-full"}
+           top-0 bg-white z-40 transition-transform duration-300 ease-in-out lg:hidden
+          ${isOpen ? "sticky" : "hidden"}
         `}
       >
         <div className="flex flex-col p-6 gap-6">

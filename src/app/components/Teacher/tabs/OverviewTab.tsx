@@ -37,7 +37,7 @@ const OverviewTab = ({ data }: any) => {
 
       <div className="max-w-6xl flex flex-col md:flex-row gap-6">
         <div
-          data-aos="fade-left"
+          data-aos="fade-up"
           className="flex flex-col gap-6 w-full md:w-2/5"
         >
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">
@@ -104,7 +104,7 @@ const OverviewTab = ({ data }: any) => {
           </div>
         </div>
         <div
-          data-aos="fade-right"
+          data-aos="fade-up"
           className="flex flex-col gap-3 w-full md:w-3/5"
         >
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">
