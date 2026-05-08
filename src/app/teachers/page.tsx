@@ -7,15 +7,15 @@ import TeachersFilters from "../components/Teacher/TeachersFilters";
 import TeacherCard from "../components/Teacher/TeacherCard";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
+import CenterCardSkeleton from "../components/Center/CenterCardSkeleton";
 
 export default function TeachersPage() {
   const [search, setSearch] = useState("");
   const [system, setSystem] = useState("");
   const [grade, setGrade] = useState("");
   const [subject, setSubject] = useState("");
-
-  const [data, setData] = useState([]);
-  const [filteredTeachers, setFilteredTeachers] = useState(data);
+  const [loading, setLoading] = useState(true);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
 
@@ -68,10 +68,19 @@ export default function TeachersPage() {
   };
 
   const handleGetTeachers = async () => {
-    const { data } = await axios.get(`${DOMAIN}users?role=teacher`, {});
+    try {
+      setLoading(true);
 
-    setData(data.data);
-    setFilteredTeachers(data.data);
+      const {
+        data: { data },
+      } = await axios.get(`${DOMAIN}users?role=teacher`);
+
+      setFilteredTeachers(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     handleGetTeachers();
@@ -153,19 +162,23 @@ export default function TeachersPage() {
             <ListFilter size={18} />
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredTeachers?.map((teacher) => (
-            <TeacherCard key={teacher?.id} teacher={teacher} />
-          ))}
-        </div>
-
-        {filteredTeachers.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-slate-400 text-lg">
-              لم يتم العثور على مدرسين يطابقون بحثك.
-            </p>
-          </div>
+        {loading ? (
+          <CenterCardSkeleton />
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredTeachers?.map((teacher) => (
+                <TeacherCard key={teacher?.id} teacher={teacher} />
+              ))}
+            </div>
+            {filteredTeachers.length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-slate-400 text-lg">
+                  لم يتم العثور على مدرسين يطابقون بحثك.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>

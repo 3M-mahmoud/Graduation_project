@@ -112,16 +112,19 @@ export default function ChatSidebar({ isTyping }: any) {
                 >
                   <div className="relative flex-shrink-0">
                     <div
-                      className={`size-13 rounded-full p-[2px] transition-all duration-500 ${
+                      className={`size-13 rounded-full transition-all duration-500 ${
                         active ? "ring-2 ring-[#204658] ring-offset-2" : ""
                       }`}
                     >
                       <div className="w-full h-full rounded-full overflow-hidden border-2 border-white bg-white shadow-sm">
                         {user?.imageUrl ? (
                           <Image
-                            src={user.imageUrl || ""}
+                            src={user.imageUrl}
                             alt={user.name}
+                            width={80}
+                            height={80}
                             className="w-full h-full object-cover"
+                            unoptimized
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-[#204658] to-[#3a6d85] flex items-center justify-center">
@@ -141,9 +144,47 @@ export default function ChatSidebar({ isTyping }: any) {
                   </div>
 
                   <div className="flex-1 min-w-0 text-right">
-                    <div className="flex justify-between items-center mb-1">
+                    <div className="flex justify-between items-center gap-1 mb-1">
                       <h3
-                        className={`font-bold text-[14.5px] truncate ${active ? "text-[#204658]" : "text-gray-800"}`}
+                        className={`font-bold text-[14.5px] truncate flex-1 ${
+                          active ? "text-[#204658]" : "text-gray-800"
+                        } line-clamp-1`}
+                      >
+                        {user.name}
+                      </h3>
+
+                      <span className="text-[10px] font-medium text-gray-400 shrink-0 whitespace-nowrap">
+                        {formatDate(user.lastMessageAt)}
+                      </span>
+                    </div>
+
+                    <div className="h-5 flex items-center overflow-hidden">
+                      {typing ? (
+                        <div className="flex items-center gap-1.5 text-[#204658] animate-pulse">
+                          <div className="flex gap-0.5">
+                            <span className="size-1 bg-[#204658] rounded-full animate-bounce"></span>
+                            <span className="size-1 bg-[#204658] rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                            <span className="size-1 bg-[#204658] rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                          </div>
+                          <span className="text-[11px] font-bold italic">
+                            يكتب الآن...
+                          </span>
+                        </div>
+                      ) : (
+                        <p
+                          className={`text-[12.5px] truncate transition-colors ${
+                            active ? "text-[#204658]/70" : "text-gray-400"
+                          }`}
+                        >
+                          {user.lastMessage || "انقر للبدء المحادثة"}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {/* <div className="flex-1 min-w-0 text-right">
+                    <div className="flex justify-between items-center gap-1 mb-1">
+                      <h3
+                        className={`font-bold text-[14.5px] truncate ${active ? "text-[#204658]" : "text-gray-800"} line-clamp-1`}
                       >
                         {user.name}
                       </h3>
@@ -172,7 +213,7 @@ export default function ChatSidebar({ isTyping }: any) {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </div> */}
 
                   {active && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-[#204658] rounded-l-full"></div>

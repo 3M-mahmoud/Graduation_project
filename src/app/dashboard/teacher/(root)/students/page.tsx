@@ -83,7 +83,6 @@ import { useEffect, useState } from "react";
 const LIMIT_PER_PAGE = 5;
 
 const StudentsTable = () => {
-  const { senderId } = useSocket();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [coursesCount, setCoursesCount] = useState(0);
   const [coursesData, setCoursesData] = useState([]);
@@ -108,6 +107,15 @@ const StudentsTable = () => {
   }, []);
 
   const totalPages = Math.ceil(coursesCount / LIMIT_PER_PAGE);
+  const visiblePages = 3;
+
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+  const pages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, i) => startPage + i,
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 lg:p-12 font-sans" dir="rtl">
@@ -201,35 +209,38 @@ const StudentsTable = () => {
             أصل <span className="text-gray-800">{coursesCount}</span> طلاب
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-black">
             <button
               onClick={() => setCurrentPage((p) => p - 1)}
               disabled={currentPage === 1}
-              className={`${currentPage === 1 ? "disabled:cursor-not-allowed" : ""} px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
+              className={`${
+                currentPage === 1 ? "disabled:cursor-not-allowed" : ""
+              } px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
             >
               {"<"}
             </button>
-            {Array.from({ length: totalPages }).map((_, i) => (
+
+            {pages.map((page) => (
               <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
+                key={page}
+                onClick={() => setCurrentPage(page)}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === i + 1 ? "bg-green-600" : "bg-gray-100"
+                  currentPage === page ? "bg-green-600" : "bg-gray-100"
                 } cursor-pointer`}
               >
-                {i + 1}
+                {page}
               </button>
             ))}
+
             <button
               onClick={() => setCurrentPage((p) => p + 1)}
               disabled={currentPage === totalPages}
-              className={`${currentPage === totalPages ? "disabled:cursor-not-allowed" : ""} px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
+              className={`${
+                currentPage === totalPages ? "disabled:cursor-not-allowed" : ""
+              } px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
             >
               {">"}
             </button>
-            {/* <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-400 transition-all">
-              <ChevronLeft size={18} />
-            </button> */}
           </div>
         </div>
       </div>

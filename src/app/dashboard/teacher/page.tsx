@@ -1,12 +1,13 @@
 "use client";
 
 import HeroSectionDashboardTeacherCursers from "@/app/components/dashboard/teacher/HeroSectionDashboardTeacherCursers";
+import { useDashboardTeacherContext } from "@/context/DashboardTeacher";
 import { useSocket } from "@/context/WsSocket";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
 import { Trash, Pencil } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type Course = {
   id: number;
@@ -18,153 +19,25 @@ type Course = {
   reviews: number;
 };
 
-const coursesData: Course[] = [
-  {
-    id: 1,
-    title: "دورة الجبر الشاملة",
-    grade: "الأول الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 2,
-    title: "دورة التفاضل والتكامل",
-    grade: "الثاني الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-  {
-    id: 3,
-    title: "دورة الجبر الشاملة",
-    grade: "الثالث الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 4,
-    title: "دورة التفاضل والتكامل",
-    grade: "الأول الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-  {
-    id: 5,
-    title: "دورة الجبر الشاملة",
-    grade: "الثاني الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 6,
-    title: "دورة التفاضل والتكامل",
-    grade: "الثالث الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-  {
-    id: 7,
-    title: "دورة الجبر الشاملة",
-    grade: "الأول الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 8,
-    title: "دورة التفاضل والتكامل",
-    grade: "الثاني الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-  {
-    id: 9,
-    title: "دورة الجبر الشاملة",
-    grade: "الثالث الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 10,
-    title: "دورة التفاضل والتكامل",
-    grade: "الأول الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-  {
-    id: 11,
-    title: "دورة الجبر الشاملة",
-    grade: "الثالث الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 12,
-    title: "دورة التفاضل والتكامل",
-    grade: "الثالث الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-  {
-    id: 13,
-    title: "دورة الجبر الشاملة",
-    grade: "الأول الثانوي",
-    students: 118,
-    price: 1200,
-    rating: 4.8,
-    reviews: 35,
-  },
-  {
-    id: 14,
-    title: "دورة التفاضل والتكامل",
-    grade: "الثاني الثانوي",
-    students: 142,
-    price: 1400,
-    rating: 4.9,
-    reviews: 56,
-  },
-];
-
 const minWidthHeaders = "min-w-[100px] text-center";
 const LIMIT_PER_PAGE = 5;
 const classRooms = [
-  "الكل",
-  "الأول الثانوي",
-  "الثاني الثانوي",
+  // "الكل",
   "الثالث الثانوي",
+  "الثاني الثانوي",
+  "الاول الثانوي",
 ];
 
 const CoursesPage = () => {
   const { senderId } = useSocket();
-  const [filter, setFilter] = useState<string>("الكل");
+  const { dataProfile } = useDashboardTeacherContext();
+  const [filter, setFilter] = useState<string>("الثالث الثانوي");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [coursesData, setCoursesData] = useState<Course[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleGetTeachers = async () => {
-    if (filter === "الكل") return;
+    if (filter === "الكل" || !senderId) return;
     const token = localStorage.getItem("token");
     const { data } = await axios.get(
       `${DOMAIN}courses?id=${senderId}&classRoom=الصف ${filter}&role=center`,
@@ -247,10 +120,6 @@ const CoursesPage = () => {
                   </td>
 
                   <td className="flex gap-2 p-3 justify-center">
-                    {/* <button className="bg-gray-100 px-3 py-1 rounded-lg text-sm hover:bg-gray-200 font-bold">
-                      المحتوى
-                    </button> */}
-
                     <Link
                       href={`/dashboard/teacher/edit/${course.id}`}
                       className="bg-gray-100 p-2 rounded-lg hover:bg-gray-200"

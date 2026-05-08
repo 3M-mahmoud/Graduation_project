@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { teachersData } from "@/data/centerProfile";
+import { useEffect, useState } from "react";
+// import { teachersData } from "@/data/centerProfile";
 import {
   GraduationCap,
   Users,
@@ -11,6 +11,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 const stages = [
   "المراحل التعليمية",
   "المرحلة الابتدائية",
@@ -25,28 +27,50 @@ const subjects = [
   "اللغة الإنجليزية",
 ];
 
-export default function TeachersTab() {
+export default function TeachersTab({ centerId, cache, setsetCache }: any) {
   const [selectedStage, setSelectedStage] = useState("المراحل التعليمية");
   const [selectedSubject, setSelectedSubject] = useState("المادة التعليمية");
+  // const [teachersData, setTeachersData] = useState(cache || []);
 
   const [isStageOpen, setIsStageOpen] = useState(false);
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
 
-  const filteredTeachers = teachersData.filter((teacher) => {
-    const stageMatch =
-      selectedStage === "المراحل التعليمية" || teacher.stage === selectedStage;
-    const subjectMatch =
-      selectedSubject === "المادة التعليمية" ||
-      teacher.subject === selectedSubject;
-    return stageMatch && subjectMatch;
-  });
+  // const filteredTeachers = cache?.filter((teacher) => {
+  //   const stageMatch =
+  //     selectedStage === "المراحل التعليمية" ||
+  //     teacher?.educationalStage === selectedStage;
+  //   const subjectMatch =
+  //     selectedSubject === "المادة التعليمية" ||
+  //     teacher?.studyMaterial === selectedSubject;
+  //   return setTeachersData(stageMatch && subjectMatch);
+  // });
+
+  const handleGetTeachers = async () => {
+    const token = localStorage.getItem("token");
+    const res = await axios.get(
+      `${DOMAIN}center-dashboard/teachers/${centerId}?limit=9`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    setsetCache((pre) => {
+      return {
+        ...pre,
+        students: res.data.data,
+      };
+    });
+  };
+
+  useEffect(() => {
+    handleGetTeachers();
+  }, [isStageOpen, isSubjectOpen]);
 
   return (
     <div className="bg-[#f9fafb] min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-500">
-      <div
-        data-aos="fade-up"
-        className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4"
-      >
+      <div className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4">
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsStageOpen(!isStageOpen)}
@@ -121,7 +145,7 @@ export default function TeachersTab() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {filteredTeachers.map((teacher) => (
+        {cache?.map((teacher) => (
           <div
             data-aos="flip-left"
             key={teacher.id}
@@ -129,31 +153,33 @@ export default function TeachersTab() {
           >
             <div className="relative w-28 h-28 mb-4">
               <div className="absolute inset-0 rounded-full scale-110 opacity-50"></div>
-              <Image
-                src={teacher.image}
-                alt={teacher.name}
-                className="w-full h-full rounded-full object-cover relative z-10 border-2 border-[#E7F2EF] shadow-sm"
-              />
+              {teacher?.imageUrl && (
+                <Image
+                  src={teacher.imageUrl}
+                  alt={teacher.name}
+                  width={80}
+                  height={80}
+                  className="w-full h-full rounded-full object-cover relative z-10 border-2 border-[#E7F2EF] shadow-sm"
+                />
+              )}
             </div>
 
             <div className="text-center w-full">
               <h4 className="text-xl font-black text-[#204658] mb-1">
                 {teacher.name}
               </h4>
+              <p className="text-black text-[16px] mb-4">
+                {teacher.studyMaterial}
+              </p>
               <p className="text-[#A9363D] text-xs font-bold mb-4">
-                {teacher.subject}
+                {teacher.studyMaterial}
               </p>
 
               <div className="flex items-center justify-center gap-4 text-[15px] text-[#5F5F60] mb-4">
                 <span className="flex items-center gap-1">
-                  <Users size={15} /> {teacher.experience}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock size={15} /> {teacher.yearsInCenter}
+                  <Clock size={15} /> {teacher.classRoom[0]}
                 </span>
               </div>
-
-              <p className="text-black text-[16px] mb-4">{teacher.grade}</p>
 
               <div className="space-y-2">
                 <button className="text-[16px] text-[#204658] flex items-center gap-1 mx-auto">
@@ -183,7 +209,7 @@ export default function TeachersTab() {
         ))}
       </div>
 
-      {filteredTeachers.length === 0 && (
+      {cache?.length === 0 && (
         <div className="text-center h-80 flex items-center justify-center bg-white rounded-2xl border border-[#C0BEBE] max-w-3xl mx-auto">
           <p className="text-[#204658] text-2xl font-bold">
             أختر المرحلة التعليمية والصف الدراسي لعرض مدرسين السناتر

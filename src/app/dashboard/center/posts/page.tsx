@@ -2,12 +2,17 @@
 import { Plus, SlidersHorizontal } from "lucide-react";
 import centerLogo from "@/assets/ceterProfile/teacherTap1.jpeg";
 import { Post } from "@/app/components/dashboard/center/Post";
-import { useSocket } from "@/context/WsSocket";
+import AddPostModal from "@/app/components/dashboard/center/AddPostModal";
+import { useState } from "react";
 
 const PostsPage = () => {
   // معرف السنتر (يمكنك جلبه من الـ Auth context أو الـ LocalStorage)
-  const { senderId } = useSocket();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const centerId = "YOUR_CENTER_ID";
+  const handleRefresh = () => {
+    // منطق لتحديث المنشورات بعد الإضافة (مثلاً بتغيير key الـ ProfileFeed)
+    window.location.reload();
+  };
   return (
     <div className="max-w-[1000px] mx-auto pb-10">
       {/* عنوان الصفحة */}
@@ -24,14 +29,17 @@ const PostsPage = () => {
           {/* لوجو السنتر الصغير */}
           <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-100 shrink-0 relative">
             <img
-              src={centerLogo?.src}
+              src={centerLogo.src}
               alt="Center Logo"
               className="w-full h-full object-cover"
             />
           </div>
 
           {/* زر فتح مودال المنشور الجديد */}
-          <button className="flex-1 bg-slate-50 text-right px-6 py-2.5 rounded-xl text-slate-400 text-xs font-bold hover:bg-slate-100 transition-all flex items-center justify-between">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex-1 bg-slate-50 text-right px-6 py-2.5 rounded-xl text-slate-400 text-xs font-bold hover:bg-slate-100 transition-all flex items-center justify-between"
+          >
             <span>منشور جديد ..</span>
             <Plus size={16} className="text-slate-300" />
           </button>
@@ -45,7 +53,12 @@ const PostsPage = () => {
 
       {/* استدعاء مكون التغذية الذي قمنا بتعديله */}
       {/* سيتولى هذا المكون عملية الـ Fetch والـ Mapping تلقائياً */}
-      {senderId && <Post centerId={senderId} />}
+      <Post centerId={centerId} />
+      <AddPostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleRefresh}
+      />
     </div>
   );
 };

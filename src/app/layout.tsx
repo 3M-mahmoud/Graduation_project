@@ -4,7 +4,6 @@ import Footer from "./components/layouts/footer/Footer";
 import Nav from "./components/layouts/nav/Nav";
 import "./globals.css";
 import "aos/dist/aos.css";
-import Script from "next/script";
 import AOSProvider from "./AOSProvider";
 import WsSocket from "@/context/WsSocket";
 import { Toaster } from "react-hot-toast";
@@ -30,10 +29,8 @@ export default function RootLayout({
         ></link>
       </head>
       <body dir="rtl" className={`${cairo.className}`}>
-        <WsSocket>
-          <Nav />
-          {children}
-        </WsSocket>
+        <Nav />
+        <WsSocket>{children}</WsSocket>
         <Footer />
         <AOSProvider />
         <Toaster position="top-center" />

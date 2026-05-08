@@ -7,11 +7,17 @@ import {
   PencilLine,
   MessageCircle,
   Heart,
+  MessageSquare,
+  Pencil,
+  Clock,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
+import ButtonLikes from "@/app/components/button/ButtonLike";
+import { formatDate } from "@/app/components/helper";
+import { useDashboardTeacherContext } from "@/context/DashboardTeacher";
 
 const postsData = [
   {
@@ -46,6 +52,7 @@ type PostType = {
 };
 
 export default function PostsManagement() {
+  const { dataProfile } = useDashboardTeacherContext();
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -110,65 +117,82 @@ export default function PostsManagement() {
 
         {posts?.length > 0 ? (
           <div className="space-y-4">
-            {posts?.map((post) => (
+            {posts?.map((post: any) => (
               <div
+                data-aos="fade-up"
                 key={post.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 relative "
+                className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
               >
-                <div className="absolute top-6 left-6 flex items-center gap-3">
-                  <button className="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
-                    <Trash2 size={18} />
-                  </button>
-                  <Link
-                    href={`/dashboard/teacher/posts/edit/${post.id}`}
-                    className="text-gray-300 hover:text-[#003F87] transition-colors cursor-pointer"
-                  >
-                    <PencilLine size={18} />
-                  </Link>
-                </div>
-
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="size-12 rounded-full overflow-hidden">
-                    <Image
-                      src="/teacher-avatar.jpg"
-                      alt=""
-                      width={48}
-                      height={48}
-                    />
-                  </div>
-                  <div className="text-right">
-                    <h4 className="text-[#204658] font-bold text-lg leading-none mb-1">
-                      {post.author}
-                    </h4>
-                    <p className="text-[11px] text-gray-400 font-medium">
-                      {post.time}
-                    </p>
+                <div className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-slate-100 border border-slate-50 overflow-hidden">
+                      {dataProfile?.imageUrl && (
+                        <Image
+                          src={dataProfile?.imageUrl}
+                          alt={dataProfile?.name}
+                          width={44}
+                          height={44}
+                          className="w-11 h-11 object-cover"
+                          unoptimized
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-sm">
+                        {dataProfile?.name}
+                      </h4>
+                      <div className="flex items-center gap-1 text-[10px] text-slate-400 mt-0.5">
+                        <Clock size={12} /> {formatDate(post.createdAt)}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="pr-16 mb-8">
-                  <p className="text-[#204658] text-sm md:text-base leading-relaxed whitespace-pre-line text-right font-medium">
-                    {post.content}
+                <div className="px-4 pb-4">
+                  <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
+                    {post.title}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-gray-50 flex items-center justify-end gap-6">
-                  <div className="flex items-center gap-2 text-gray-400 hover:text-[#003F87] cursor-pointer transition-colors">
-                    <span className="text-sm font-bold">
-                      {post.comments} تعليق
-                    </span>
-                    <MessageCircle size={18} />
+                {post?.imageUrl && (
+                  <div className="max-w-5xl mx-auto bg-slate-50 border-y border-slate-50">
+                    <Image
+                      src={post?.imageUrl}
+                      alt="Post Attachment"
+                      width={400}
+                      height={200}
+                      className="w-full object-contain mx-auto"
+                      unoptimized
+                    />
                   </div>
-                  <div className="flex items-center gap-2 text-gray-400 hover:text-red-500 cursor-pointer transition-colors">
-                    <span className="text-sm font-bold">{post.likes}</span>
-                    <Heart size={18} />
+                )}
+
+                <div className="px-4 py-3 border-t flex justify-between">
+                  <div className=" flex items-center gap-6">
+                    <ButtonLikes
+                      isLiked={post.isLiked}
+                      likesCount={post.likeCounts}
+                      id={post.id}
+                    />
+
+                    <button className="flex items-center gap-2 text-slate-500 text-sm font-bold hover:text-orange-500 transition cursor-pointer">
+                      <MessageCircle size={18} />
+                      <span>{post.commentCounts}</span>
+                    </button>
                   </div>
+                  <button className="py-2 px-4 bg-[#E2F5FE] text-sm rounded-xl text-[#0F3D2E] hover:bg-[#c1e1f0] cursor-pointer">
+                    إضافة تعليق
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="">0</div>
+          <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
+            <p className="text-slate-400 font-bold text-lg">
+              لا توجد منشورات متاحة حالياً.
+            </p>
+          </div>
         )}
       </div>
     </div>

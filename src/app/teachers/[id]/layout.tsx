@@ -7,8 +7,14 @@ import TeacherProfile from "./page";
 import ButtonFollow from "@/app/components/button/ButtonFollow";
 import { DOMAIN } from "@/utils/constants";
 import { useSocket } from "@/context/WsSocket";
+import { OverviewSkeleton } from "@/app/components/Teacher/tabs/OverviewSkeleton";
+import Image from "next/image";
 
-export default function RootLayout() {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const param = useParams() as { id: string };
   const { socket } = useSocket();
   const [data, setData] = useState({});
@@ -35,8 +41,7 @@ export default function RootLayout() {
     );
   }, [param?.id]);
 
-  if (!data?.id)
-    return <div className="flex items-center justify-center">loading...</div>;
+  if (!data?.id) return <OverviewSkeleton />;
 
   return (
     <main className="bg-[#F8FAFC] min-h-screen pb-20" dir="rtl">
@@ -48,12 +53,15 @@ export default function RootLayout() {
             {/* إطار الصورة */}
             <div className="w-full h-full rounded-full p-1 border-2 border-[#2E637C]/10 group-hover:border-[#2E637C]/30 transition-all duration-500">
               <div className="relative w-full h-full rounded-full overflow-hidden shadow-inner">
-                {/* <Image
-                  src={data.imageUrl || "/default-avatar.png"}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  alt={data.name}
-                /> */}
+                {data?.imageUrl && (
+                  <Image
+                    src={data.imageUrl}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt={data.name}
+                    unoptimized
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -90,7 +98,7 @@ export default function RootLayout() {
           </div>
         </div>
       </div>
-      <TeacherProfile data={data} />
+      {children}
     </main>
   );
 }

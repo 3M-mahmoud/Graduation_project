@@ -58,7 +58,7 @@ const ReviewsTab = ({ teacherId, setCacheReviews, cacheReviews }): any => {
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row gap-6 mb-10">
             <div
-              data-aos="fade-left"
+              data-aos="fade-up"
               className="bg-white rounded-2xl py-8 px-20 border border-slate-100 shadow-sm flex flex-col items-center justify-center"
             >
               <h2 className="text-6xl font-bold text-[#4B5563] mb-2 tracking-tighter">
@@ -74,7 +74,7 @@ const ReviewsTab = ({ teacherId, setCacheReviews, cacheReviews }): any => {
               </p>
             </div>
             <div
-              data-aos="fade-right"
+              data-aos="fade-up"
               className="p-8 bg-white rounded-2xl shadow-sm flex flex-col lg:flex-row"
             >
               <div className="w-full flex flex-col justify-center ml-4">

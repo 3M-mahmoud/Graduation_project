@@ -10,9 +10,10 @@ import {
   ArrowBigLeft,
 } from "lucide-react";
 import { formatDate } from "../../helper";
+import { OverviewSkeleton } from "./OverviewSkeleton";
 
 const OverviewTab = ({ data }: any) => {
-  if (!data?.id) return <div>loading...</div>;
+  if (!data?.id) return <OverviewSkeleton />;
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       <div
@@ -27,16 +28,12 @@ const OverviewTab = ({ data }: any) => {
         </div>
         <p className="text-slate-600 leading-relaxed font-medium">
           {data.teacher?.bio}
-          {/* مدرس رياضيات متخصص مع خبرة واسعة في تدريس جميع المراحل التعليمية، حاصل
-          على دكتوراه في الرياضيات من جامعة القاهرة. لدي شغف كبير بتبسيط
-          المفاهيم الرياضية المعقدة للطلاب. أؤمن بأن كل طالب قادر على التفوق في
-          الرياضيات مع الطريقة الصحيحة والتوجيه المناسب. */}
         </p>
       </div>
 
       <div className="max-w-6xl flex flex-col md:flex-row gap-6">
         <div
-          data-aos="fade-left"
+          data-aos="fade-up"
           className="flex flex-col gap-6 w-full md:w-2/5"
         >
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">
@@ -49,12 +46,6 @@ const OverviewTab = ({ data }: any) => {
             <p className="font-semibold text-[16px]">
               {data.teacher.educationalQualification}
             </p>
-            {/* <p className="font-semibold text-[16px]">
-              بكالوريوس التربية والعلوم
-            </p> */}
-            {/* <p className="text-[#424752] text-sm">
-              قسم الرياضيات - جامعة القاهرة 2008
-            </p> */}
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">
@@ -69,22 +60,6 @@ const OverviewTab = ({ data }: any) => {
               <span className="px-3 py-1 bg-white text-[#003F87] rounded-md text-[16px] font-semibold border border-[#003F870D]">
                 {data.teacher.educationalStage}
               </span>
-              {/* {[
-                "الجبر",
-                "هندسة فراغية",
-                "حساب المثلثات",
-                "التفاضل والتكامل",
-                "الإحصاء",
-                "استاتيكا",
-                "ديناميكا",
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="px-3 py-1 bg-white text-[#003F87] rounded-md text-[16px] font-semibold border border-[#003F870D]"
-                >
-                  {item}
-                </span>
-              ))} */}
             </div>
 
             <h4 className="text-sm font-black text-slate-800 mb-3 flex items-center gap-2">
@@ -103,7 +78,7 @@ const OverviewTab = ({ data }: any) => {
           </div>
         </div>
         <div
-          data-aos="fade-right"
+          data-aos="fade-up"
           className="flex flex-col gap-3 w-full md:w-3/5"
         >
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-50 text-[#191C1D]">

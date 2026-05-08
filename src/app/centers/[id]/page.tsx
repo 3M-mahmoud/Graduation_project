@@ -10,14 +10,19 @@ import ScheduleTab from "@/app/components/profile/ScheduleTab";
 import LocationTab from "@/app/components/profile/LocationTap";
 import { DOMAIN } from "@/utils/constants";
 import { useParams } from "next/navigation";
+import CenterProfileSkeleton from "@/app/components/profile/CenterProfileSkeleton";
 
 export default function CenterProfilePage() {
   const param = useParams() as { id: string };
   const [centerData, setCenterData] = useState({});
-  const [cash, setCash] = useState({
-    posts: [],
+  const [cachePosts, setCachePosts] = useState({
+    meta: {},
+    data: [],
+  });
+  const [cache, setCache] = useState({
+    students: [],
     reviews: [],
-    courses: [],
+    weeks: [],
   });
   const [activeTab, setActiveTab] = useState("الرئيسية");
 
@@ -26,27 +31,44 @@ export default function CenterProfilePage() {
       case "الرئيسية":
         return (
           <ProfileFeed
-            centerId={centerData?.id}
-            setCash={setCash}
-            cashPosts={cash.posts || []}
+            userName={centerData?.name}
+            userImage={centerData?.imageUrl}
+            role="center"
+            userId={centerData?.id}
+            setCachePosts={setCachePosts}
+            cachePosts={cachePosts || []}
           />
         );
       case "المدرسين":
-        return <TeachersTab />;
+        return (
+          <TeachersTab
+            centerId={centerData?.center?.id}
+            cache={cache?.students || []}
+            setsetCache={setCache}
+          />
+        );
       case "جدول الحصص":
         return (
           <ScheduleTab
-            centerId={centerData?.id}
-            setCash={setCash}
-            cashCourses={cash.courses || []}
+            centerId={centerData?.center?.id}
+            setCache={setCache}
+            cashWeeks={cache.weeks || []}
           />
         );
       case "الموقع الجغرافي":
-        return <LocationTab geography={centerData?.geography || ""} />;
+        return (
+          <LocationTab
+            governorate={centerData?.center?.governorate || ""}
+            location={centerData?.center?.location || ""}
+          />
+        );
       default:
         return (
           <ProfileFeed
-            centerId={centerData?.id}
+            userName={centerData?.name}
+            userImage={centerData?.imageUrl}
+            role="center"
+            userId={centerData?.id}
             setCash={setCash}
             cashPosts={cash.posts || []}
           />
@@ -62,11 +84,15 @@ export default function CenterProfilePage() {
       });
       const json = await res.json();
       setCenterData(json.data);
+      console.log(json.data);
     };
 
     if (param) getData();
   }, [param]);
 
+  if (!centerData?.id) {
+    return <CenterProfileSkeleton />;
+  }
   return (
     <main className="bg-[#F3F4F6] min-h-screen pb-20" dir="rtl">
       <ProfileHeader data={centerData} />

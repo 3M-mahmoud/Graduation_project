@@ -1,17 +1,21 @@
 "use client";
 import { MapPin } from "lucide-react";
 
-export default function LocationTab({ geography }: { geography: string }) {
-  // const mapUrl = "https://maps.app.goo.gl/qe1AGLPuLa44V8gE9";
-
-  const address = "شارع المجزر الالي، الهرم, الجيزة، مصر";
-
+export default function LocationTab({
+  governorate,
+  location,
+}: {
+  governorate: string;
+  location: string;
+}) {
   return (
     <div className="space-y-6 animate-in fade-in duration-500 py-4" dir="rtl">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-sm">
           <MapPin size={22} className="text-[#204658]" />
-          <span className="text-[#4B5563] text-sm md:text-base">{address}</span>
+          <span className="text-[#4B5563] text-sm md:text-base">
+            {location}
+          </span>
         </div>
       </div>
 
@@ -31,12 +35,12 @@ export default function LocationTab({ geography }: { geography: string }) {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg shadow-xl border border-slate-200 pointer-events-auto">
               <a
-                href={geography}
+                href={governorate}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#2E637C] font-bold text-sm md:text-lg hover:underline transition-all"
               >
-                {geography}
+                {governorate}
               </a>
             </div>
           </div>

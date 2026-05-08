@@ -8,7 +8,7 @@ const profileTeacherSchema = z
     name: z.string().min(2, "الاسم يجب أن يكون أكثر من 5 أحرف"),
     educationalStage: z.string().min(1, "يرجى اختيار المرحلة الدراسية"),
     classRoom: z.string().min(1, "يرجى اختيار الصف الدراسي"),
-    // imageUrl: z.string().url("الصورة غير صحيحة").optional(),
+    imageUrl: z.string().url("الصورة غير صحيحة").optional(),
     email: z.string().email("البريد الإلكتروني غير صحيح"),
     studyMaterial: z.string().min(1, "يرجى اختيار المادة"),
     qualification: z
