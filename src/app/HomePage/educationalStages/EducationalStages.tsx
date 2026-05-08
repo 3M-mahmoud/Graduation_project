@@ -8,7 +8,6 @@ import eduction3 from "../../../assets/Eduction/eduction-3.png";
 import Link from "next/link";
 import SectionHeader from "@/app/components/sectionHeader/SectionHeader";
 
-
 interface EducationalStage {
   id: number;
   title: string;
@@ -16,7 +15,6 @@ interface EducationalStage {
   imageSrc: StaticImageData;
   imageAlt: string;
 }
-
 
 const educationalStages: EducationalStage[] = [
   {
@@ -43,11 +41,12 @@ const educationalStages: EducationalStage[] = [
   },
 ];
 
-
 const StageCard: React.FC<{ stage: EducationalStage }> = ({ stage }) => {
   return (
-    <div data-aos="zoom-in-up" className="bg-white rounded-3xl overflow-hidden shadow-lg transition-transform hover:scale-105">
-   
+    <div
+      data-aos="zoom-in-up"
+      className="bg-white rounded-3xl overflow-hidden shadow-lg transition-transform hover:scale-105"
+    >
       <div className="relative aspect-video w-full">
         <Image
           src={stage.imageSrc}
@@ -55,6 +54,7 @@ const StageCard: React.FC<{ stage: EducationalStage }> = ({ stage }) => {
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          unoptimized
         />
       </div>
 
@@ -66,9 +66,7 @@ const StageCard: React.FC<{ stage: EducationalStage }> = ({ stage }) => {
           {stage.description}
         </p>
 
-       
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-2">
-         
           <button className=" rounded-xl bg-[#3770AC] text-white font-medium text-sm w-full sm:w-auto hover:bg-[#306298] transition-colors">
             {/* Custom SVG combined from Monitor and User Cog for detailed representation */}
             <Link
@@ -103,13 +101,11 @@ const EducationalStagesSection: React.FC = () => {
   return (
     <section className="py-20 md:py-28 bg-slate-50" dir="rtl">
       <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-8">
-     
         <SectionHeader
           title="المراحل التعليمية"
           description="اختر المرحلة التعليمية المناسبة واكتشف السناتر والمدرسين المختصين"
         />
 
-    
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 xl:gap-12">
           {educationalStages.map((stage) => (
             <StageCard key={stage.id} stage={stage} />

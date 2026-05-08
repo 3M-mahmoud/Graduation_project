@@ -18,6 +18,7 @@ export default function PureWSChat() {
   const [AllMessages, setAllMessages] = useState<Record<string, MessageType[]>>(
     {},
   );
+
   useEffect(() => {
     if (socket?.readyState === WebSocket.OPEN && conversations?.length > 0) {
       socket.send(
@@ -42,6 +43,7 @@ export default function PureWSChat() {
         case "AllPresence": {
           const targetId = data.payload.receiverId;
           const isOnline = data.payload.isOnline;
+          console.log("AllPresence", data);
 
           if (data.payload.senderId === senderId) {
             setAllOnline((prevSet) => {
@@ -60,6 +62,7 @@ export default function PureWSChat() {
           const targetId = data.payload.senderId;
           const isOnline = data.payload.isOnline;
 
+          console.log("presence", data);
           if (data.payload.receiverId === senderId) {
             setAllOnline((prevSet) => {
               const newSet = new Set(prevSet);

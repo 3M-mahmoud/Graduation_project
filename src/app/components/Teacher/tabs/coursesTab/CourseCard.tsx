@@ -1,4 +1,4 @@
-import { formatDate, getCurrentTime } from "@/app/components/helper";
+import { formatDateTime } from "@/app/components/helper";
 import Cookies from "js-cookie";
 import { Calendar, Clock, Users, BookOpen, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -59,7 +59,7 @@ const CourseCard = ({
         </div>
         <div className="flex items-center gap-2 text-[#424752] text-sm">
           <Clock size={16} />
-          <span className="font-bold">{getCurrentTime(time)}</span>
+          <span className="font-bold">{formatDateTime(time)}</span>
         </div>
       </div>
 

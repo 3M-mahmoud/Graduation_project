@@ -15,6 +15,7 @@ const ButtonSendChat = ({ id }: { id: string }) => {
     senderId,
     socket,
   }: any = useSocket();
+
   const createConversation = async () => {
     if (id === senderId) {
       setDataHeader(null);

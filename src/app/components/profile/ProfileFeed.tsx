@@ -4,9 +4,19 @@ import { MessageCircle, Clock, Heart } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ButtonLikes from "../button/ButtonLike";
-export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
+import { formatDate } from "../helper";
+export const ProfileFeed = ({
+  userName,
+  userImage,
+  role,
+  userId,
+  cachePosts,
+  setCachePosts,
+}: any) => {
   const [page, setPage] = useState(1);
 
+  console.log(cachePosts);
+  // console.log(json);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (cachePosts?.length > 0)
@@ -16,9 +26,9 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
       }));
 
     const getData = async () => {
-      if (!teacherId) return;
+      if (!userId) return;
       const res = await fetch(
-        `${DOMAIN}posts?userId=${teacherId}&role=teacher&page=${page}`,
+        `${DOMAIN}posts?userId=${userId}&role=${role}&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -26,6 +36,7 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
         },
       );
       const json = await res.json();
+      console.log(json);
 
       setCachePosts({
         meta: json?.data?.meta,
@@ -33,7 +44,7 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
       });
     };
     getData();
-  }, [teacherId]);
+  }, [userId]);
 
   return (
     <>
@@ -48,18 +59,23 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
               <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-full bg-slate-100 border border-slate-50 overflow-hidden">
-                    <Image
-                      src={post.imageUrl || ""}
-                      alt="Author"
-                      className="w-full h-full object-cover"
-                    />
+                    {userImage && (
+                      <Image
+                        src={userImage}
+                        alt="Author"
+                        width={44}
+                        height={44}
+                        className="w-11 h-11 object-cover"
+                        unoptimized
+                      />
+                    )}
                   </div>
                   <div>
                     <h4 className="font-bold text-slate-800 text-sm">
-                      {post.author}
+                      {userName}
                     </h4>
                     <div className="flex items-center gap-1 text-[10px] text-slate-400 mt-0.5">
-                      <Clock size={12} /> {post.time}
+                      <Clock size={12} /> {formatDate(post.createdAt)}
                     </div>
                   </div>
                 </div>
@@ -67,23 +83,30 @@ export const ProfileFeed = ({ teacherId, cachePosts, setCachePosts }: any) => {
 
               <div className="px-4 pb-4">
                 <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
-                  {post.content}
+                  {post.title}
                 </p>
               </div>
 
-              {post.image && (
-                <div className="w-full bg-slate-50 border-y border-slate-50">
+              {post?.imageUrl && (
+                <div className="max-w-5xl mx-auto bg-slate-50 border-y border-slate-50">
                   <Image
-                    src={post.image}
+                    src={post?.imageUrl}
                     alt="Post Attachment"
-                    className="w-full max-h-[500px] object-contain mx-auto"
+                    width={400}
+                    height={200}
+                    className="w-full object-contain mx-auto"
+                    unoptimized
                   />
                 </div>
               )}
 
               <div className="px-4 py-3 border-t flex justify-between">
                 <div className=" flex items-center gap-6">
-                  <ButtonLikes likesCount={post.likeCounts} id={post.id} />
+                  <ButtonLikes
+                    isLiked={post.isLiked}
+                    likesCount={post.likeCounts}
+                    id={post.id}
+                  />
 
                   <button className="flex items-center gap-2 text-slate-500 text-sm font-bold hover:text-orange-500 transition cursor-pointer">
                     <MessageCircle size={18} />

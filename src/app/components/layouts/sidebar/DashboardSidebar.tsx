@@ -60,6 +60,7 @@ const DashboardSidebar = () => {
               alt={"username"}
               fill
               className="object-contain"
+              unoptimized
             />
           )}
         </div>

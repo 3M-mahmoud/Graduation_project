@@ -10,7 +10,7 @@ type Props = {
     name: string;
     governorate: string;
     star: string;
-    image: string;
+    imageUrl: string;
     studySystem: string[];
     educationalStage: string[];
     systems: string[];
@@ -18,31 +18,36 @@ type Props = {
   };
 };
 export default function CenterCard({ center }: Props) {
+  console.log(center?.imageUrl);
+
   return (
     <div
       data-aos="zoom-out"
       className="bg-white rounded-[2rem] shadow-md border border-slate-50 overflow-hidden flex flex-col h-full transition-transform hover:scale-105 hover:shadow-xl"
     >
       <div className="relative h-48 w-full">
-        {/* <Image
-          src={center?.image || ""}
-          alt={center?.name}
-          fill
-          className="object-center"
-        /> */}
+        {center?.imageUrl && (
+          <Image
+            src={center?.imageUrl}
+            alt={center?.name}
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        )}
       </div>
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-bold text-[#081A28]">{center?.name}</h3>
           <div className="flex items-center gap-1 text-orange-500 font-bold">
             <Star size={16} fill="currentColor" />
-            <span className="text-black">{center?.star}</span>
+            <span className="text-black">{center?.center?.star}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-1 text-slate-400 text-sm mb-4">
           <MapPin size={14} />
-          <span>{center?.governorate}</span>
+          <span>{center?.center?.location}</span>
         </div>
 
         <div className="space-y-4 mb-6">
@@ -51,7 +56,7 @@ export default function CenterCard({ center }: Props) {
               <GraduationCap size={16} /> المراحل التعليمية:
             </p>
             <div className="flex flex-wrap gap-2">
-              {center?.educationalStage?.map((s: string) => (
+              {center?.center?.educationalStage?.map((s: string) => (
                 <Badge key={s}>{s}</Badge>
               ))}
             </div>
@@ -61,7 +66,7 @@ export default function CenterCard({ center }: Props) {
               <Globe size={16} /> النظام الدراسي
             </p>
             <div className="flex flex-wrap gap-2">
-              {center?.studySystem?.map((s: string) => (
+              {center?.center?.studySystem?.map((s: string) => (
                 <Badge key={s}>{s}</Badge>
               ))}
             </div>
