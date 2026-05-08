@@ -32,7 +32,7 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
     if (!dataHeader?.id || !senderId) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/api/v1/messages?senderId=${senderId}&receiverId=${receiverId}`,
+        `https://centermasrbackendgraduationproject-production-92c6.up.railway.app/api/v1/messages?senderId=${senderId}&receiverId=${receiverId}`,
       );
       const data = await res.json();
       setAllMessages((prev: any) => ({
