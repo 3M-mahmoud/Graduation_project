@@ -21,9 +21,10 @@ import Cookies from "js-cookie";
 interface UserMenuProps {
   userName: string;
   userImage?: string | null;
+  closeMenu: () => void;
 }
 
-export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
+export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
@@ -214,6 +215,9 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
           {/* 📌 Links */}
           <Link
             href="/profile"
+            onClick={() => {
+              closeMenu();
+            }}
             className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
           >
             <span className="text-base font-bold text-slate-700">
@@ -223,6 +227,9 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
 
           <Link
             href={`/dashboard/${role}/settings`}
+               onClick={() => {
+              closeMenu();
+            }}
             className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
           >
             <span className="text-base font-bold text-slate-700">
@@ -232,6 +239,9 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
 
           <Link
             href={getDashboardPath()}
+               onClick={() => {
+              closeMenu();
+            }}
             className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
           >
             <span className="text-base font-bold text-slate-700">
