@@ -25,9 +25,11 @@ interface UserMenuProps {
 
 export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
   const role = Cookies.get("role") || "student";
   const [userRole, setUserRole] = useState<string>("student");
+  const shouldShowDropdown = isMobile || showDropdown;
   const handleLogout = async () => {
     try {
       const token = Cookies.get("token");
@@ -64,11 +66,20 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
   };
   useEffect(() => {
     setUserRole(role);
+    const check = () => setIsMobile(window.innerWidth < 768);
+
+    check(); // أول ما الصفحة تفتح
+    window.addEventListener("resize", check);
+
+    return () => window.removeEventListener("resize", check);
   }, []);
   return (
     <div className="flex items-center gap-3 md:gap-6">
       <div className="flex items-center gap-2 md:gap-4 border-l border-slate-200 pl-3 md:pl-6">
-        <Link href="/chat" className="relative p-2.5 bg-orange-50 rounded-full text-orange-500 cursor-pointer hover:bg-orange-100 transition-colors">
+        <Link
+          href="/chat"
+          className="relative p-2.5 bg-orange-50 rounded-full text-orange-500 cursor-pointer hover:bg-orange-100 transition-colors"
+        >
           <MessageSquare size={22} />
           <span className="absolute top-1 right-1 w-3 h-3 bg-orange-500 border-2 border-white rounded-full"></span>
         </Link>
@@ -78,106 +89,164 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
           <span className="absolute top-1 right-1 w-3 h-3 bg-orange-500 border-2 border-white rounded-full"></span>
         </div>
       </div>
-
-      <div
-        className="relative"
-        onMouseEnter={() => setShowDropdown(true)}
-        onMouseLeave={() => setShowDropdown(false)}
-      >
-        <div className="flex items-center gap-2 md:gap-3 cursor-pointer group py-2">
-          <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-slate-100 shadow-sm">
-            <Image
-              src={avatarImage}
-              alt={userName}
-              fill
-              className="object-contain"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[#64748B] font-bold text-lg hidden md:block">
-              {userName}
-            </span>
-            <ChevronDown
-              size={18}
-              className={`text-slate-400 transition-transform ${
-                showDropdown ? "rotate-180" : ""
-              }`}
-            />
-          </div>
-        </div>
-
-        {showDropdown && (
-          <div className="absolute md:left-0 top-full">
-            <div className="mt-0 md:mt-3 w-72 bg-white rounded-2xl shadow-2xl z-50 overflow-hidden p-3 md:p-6 animate-in fade-in zoom-in duration-200">
-              <div className="hidden md:flex flex-col items-center mb-6">
-                <div className="relative w-20 h-20 rounded-full overflow-hidden mb-3 border-4 border-slate-50">
-                  <Image
-                    src={avatarImage}
-                    alt="user"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <h3 className="text-xl font-black text-slate-800">
-                  {userName}
-                </h3>
-                <p className="text-red-500 font-bold text-lg mt-1">الرياضيات</p>
-              </div>
-
-              <div className="md:space-y-2 md:border-t border-slate-100 md:pt-4">
-                <Link
-                  href="/profile"
-                  className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
-                >
-                  <span className="text-xl font-bold text-slate-700">
-                    عرض الملف الشخصى
-                  </span>
-                  <User
-                    className="text-slate-400 group-hover:text-blue-600"
-                    size={24}
-                  />
-                </Link>
-
-                <Link
-                  href={`/dashboard/${role}/settings`}
-                  className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
-                >
-                  <span className="text-xl font-bold text-slate-700">
-                    اعدادات الحساب
-                  </span>
-                  <Settings
-                    className="text-slate-400 group-hover:text-blue-600"
-                    size={24}
-                  />
-                </Link>
-
-                <Link
-                  href={getDashboardPath()}
-                  className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
-                >
-                  <span className="text-xl font-bold text-slate-700">
-                    لوحة التحكم
-                  </span>
-                  <LayoutDashboard
-                    className="text-slate-400 group-hover:text-blue-600"
-                    size={24}
-                  />
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center justify-between w-full p-3 hover:bg-red-50 rounded-xl transition-colors group border-t border-slate-50 mt-2 pt-4 cursor-pointer"
-                >
-                  <span className="text-xl font-black text-red-500">
-                    تسجيل الخروج
-                  </span>
-                  <LogOut className="text-red-500" size={24} />
-                </button>
-              </div>
+      {!isMobile && (
+        <div
+          className="relative"
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
+          <div className="flex items-center gap-2 md:gap-3 cursor-pointer group py-2">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-slate-100 shadow-sm">
+              <Image
+                src={avatarImage}
+                alt={userName}
+                fill
+                className="object-contain"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#64748B] font-bold text-lg hidden md:block">
+                {userName}
+              </span>
+              <ChevronDown
+                size={18}
+                className={`text-slate-400 transition-transform ${
+                  shouldShowDropdown ? "rotate-180" : ""
+                }`}
+              />
             </div>
           </div>
-        )}
-      </div>
+
+          {!isMobile && showDropdown && (
+            <div className="absolute left-0 top-full">
+              <div className="mt-0 md:mt-3 w-72 bg-white rounded-2xl shadow-2xl z-50 overflow-hidden p-3 md:p-6 animate-in fade-in zoom-in duration-200">
+                <div className="hidden md:flex flex-col items-center mb-6">
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden mb-3 border-4 border-slate-50">
+                    <Image
+                      src={avatarImage}
+                      alt="user"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <h3 className="text-xl font-black text-slate-800">
+                    {userName}
+                  </h3>
+                  <p className="text-red-500 font-bold text-lg mt-1">
+                    الرياضيات
+                  </p>
+                </div>
+
+                <div className="md:space-y-2 md:border-t border-slate-100 md:pt-4">
+                  <Link
+                    href="/profile"
+                    className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
+                  >
+                    <span className="text-xl font-bold text-slate-700">
+                      عرض الملف الشخصى
+                    </span>
+                    <User
+                      className="text-slate-400 group-hover:text-blue-600"
+                      size={24}
+                    />
+                  </Link>
+
+                  <Link
+                    href={`/dashboard/${role}/settings`}
+                    className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
+                  >
+                    <span className="text-xl font-bold text-slate-700">
+                      اعدادات الحساب
+                    </span>
+                    <Settings
+                      className="text-slate-400 group-hover:text-blue-600"
+                      size={24}
+                    />
+                  </Link>
+
+                  <Link
+                    href={getDashboardPath()}
+                    className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group"
+                  >
+                    <span className="text-xl font-bold text-slate-700">
+                      لوحة التحكم
+                    </span>
+                    <LayoutDashboard
+                      className="text-slate-400 group-hover:text-blue-600"
+                      size={24}
+                    />
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-between w-full p-3 hover:bg-red-50 rounded-xl transition-colors group border-t border-slate-50 mt-2 pt-4 cursor-pointer"
+                  >
+                    <span className="text-xl font-black text-red-500">
+                      تسجيل الخروج
+                    </span>
+                    <LogOut className="text-red-500" size={24} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+      {isMobile && (
+        <div className="flex flex-col gap-3 mt-3 w-full pt-4">
+          {/* 👤 User Info */}
+          <div className="flex items-center gap-3 px-2">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden border">
+              <Image
+                src={userImage || avatarImage}
+                alt={userName}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <span className="font-bold text-slate-800">{userName}</span>
+              <span className="text-sm text-red-500">الرياضيات</span>
+            </div>
+          </div>
+
+          {/* 📌 Links */}
+          <Link
+            href="/profile"
+            className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
+          >
+            <span className="text-base font-bold text-slate-700">
+              عرض الملف الشخصى
+            </span>
+          </Link>
+
+          <Link
+            href={`/dashboard/${role}/settings`}
+            className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
+          >
+            <span className="text-base font-bold text-slate-700">
+              اعدادات الحساب
+            </span>
+          </Link>
+
+          <Link
+            href={getDashboardPath()}
+            className="flex items-center justify-between p-1 hover:bg-slate-50 rounded-xl transition-colors group"
+          >
+            <span className="text-base font-bold text-slate-700">
+              لوحة التحكم
+            </span>
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="text-red-500 font-bold text-right cursor-pointer"
+          >
+            تسجيل الخروج
+          </button>
+        </div>
+      )}
     </div>
   );
 };
