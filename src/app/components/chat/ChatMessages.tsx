@@ -4,6 +4,7 @@ import { useSocket } from "@/context/WsSocket"; // تغيير السياق هن�
 import { Send, X, User } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { formatDateTime } from "../helper";
 
 const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -20,19 +21,11 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
 
   const messages = AllMessages[dataHeader?.id] || [];
 
-  const getCurrentTime = () => {
-    return new Date().toLocaleTimeString("ar-EG", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
   const openChat = async () => {
     if (!dataHeader?.id || !senderId) return;
     try {
       const res = await fetch(
-        `https://centermasrbackendgraduationproject-production-92c6.up.railway.app/api/v1/messages?senderId=${senderId}&receiverId=${receiverId}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}messages?senderId=${senderId}&receiverId=${receiverId}`,
       );
       const data = await res.json();
       setAllMessages((prev: any) => ({
@@ -106,9 +99,12 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
             <div className="size-11 rounded-full overflow-hidden border border-gray-200 bg-gradient-to-tr from-gray-50 to-gray-200 flex items-center justify-center">
               {dataHeader?.imageUrl ? (
                 <Image
-                  src={dataHeader.imageUrl || ""}
-                  alt=""
+                  src={dataHeader?.imageUrl || ""}
+                  alt={dataHeader?.name}
+                  width={80}
+                  height={80}
                   className="object-cover size-full"
+                  unoptimized
                 />
               ) : (
                 <User className="text-gray-400" size={24} />
@@ -165,7 +161,7 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
                 <span
                   className={`text-[9px] mt-1 block opacity-50 ${isMe ? "text-left" : "text-right"}`}
                 >
-                  {msg.time || getCurrentTime()}
+                  {formatDateTime(msg.createdAt)}
                 </span>
               </div>
             </div>

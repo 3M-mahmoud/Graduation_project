@@ -24,6 +24,7 @@ export default function CentersHeader() {
             alt="Centers"
             fill
             className="object-contain"
+            unoptimized
           />
         </div>
       </div>

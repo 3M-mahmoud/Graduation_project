@@ -62,6 +62,7 @@ export const Post = ({ centerId }: any) => {
                       alt={post.author}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                 </div>
@@ -80,13 +81,18 @@ export const Post = ({ centerId }: any) => {
                       width={800}
                       height={400}
                       className="w-full object-cover"
+                      unoptimized
                     />
                   </div>
                 )}
 
                 {/* التفاعلات - تصميم مطابق للصورة */}
                 <div className="flex items-center gap-6 pt-4 border-t border-slate-50 mt-2">
-                  <ButtonLikes likesCount={post.likesCount} id={post.id} />
+                  <ButtonLikes
+                    isLiked={post.isLiked}
+                    likesCount={post.likesCount}
+                    id={post.id}
+                  />
                   <div className="flex items-center gap-2 text-slate-400 hover:text-blue-500 cursor-pointer transition-colors">
                     <span className="text-[11px] font-black">
                       {post.commentsCount || 0} تعليق

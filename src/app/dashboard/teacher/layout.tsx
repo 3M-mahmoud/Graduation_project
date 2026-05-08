@@ -5,6 +5,7 @@ import {
 } from "@/app/components/dashboard/teacher";
 import { useState } from "react";
 import Script from "next/script"; // 👈 مهم
+import DashBoardTeacherContext from "@/context/DashboardTeacher";
 
 const LayoutDashboardTeacher = ({
   children,
@@ -26,19 +27,21 @@ const LayoutDashboardTeacher = ({
         dir="ltr"
         className="mx-auto w-full flex justify-between items-start"
       >
-        <div
-          dir="rtl"
-          className="lg:w-[calc(100%-256px)] w-full bg-[#F5F7FA] lg:py-10 p-5 min-h-screen"
-        >
-          <HeroSectionDashboardTeacher setOpenSidebar={setOpenSidebar} />
-          {children}
-        </div>
+        <DashBoardTeacherContext>
+          <div
+            dir="rtl"
+            className="lg:w-[calc(100%-256px)] w-full bg-[#F5F7FA] lg:py-10 p-5 min-h-screen"
+          >
+            <HeroSectionDashboardTeacher setOpenSidebar={setOpenSidebar} />
+            {children}
+          </div>
 
-        {model}
-        <SideBarDashboardTeacher
-          openSidebar={openSidebar}
-          setOpenSidebar={setOpenSidebar}
-        />
+          {model}
+          <SideBarDashboardTeacher
+            openSidebar={openSidebar}
+            setOpenSidebar={setOpenSidebar}
+          />
+        </DashBoardTeacherContext>
       </main>
     </>
   );

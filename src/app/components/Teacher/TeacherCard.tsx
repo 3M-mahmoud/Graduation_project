@@ -9,6 +9,8 @@ type Props = {
 };
 
 export default function TeacherCard({ teacher }: any) {
+  console.log(teacher?.imageUrl);
+
   return (
     <div
       data-aos="zoom-in"
@@ -16,12 +18,15 @@ export default function TeacherCard({ teacher }: any) {
     >
       <div className="flex flex-row items-center gap-3 mb-4">
         <div className="relative w-20 h-20 rounded-full overflow-hidden mb-2 border-2 border-slate-100">
-          <Image
-            src={teacher?.imageUrl || ""}
-            alt={teacher?.name}
-            fill
-            className="object-cover"
-          />
+          {teacher?.imageUrl && (
+            <Image
+              src={teacher?.imageUrl || ""}
+              alt={teacher?.name}
+              fill
+              className="object-cover w-20 h-20"
+              unoptimized
+            />
+          )}
         </div>
         <div>
           <h3 className="text-lg font-bold text-slate-800">{teacher?.name}</h3>

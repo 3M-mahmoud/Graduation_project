@@ -29,7 +29,10 @@ export default function TeacherProfile() {
       case "المنشورات":
         return (
           <ProfileFeed
-            teacherId={data?.id}
+            userName={data?.name}
+            userImage={data?.imageUrl}
+            role="teacher"
+            userId={data?.id}
             setCachePosts={setCachePosts}
             cachePosts={cachePosts || []}
           />

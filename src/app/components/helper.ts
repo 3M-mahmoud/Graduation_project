@@ -9,8 +9,8 @@ export const formatDate = (date: string) => {
   return dateObject.toLocaleString("ar-EG", options);
 };
 
-export const getCurrentTime = () => {
-  return new Date().toLocaleTimeString("ar-EG", {
+export const formatDateTime = (time: string) => {
+  return new Date(time).toLocaleString("ar-EG", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,

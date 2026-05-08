@@ -168,11 +168,7 @@ export default function TeachersPage() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredTeachers?.map((teacher) => (
-                <TeacherCard
-                  key={teacher?.id}
-                  teacher={teacher}
-                  // user={teacher}
-                />
+                <TeacherCard key={teacher?.id} teacher={teacher} />
               ))}
             </div>
             {filteredTeachers.length === 0 && (
