@@ -71,13 +71,13 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!senderId) return;
 
-    // const ws = new WebSocket(
-    //   `wss://centermasrbackendgraduationproject-production-92c6.up.railway.app/api/v1/ws?userId=${
-    //     senderId || ""
-    //   }`,
-    // );
-    const ws = new WebSocket(`ws://localhost:3001?userId=${senderId}`);
-    setSocket(ws);
+    const ws = new WebSocket(
+      `wss://centermasrbackendgraduationproject-production-92c6.up.railway.app/api/v1/ws?userId=${
+        senderId || ""
+      }`,
+    );
+    // const ws = new WebSocket(`ws://localhost:3001?userId=${senderId}`);
+    // setSocket(ws);
 
     ws.onopen = () => {
       console.log("✅ Socket Connected");

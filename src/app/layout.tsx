@@ -8,6 +8,7 @@ import AOSProvider from "./AOSProvider";
 import WsSocket from "@/context/WsSocket";
 import TopLoader from "./components/ui/TopLoader";
 import { Suspense } from "react";
+import { Toaster } from "react-hot-toast";
 
 const cairo = Cairo({ subsets: ["arabic"] });
 
