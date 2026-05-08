@@ -68,7 +68,7 @@ export default function CenterCard({ center }: Props) {
           </div>
         </div>
 
-        <div className="mt-auto flex gap-3">
+        <div className="mt-auto flex flex-col md:flex-row gap-3">
           <button className="flex-1 py-2 bg-slate-800 text-white rounded-lg text-sm font-bold hover:bg-slate-700">
             <Link
               className="flex items-center justify-center"

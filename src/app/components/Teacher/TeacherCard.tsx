@@ -38,11 +38,11 @@ export default function TeacherCard({ teacher }: any) {
       <div className="space-y-3 mb-6">
         <div className="flex items-center gap-2 text-slate-500 text-sm">
           <Clock size={16} />
-          <span>{teacher?.teacher?.experienceYear}</span>
+          <span>خبرة {teacher?.teacher?.experienceYear} سنة</span>
         </div>
         <div className="flex items-start gap-2 text-slate-500 text-sm leading-relaxed">
           <Pencil size={16} className="mt-1 shrink-0" />
-          <span className="text-right">{teacher?.teacher?.bio}</span>
+          <span className="text-right overflow-hidden text-ellipsis line-clamp-2">{teacher?.teacher?.bio}</span>
         </div>
 
         <div>
@@ -67,7 +67,7 @@ export default function TeacherCard({ teacher }: any) {
         </div>
       </div>
 
-      <div className="mt-auto flex gap-3">
+      <div className="mt-auto flex flex-col md:flex-row gap-3">
         <button className="flex-1 py-2 bg-[#204658] text-white rounded-lg text-sm font-bold hover:bg-slate-700">
           <Link
             className="flex items-center justify-center"

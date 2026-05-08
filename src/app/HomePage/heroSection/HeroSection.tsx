@@ -19,7 +19,7 @@ const HeroSection: React.FC = () => {
         </p>
       </div>
 
-      <div data-aos="fade-right" className="w-full max-w-5xl relative">
+      <div data-aos="zoom-in" className="w-full max-w-5xl relative">
         <div className="relative w-full aspect-[16/8]">
           <Image
             src={HeroSectionImage}

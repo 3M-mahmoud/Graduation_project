@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 
 const SectionHeader = ({ title }: { title: string }) => (
   <div className="bg-white rounded-2xl shadow-sm p-5 mb-8 flex items-center justify-between border border-slate-100">
-    <h2 className="text-sm sm:xl md:text-2xl font-bold text-slate-800">
+    <h2 className="text-sm md:text-2xl font-normal md:font-bold text-slate-800">
       {title}
     </h2>
-    <button className="flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors font-medium">
+    <button className="flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors font-normal md:font-medium text-sm md:text-lg">
       <Link className="flex items-center justify-center gap-2" href="/">
         <span>عرض الكل</span>
         <ArrowLeft size={18} />

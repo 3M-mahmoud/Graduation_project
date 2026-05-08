@@ -34,7 +34,7 @@ export const ProfileHeader = ({ data }: any) => {
           </div>
 
           <div
-            data-aos="fade-up"
+            data-aos="zoom-in"
             className="flex-1 text-center md:text-right pb-2"
           >
             <div className="flex flex-col md:flex-row items-center gap-2 mb-1">
@@ -48,7 +48,7 @@ export const ProfileHeader = ({ data }: any) => {
             </p>
           </div>
 
-          <div data-aos="fade-right" className="flex gap-2 pb-2">
+          <div data-aos="zoom-in" className="flex gap-2 pb-2">
             {/* <button className="bg-[#2E637C] hover:bg-[#1c5570] text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-200 flex items-center gap-2 cursor-pointer"> */}
             <ButtonFollow
               id={dataHeader?.id}
