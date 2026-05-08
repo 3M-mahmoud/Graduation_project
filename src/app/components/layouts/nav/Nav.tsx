@@ -88,7 +88,7 @@ const Nav = () => {
         <div className="flex items-center gap-4">
           <div className="hidden lg:flex items-center gap-4">
             {isLoggedIn ? (
-              <UserMenu userName={userName} />
+              <UserMenu userName={userName} closeMenu={closeMenu} />
             ) : (
               <>
                 <Link
