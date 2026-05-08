@@ -68,10 +68,10 @@ export const UserMenu = ({ userName, userImage }: UserMenuProps) => {
   return (
     <div className="flex items-center gap-3 md:gap-6">
       <div className="flex items-center gap-2 md:gap-4 border-l border-slate-200 pl-3 md:pl-6">
-        <div className="relative p-2.5 bg-orange-50 rounded-full text-orange-500 cursor-pointer hover:bg-orange-100 transition-colors">
+        <Link href="/chat" className="relative p-2.5 bg-orange-50 rounded-full text-orange-500 cursor-pointer hover:bg-orange-100 transition-colors">
           <MessageSquare size={22} />
           <span className="absolute top-1 right-1 w-3 h-3 bg-orange-500 border-2 border-white rounded-full"></span>
-        </div>
+        </Link>
 
         <div className="relative p-2.5 bg-slate-100 rounded-full text-slate-600 cursor-pointer hover:bg-slate-200 transition-colors">
           <Bell size={22} />
