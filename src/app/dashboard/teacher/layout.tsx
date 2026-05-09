@@ -4,7 +4,7 @@ import {
   SideBarDashboardTeacher,
 } from "@/app/components/dashboard/teacher";
 import { useState } from "react";
-import Script from "next/script"; // 👈 مهم
+import Script from "next/script"; 
 import DashBoardTeacherContext from "@/context/DashboardTeacher";
 
 const LayoutDashboardTeacher = ({

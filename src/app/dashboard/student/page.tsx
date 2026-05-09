@@ -89,7 +89,6 @@ export default function DashboardPage() {
           الحصص
         </h1>
 
-        {/* التابات العلوية الثابتة */}
         <div className="flex items-center justify-center lg:justify-start gap-8 md:gap-12 border-b border-slate-200 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {[
             { id: "الحصص الحالية", icon: BookOpen },
@@ -115,7 +114,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* عرض المكون المختار بناءً على التاب */}
       <div className="mt-8">{tabComponents[activeTab]}</div>
     </div>
   );

@@ -88,7 +88,6 @@ const MyLessons = ({ handleGetLessons, cash }: any) => {
 
   return (
     <div className="animate-in fade-in duration-500">
-      {/* قسم الجدول القادم - ديناميكي */}
       <section className="mb-10">
         <h3 className="text-2xl font-normal text-black mb-6">الجدول القادم</h3>
         <div className="flex flex-row justify-between gap-2 overflow-x-auto pb-4 scrollbar-hide">
@@ -109,7 +108,6 @@ const MyLessons = ({ handleGetLessons, cash }: any) => {
         </div>
       </section>
 
-      {/* قسم الحصص المحجوزة - يتغير حسب اليوم المختار */}
       <section>
         <h3 className="text-2xl font-normal text-black mb-4">الحصص المحجوزة</h3>
 

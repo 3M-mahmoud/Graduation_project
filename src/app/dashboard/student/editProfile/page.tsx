@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Loader2 } from "lucide-react"; // 👈 علشان الزرار
+import { Loader2 } from "lucide-react";
 import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
 import { useForm } from "react-hook-form";
 import { ProfileFormValues } from "@/lib/ProfileSchema";
@@ -19,7 +19,6 @@ const EditProfilePage = () => {
         dir="rtl"
       >
         <form className="space-y-10">
-          {/* الصورة الشخصية */}
           <div className="flex flex-col md:flex-row gap-4 items-center relative">
             <div className="relative w-28 h-28 rounded-full overflow-hidden">
               <Image
@@ -38,7 +37,6 @@ const EditProfilePage = () => {
               </p>
             </div>
           </div>
-          {/* قسم المعلومات الشخصية */}
           <div className="space-y-6">
             <h2 className="text-xl font-bold text-black border-r-4 border-[#062D27] pr-3">
               المعلومات الشخصية
@@ -66,7 +64,6 @@ const EditProfilePage = () => {
             </div>
           </div>
 
-          {/* البيانات التعليمية */}
           <div className="space-y-6">
             <h2 className="text-xl font-black text-slate-800 border-r-4 border-[#062D27] pr-3">
               البيانات التعليمية
@@ -93,7 +90,6 @@ const EditProfilePage = () => {
             </div>
           </div>
 
-          {/* بيانات التواصل */}
           <div className="space-y-6">
             <h2 className="text-xl font-black text-slate-800 border-r-4 border-[#062D27] pr-3">
               بيانات التواصل

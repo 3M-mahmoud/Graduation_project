@@ -70,7 +70,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
     setUserRole(role);
     const check = () => setIsMobile(window.innerWidth < 768);
 
-    check(); // أول ما الصفحة تفتح
+    check();
     window.addEventListener("resize", check);
 
     return () => window.removeEventListener("resize", check);
@@ -201,7 +201,6 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
       )}
       {isMobile && (
         <div className="flex flex-col gap-3 mt-3 w-full pt-4">
-          {/* 👤 User Info */}
           <div className="flex items-center gap-3 px-2">
             <div className="relative w-12 h-12 rounded-full overflow-hidden border">
               <Image
@@ -219,7 +218,6 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
             </div>
           </div>
 
-          {/* 📌 Links */}
           <Link
             href="/profile"
             onClick={() => {

@@ -46,7 +46,6 @@ const TeachersPage = () => {
       }
     };
 
-    // debounce علشان نقلل عدد requests
     const delayDebounce = setTimeout(() => {
       fetchTeachers();
     }, 400);
@@ -59,7 +58,6 @@ const TeachersPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl">
-      {/* Header */}
       <div className="mb-10 text-right">
         <h1 className="text-2xl font-bold text-[#134E4A]">المدرسين</h1>
         <p className="text-[#424752] font-normal text-[16px] mt-1">
@@ -67,7 +65,6 @@ const TeachersPage = () => {
         </p>
       </div>
 
-      {/* Controls */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
         <div className="relative w-full">
           <input
@@ -112,14 +109,12 @@ const TeachersPage = () => {
         </div>
       </div>
 
-      {/* Loading */}
       {loading && (
         <div className="text-center py-10 text-slate-400">
           جاري تحميل المدرسين...
         </div>
       )}
 
-      {/* Teachers */}
       {!loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.map((teacher) => (
@@ -156,7 +151,6 @@ const TeachersPage = () => {
         </div>
       )}
 
-      {/* Empty */}
       {!loading && data.length === 0 && (
         <div className="text-center py-20 text-slate-400">لا يوجد مدرسين</div>
       )}

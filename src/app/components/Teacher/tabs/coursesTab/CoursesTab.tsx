@@ -12,7 +12,6 @@ const CoursesTab = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [activeGrade, setActiveGrade] = useState("الثالث الثانوي");
 
-  // 1. دالة جلب البيانات مع useCallback لضمان استقرار المرجع
   const getData = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
@@ -23,7 +22,6 @@ const CoursesTab = ({
       });
 
       const json = await res.json();
-      // تحديث الكاش بالبيانات القادمة (تأكد أن json.data يحتوي على مصفوفة الكورسات)
       setCacheCourse(json.data);
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -35,26 +33,20 @@ const CoursesTab = ({
   }, [getData]);
 
 const filteredCourses = useMemo(() => {
-    // التأكد من الوصول للمصفوفة (حسب الكونسول هي مصفوفة مباشرة)
     const allCourses = Array.isArray(cashCourses) 
       ? cashCourses 
       : (cashCourses?.courses || []);
 
     return allCourses.filter((course: any) => {
-      // 1. منطق البحث في العنوان (Title)
       const search = searchQuery.trim().toLowerCase();
       const matchesSearch = (course?.title || "")
         .toLowerCase()
         .includes(search);
 
-      // 2. منطق الفلتر (تعديل مسمى الحقل إلى classRoom)
       const serverGrade = (course?.classRoom || "").trim();
       const UIActiveGrade = activeGrade.trim();
 
-      /* 
-         بما أن السيرفر يرسل "الصف الثاني الثانوي" والزر "الثاني الثانوي"
-         سنستخدم .includes() لضمان المطابقة حتى مع وجود كلمة "الصف"
-      */
+     
       const matchesGrade = 
         !UIActiveGrade || 
         serverGrade.includes(UIActiveGrade) || 
@@ -63,10 +55,7 @@ const filteredCourses = useMemo(() => {
       return matchesGrade && matchesSearch;
     });
   }, [cashCourses, activeGrade, searchQuery]);
-  // سطر لاكتشاف المشكلة (Debug) - احذفه بعد التأكد
-  console.log("البيانات في الكاش:", cashCourses?.courses);
-  console.log("الصف المختار حالياً:", activeGrade);
-  console.log("عدد النتائج بعد الفلترة:", filteredCourses.length);
+
 
   const studeMaterial = ["الثالث الثانوي", "الثاني الثانوي", "الأول الثانوي"];
 
@@ -76,7 +65,6 @@ const filteredCourses = useMemo(() => {
         data-aos="fade-up"
         className="p-4 shadow-sm border border-[#E5E6EC] mb-4 flex flex-col md:flex-row items-center gap-8 rounded-lg"
       >
-        {/* أزرار الفلترة - الصف الدراسي */}
         <div className="flex flex-col md:flex-row items-center gap-2 overflow-x-auto pb-2 md:pb-0 order-2 md:order-1">
           {studeMaterial.map((grade) => (
             <button
@@ -93,7 +81,6 @@ const filteredCourses = useMemo(() => {
           ))}
         </div>
 
-        {/* حقل البحث بالاسم */}
         <div className="relative flex-1 w-full order-1 md:order-2">
           <input
             type="text"
@@ -113,7 +100,6 @@ const filteredCourses = useMemo(() => {
         </div>
       </div>
 
-      {/* عرض النتائج المفلترة */}
       {filteredCourses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
           {filteredCourses.map((course: any) => (

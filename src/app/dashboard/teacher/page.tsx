@@ -23,7 +23,6 @@ type Course = {
 const minWidthHeaders = "min-w-[100px] text-center";
 const LIMIT_PER_PAGE = 5;
 const classRooms = [
-  // "الكل",
   "الثالث الثانوي",
   "الثاني الثانوي",
   "الاول الثانوي",
@@ -52,13 +51,6 @@ const CoursesPage = () => {
     handleGetTeachers();
   }, [filter]);
 
-  // const filteredCourses = useMemo(() => {
-  //   if (filter === "الكل") return coursesData;
-
-  //   return coursesData.filter((c) =>
-  //     c.grade.toLowerCase().includes(filter.toLowerCase()),
-  //   );
-  // }, [filter]);
 
   const totalPages = Math.ceil(coursesData.length / LIMIT_PER_PAGE);
 

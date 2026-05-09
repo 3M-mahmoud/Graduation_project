@@ -118,9 +118,7 @@ const StudentsTable = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 lg:p-12 font-sans" dir="rtl">
-      {/* Main Card */}
       <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-        {/* Search and Stats Row */}
         <div className="p-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-gray-50">
           <div className="relative w-full md:w-2/3">
             <input
@@ -149,7 +147,6 @@ const StudentsTable = () => {
           </div>
         </div>
 
-        {/* Table Container */}
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
@@ -202,7 +199,6 @@ const StudentsTable = () => {
           </table>
         </div>
 
-        {/* Pagination Footer */}
         <div className="p-6 bg-white border-t border-gray-50 flex justify-between items-center">
           <div className="text-sm text-gray-400 font-medium">
             عرض <span className="text-gray-800">{coursesData?.length}</span> من

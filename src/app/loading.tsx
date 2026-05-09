@@ -1,7 +1,6 @@
 export default function Loading() {
   return (
     <div className="bg-slate-50 animate-pulse">
-      {/* 🔵 Hero Section */}
       <section className="pt-16 flex flex-col items-center px-4 text-center">
         <div className="h-10 w-2/3 bg-gray-300 rounded mb-4"></div>
         <div className="h-6 w-1/2 bg-gray-300 rounded mb-8"></div>
@@ -11,7 +10,6 @@ export default function Loading() {
         </div>
       </section>
 
-      {/* 🟢 Features Section */}
       <section className="py-20 px-6 md:px-16">
         <div className="h-8 w-1/3 bg-gray-300 rounded mb-4"></div>
         <div className="h-5 w-1/2 bg-gray-300 rounded mb-10"></div>
@@ -28,7 +26,6 @@ export default function Loading() {
         </div>
       </section>
 
-      {/* 🟡 Educational Stages */}
       <section className="py-20 px-6 md:px-12">
         <div className="h-8 w-1/3 bg-gray-300 rounded mb-10"></div>
 
@@ -51,7 +48,6 @@ export default function Loading() {
         </div>
       </section>
 
-      {/* 🟣 Success Section */}
       <section className="py-20 bg-white px-6">
         <div className="h-8 w-1/3 bg-gray-300 rounded mx-auto mb-10"></div>
 

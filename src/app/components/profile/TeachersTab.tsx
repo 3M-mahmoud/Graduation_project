@@ -12,7 +12,6 @@ import Image from "next/image";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
 
-// سنترك هذه المصفوفات للقيم الافتراضية فقط
 const stages = [
   "المراحل التعليمية",
   "المرحلة الابتدائية",
@@ -34,16 +33,14 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
   const [isStageOpen, setIsStageOpen] = useState(false);
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
 
-  // 1. منطق الفلترة الجديد: يعرض الكل إذا لم يتم اختيار قيمة محددة
   const filteredTeachers = useMemo(() => {
-    // التأكد من أن cache مصفوفة، وإلا نستخدم مصفوفة فارغة
     const data = Array.isArray(cache) ? cache : [];
 
     if (
       selectedStage === "المراحل التعليمية" &&
       selectedSubject === "المادة التعليمية"
     ) {
-      return data; // إرجاع كل البيانات فوراً إذا لم يتم اختيار فلتر
+      return data; 
     }
 
     return data.filter((teacher: any) => {
@@ -59,7 +56,6 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
     });
   }, [cache, selectedStage, selectedSubject]);
 
-  // 2. دالة جلب البيانات باستخدام useCallback لضمان استقرار المرجع
   const handleGetTeachers = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
@@ -72,13 +68,11 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
         },
       );
 
-      // تحديث الكاش بالبيانات الجديدة
       setsetCache((pre: any) => {
-        // إذا كان pre مصفوفة نحدثها مباشرة، إذا كان كائن نحدث المفتاح المطلوب
         if (Array.isArray(pre)) return res.data.data;
         return {
           ...pre,
-          students: res.data.data, // حافظت على كلمة students بناءً على كودك الأصلي
+          students: res.data.data,
         };
       });
     } catch (error) {
@@ -93,7 +87,6 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
   return (
     <div className="bg-[#f9fafb] min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-500">
       <div className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4">
-        {/* قائمة المراحل - التنسيق كما هو */}
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsStageOpen(!isStageOpen)}
@@ -130,7 +123,6 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
           <GraduationCap size={35} />
         </div>
 
-        {/* قائمة المواد - التنسيق كما هو */}
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsSubjectOpen(!isSubjectOpen)}
@@ -164,7 +156,6 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
         </div>
       </div>
 
-      {/* عرض المدرسين - تم تغيير المصدر ليكون filteredTeachers */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {filteredTeachers?.map((teacher: any) => (
           <div
@@ -221,7 +212,6 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
         ))}
       </div>
 
-      {/* رسالة في حال عدم وجود نتائج */}
       {filteredTeachers?.length === 0 && (
         <div className="text-center h-80 flex items-center justify-center bg-white rounded-2xl border border-[#C0BEBE] max-w-3xl mx-auto">
           <p className="text-[#204658] text-2xl font-bold">

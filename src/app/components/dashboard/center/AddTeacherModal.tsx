@@ -20,7 +20,6 @@ interface AddTeacherModalProps {
 
 const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
   const [loading, setLoading] = useState(false);
-  // الحالة الابتدائية للبيانات المطلوبة
   const [formData, setFormData] = useState({
     name: "",
     subject: "",
@@ -57,15 +56,12 @@ const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
   };
 
   return (
-    // الجزء الخاص بالحاوية داخل الـ Modal
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 md:p-10"
       dir="rtl"
     >
       <div className="bg-white rounded-[2.5rem] w-full max-w-[500px] max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in duration-300 border border-slate-100 scrollbar-hide">
-        {/* محتوى الـ Modal هنا */}
 
-        {/* Header */}
         <div className="p-6 border-b border-slate-50 flex items-center justify-between sticky top-0 bg-white z-10">
           <div className="text-right">
             <h2 className="text-lg font-black text-slate-800">
@@ -80,12 +76,9 @@ const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleAddTeacher} className="p-6 space-y-5">
           <div className="space-y-4">
-            {/* جعلت الحقول تظهر تحت بعضها في الموبايل لتوفير مساحة */}
             <div className="grid grid-cols-1 gap-4">
-              {/* حقل الاسم */}
               <div className="space-y-1">
                 <label className="text-slate-500 font-bold text-[11px] pr-1">
                   اسم المدرس
@@ -96,7 +89,6 @@ const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
                 />
               </div>
 
-              {/* حقل المادة */}
               <div className="space-y-1">
                 <label className="text-slate-500 font-bold text-[11px] pr-1">
                   المادة
@@ -107,7 +99,6 @@ const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
                 />
               </div>
 
-              {/* السعر واليوم في سطر واحد حتى في المساحات الصغيرة */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-slate-500 font-bold text-[11px] pr-1">
@@ -129,7 +120,6 @@ const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
                 </div>
               </div>
 
-              {/* الساعة واليوم */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-slate-500 font-bold text-[11px] pr-1">
@@ -137,7 +127,6 @@ const AddTeacherModal = ({ isOpen, onClose }: AddTeacherModalProps) => {
                   </label>
                   <select className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl text-right text-sm font-bold outline-none">
                     <option>السبت</option>
-                    {/* باقي الأيام */}
                   </select>
                 </div>
                 <div className="space-y-1">

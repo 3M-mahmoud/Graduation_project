@@ -18,7 +18,6 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
 
   if (!isOpen) return null;
 
-  // معالجة اختيار الصورة
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -30,7 +29,6 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
   };
 
   const handlePublish = async () => {
-    // التحقق من وجود نص أو صورة على الأقل
     if (!content.trim() && !image) {
       toast.error("يجب كتابة نص أو اختيار صورة للمنشور");
       return;
@@ -38,13 +36,10 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
 
     setLoading(true);
     try {
-      // هنا يتم الربط مع الـ API الخاص بالباك اند
       const formData = new FormData();
       formData.append("content", content);
       if (image) formData.append("image", image);
 
-      // مثال للطلب (تعدل حسب الـ Endpoint الخاص بك)
-      // await axios.post(`${DOMAIN}/posts`, formData);
 
       toast.success("تم نشر المنشور بنجاح");
       onSuccess();
@@ -65,7 +60,6 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
       dir="rtl"
     >
       <div className="bg-white rounded-[2rem] w-full max-w-[550px] shadow-2xl animate-in zoom-in duration-300 border border-slate-100 overflow-hidden">
-        {/* Header */}
         <div className="p-5 border-b border-slate-50 flex items-center justify-between bg-white">
           <h2 className="text-lg font-black text-slate-800">
             إنشاء منشور جديد
@@ -78,9 +72,7 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
           </button>
         </div>
 
-        {/* Body */}
         <div className="p-6 space-y-4">
-          {/* حقل النص */}
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -88,7 +80,6 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
             className="w-full min-h-[120px] p-4 bg-slate-50 border border-slate-100 rounded-2xl text-right text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500/10 resize-none"
           ></textarea>
 
-          {/* عرض الصورة المختارة */}
           {imagePreview && (
             <div className="relative w-full h-48 rounded-2xl overflow-hidden border border-slate-100 group">
               <img
@@ -108,7 +99,6 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
             </div>
           )}
 
-          {/* أدوات الإضافة */}
           <div className="flex items-center justify-between pt-2">
             <div className="flex items-center gap-2">
               <input
@@ -133,7 +123,6 @@ const AddPostModal = ({ isOpen, onClose, onSuccess }: AddPostModalProps) => {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="p-6 bg-slate-50/50 flex gap-3">
           <button
             onClick={handlePublish}

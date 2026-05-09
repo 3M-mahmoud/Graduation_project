@@ -130,7 +130,7 @@ const PersonalDataPage = () => {
                 type="button"
                 onClick={() =>
                   openCloudinaryWidget((url) => {
-                    // setImageValue(url); // 👈 يحط الصورة في الفورم
+                    setImageValue(url);
                     setValue("imageUrl", url);
                   })
                 }

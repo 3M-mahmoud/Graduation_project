@@ -9,7 +9,6 @@ export default function CenterDashboardLayout({
     <div className="min-h-screen bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto pl-3 pt-1 pb-20">
         <div className="flex gap-4 md:gap-8">
-          {/* السايد بار مخصص للطالب بتصميمه الفريد */}
           <aside className="w-fit lg:w-80">
             <CenterSidebar />
           </aside>

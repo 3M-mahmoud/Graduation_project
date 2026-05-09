@@ -5,9 +5,7 @@ import centerLogo from "@/assets/ceterProfile/teacherTap1.jpeg";
 
 const SettingsPage = () => {
   return (
-    // أضفنا نصاً صريحاً للمحاذاة لليمين text-right و dir="rtl" للتأكيد
     <div className="max-w-[850px] mx-auto pb-10 text-right" dir="rtl">
-      {/* رأس الصفحة */}
       <div className="mb-8">
         <h1 className="text-2xl font-black text-slate-800">البيانات الشخصية</h1>
         <p className="text-slate-400 text-sm font-bold mt-1">
@@ -16,9 +14,7 @@ const SettingsPage = () => {
       </div>
 
       <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-slate-100 shadow-sm space-y-12">
-        {/* 1. المعلومات الشخصية */}
         <section>
-          {/* تم تعديل border-r-4 لتكون على اليمين مع pr-3 (Padding Right) */}
           <div className="flex items-center justify-start gap-2 mb-6 border-r-4 border-blue-600 pr-3">
             <h2 className="text-lg font-black text-slate-800">
               المعلومات الشخصية
@@ -26,7 +22,6 @@ const SettingsPage = () => {
           </div>
 
           <div className="flex flex-col items-start gap-6">
-            {/* صورة الملف الشخصي - محاذاة لليمين */}
             <div className="flex items-center gap-4 flex-row-reverse">
               <div className="text-right">
                 <h3 className="font-bold text-slate-700 text-sm">
@@ -44,7 +39,6 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            {/* حقل اسم السنتر */}
             <div className="w-full md:w-1/2">
               <label className="block text-slate-500 text-xs font-bold mb-2">
                 اسم السنتر
@@ -58,7 +52,6 @@ const SettingsPage = () => {
           </div>
         </section>
 
-        {/* 2. الموقع الجغرافي */}
         <section>
           <div className="flex items-center justify-start gap-2 mb-6 border-r-4 border-blue-600 pr-3">
             <h2 className="text-lg font-black text-slate-800">
@@ -100,7 +93,6 @@ const SettingsPage = () => {
           </div>
         </section>
 
-        {/* 3. البيانات التعليمية */}
         <section>
           <div className="flex items-center justify-start gap-2 mb-6 border-r-4 border-blue-600 pr-3">
             <h2 className="text-lg font-black text-slate-800">
@@ -117,11 +109,9 @@ const SettingsPage = () => {
                 <option>المرحلة الإعدادية - المرحلة الثانوية</option>
               </select>
             </div>
-            {/* باقي الـ Selects تتبع نفس النمط */}
           </div>
         </section>
 
-        {/* 4. بيانات التواصل */}
         <section>
           <div className="flex items-center justify-start gap-2 mb-6 border-r-4 border-blue-600 pr-3">
             <h2 className="text-lg font-black text-slate-800">
@@ -140,7 +130,6 @@ const SettingsPage = () => {
           </div>
         </section>
 
-        {/* 5. النبذة الشخصية */}
         <section>
           <div className="flex items-center justify-start gap-2 mb-6 border-r-4 border-blue-600 pr-3">
             <h2 className="text-lg font-black text-slate-800">

@@ -35,7 +35,6 @@ export const Post = ({ centerId }: any) => {
               key={post.id}
               className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm relative group transition-all hover:border-slate-200"
             >
-              {/* أزرار التحكم الجانبية - كما في الصورة */}
               <div className="absolute top-6 left-6 flex items-center gap-3">
                 <button className="text-slate-300 hover:text-blue-500 transition-colors">
                   <Pencil size={16} />
@@ -46,7 +45,6 @@ export const Post = ({ centerId }: any) => {
               </div>
 
               <div className="flex flex-col gap-4">
-                {/* رأس المنشور */}
                 <div className="flex items-center gap-3">
                   <div className="text-right flex-1">
                     <h4 className="font-black text-slate-800 text-sm">
@@ -86,7 +84,6 @@ export const Post = ({ centerId }: any) => {
                   </div>
                 )}
 
-                {/* التفاعلات - تصميم مطابق للصورة */}
                 <div className="flex items-center gap-6 pt-4 border-t border-slate-50 mt-2">
                   <ButtonLikes
                     isLiked={post.isLiked}

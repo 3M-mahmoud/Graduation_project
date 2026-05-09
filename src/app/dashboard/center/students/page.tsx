@@ -8,7 +8,6 @@ import {
   Users,
 } from "lucide-react";
 
-// بيانات تجريبية موسعة لاختبار الـ Pagination
 const ALL_STUDENTS = [
   {
     id: 1,
@@ -70,7 +69,6 @@ const ALL_STUDENTS = [
     time: "02:30 م",
     badgeColor: "bg-indigo-50 text-indigo-500",
   },
-  // توليد المزيد من البيانات لتجربة التنقل بين الصفحات
   ...Array.from({ length: 25 }, (_, i) => ({
     id: i + 7,
     name: `طالب تجريبي ${i + 7}`,
@@ -89,7 +87,6 @@ const StudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 1. منطق البحث: تصفية البيانات الثابتة
   const filteredData = useMemo(() => {
     return ALL_STUDENTS.filter(
       (student) =>
@@ -99,7 +96,6 @@ const StudentsPage = () => {
     );
   }, [searchTerm]);
 
-  // 2. منطق الترقيم (Pagination): حساب البيانات المعروضة حالياً
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   
   const currentTableData = useMemo(() => {
@@ -110,12 +106,11 @@ const StudentsPage = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // العودة للصفحة الأولى عند كل بحث جديد
+    setCurrentPage(1);
   };
 
   return (
     <div className="max-w-7xl mx-auto pb-10 bg-white rounded-xl p-4" dir="rtl">
-      {/* رأس الصفحة */}
       <div className="mb-8 text-right bg-white shadow-md p-6 rounded-2xl border border-slate-50">
         <h1 className="text-2xl font-bold text-[#134E4A]">الطلاب</h1>
         <p className="text-[#424752] text-lg font-normal mt-1">
@@ -123,7 +118,6 @@ const StudentsPage = () => {
         </p>
       </div>
 
-      {/* شريط الإحصائيات والبحث */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3 bg-white p-3 rounded-2xl shadow-sm border border-slate-100 min-w-[250px]">
           <div className="w-12 h-12 bg-[#CBE7F5] rounded-xl flex items-center justify-center text-blue-600">
@@ -150,7 +144,6 @@ const StudentsPage = () => {
         </div>
       </div>
 
-      {/* الجدول */}
       <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col">
         <div className="overflow-x-auto">
           <table className="w-full text-right border-collapse">
@@ -205,7 +198,6 @@ const StudentsPage = () => {
           )}
         </div>
 
-        {/* الترقيم (Pagination) */}
         {totalPages > 1 && (
           <div className="p-6 flex items-center justify-between border-t border-slate-100 bg-white">
             <p className="text-slate-400 text-xs font-bold">

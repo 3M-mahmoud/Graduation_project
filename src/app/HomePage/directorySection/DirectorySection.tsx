@@ -55,14 +55,12 @@ export default function DirectorySection() {
               </div>
             </section>
 
-            {/* Teachers Section */}
             <section className="mb-20">
               <SectionHeader
                 title="تعلم أونلاين مع نخبة من افضل المدرسين في مصر"
                 type="teachers"
               />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Example Teacher */}
                 {data?.teachers?.map((teacher: any) => (
                   <TeacherCard key={teacher.id} teacher={teacher} />
                 ))}

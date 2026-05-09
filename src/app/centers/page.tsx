@@ -10,12 +10,10 @@ import { DOMAIN } from "@/utils/constants";
 import CenterCardSkeleton from "../components/Center/CenterCardSkeleton";
 
 export default function CentersPage() {
-  // حالات الإدخال (ما يكتبه المستخدم حالياً)
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [stage, setStage] = useState("");
 
-  // حالات الفلترة المطبقة (ما سيتم الفلترة بناءً عليه عند الضغط على الزر)
   const [appliedFilters, setAppliedFilters] = useState({
     search: "",
     location: "",
@@ -44,20 +42,16 @@ export default function CentersPage() {
     handleGetCenters();
   }, [handleGetCenters]);
 
-  // زر "تطبيق الفلتر" يقوم بنقل القيم من المدخلات إلى الحالة المطبقة
   const handleFilter = useCallback(() => {
     setAppliedFilters({ search, location, stage });
     setIsFiltered(true);
   }, [search, location, stage]);
 
-  // دالة الترتيب (تغير الحالة فقط والـ useMemo سيتكفل بالباقي)
   const handleSort = useCallback(() => {
     setIsSorted((prev) => !prev);
   }, []);
 
-  // الحسابات المعتمدة على useMemo لضمان الأداء والدقة
   const filteredCenters = useMemo(() => {
-    // 1. نقوم بالفلترة أولاً بناءً على الفلاتر المطبقة (Applied Filters)
     let result = allCenters.filter((center) => {
       const matchSearch = center?.name
         ?.toLowerCase()
@@ -74,19 +68,15 @@ export default function CentersPage() {
       return matchSearch && matchLocation && matchStage;
     });
 
-    // 2. الترتيب: نقوم بعمل نسخة جديدة بالكامل من المصفوفة المفلترة [...result]
     if (isSorted) {
       return [...result].sort((a, b) => {
-        // تحويل القيم إلى أرقام ومعالجة الـ null أو undefined بوضع 0 كقيمة افتراضية
         const ratingA = parseFloat(a?.center?.star) || 0;
         const ratingB = parseFloat(b?.center?.star) || 0;
 
-        // الترتيب من الأعلى للأقل (Descending)
         return ratingB - ratingA;
       });
     }
 
-    // إذا لم يكن الترتيب مفعلاً، نرجع النتيجة المفلترة كما هي
     return result;
   }, [allCenters, appliedFilters, isSorted]);
 
@@ -136,7 +126,6 @@ export default function CentersPage() {
                   transform="translate(0.000000,113.000000) scale(0.100000,-0.100000)"
                 >
                   <path d="M850 1069 c-23 -48 -27 -66 -19 -85 5 -14 9 -40 9 -57 0 -18 4 -38 9 -46 9 -14 19 36 19 99 1 44 7 71 17 78 9 6 35 56 35 67 0 3 -9 5 -20 5 -15 0 -28 -16 -50 -61z"></path>
-                  {/* ... باقي مسارات الـ SVG تم الإبقاء عليها كما هي ... */}
                   <path d="M1662 1099 c-24 -17 -40 -34 -38 -37 3 -3 14 2 24 11 10 10 22 17 25 17 4 0 16 9 27 20 30 30 9 24 -38 -11z"></path>
                   <path d="M101 1104 c0 -11 3 -14 6 -6 3 7 2 16 -1 19 -3 4 -6 -2 -5 -13z"></path>
                   <path d="M1090 1070 c0 -6 7 -10 15 -10 8 0 15 2 15 4 0 2 -7 6 -15 10 -8 3 -15 1 -15 -4z"></path>
