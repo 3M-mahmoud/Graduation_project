@@ -3,7 +3,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { MapPin, Calendar, Clock } from "lucide-react";
 
 const lessonsData: { [key: string]: any[] } = {
-  "5": [
+  "10": [
     {
       id: 1,
       subject: "الرياضيات - أ/ خالد",
@@ -15,6 +15,34 @@ const lessonsData: { [key: string]: any[] } = {
       subject: "الفيزياء - أ/ محمود",
       center: "أونلاين",
       time: "الساعة 8:00 مساءً",
+    },
+  ],
+  "11": [
+    {
+      id: 1,
+      subject: "الرياضيات - أ/ خالد",
+      center: "سنتر النور - الدقى",
+      time: "الساعة 4:00 عصراً",
+    }
+  ],
+  "12": [
+    {
+      id: 1,
+      subject: "الرياضيات - أ/ خالد",
+      center: "سنتر النور - الدقى",
+      time: "الساعة 4:00 عصراً",
+    },
+    {
+      id: 2,
+      subject: "الفيزياء - أ/ محمود",
+      center: "أونلاين",
+      time: "الساعة 8:00 مساءً",
+    },
+    {
+      id: 3,
+      subject: "الاحياء - أ/ سيد",
+      center: "أونلاين",
+      time: "الساعة 10:00 مساءً",
     },
   ],
 };

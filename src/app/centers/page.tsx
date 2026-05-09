@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import CentersHeader from "../components/Center/CentersHeader";
 import CentersFilters from "../components/Center/CentersFilters";
 import CenterCard from "../components/Center/CenterCard";
@@ -10,74 +10,96 @@ import { DOMAIN } from "@/utils/constants";
 import CenterCardSkeleton from "../components/Center/CenterCardSkeleton";
 
 export default function CentersPage() {
+  // حالات الإدخال (ما يكتبه المستخدم حالياً)
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [stage, setStage] = useState("");
+
+  // حالات الفلترة المطبقة (ما سيتم الفلترة بناءً عليه عند الضغط على الزر)
+  const [appliedFilters, setAppliedFilters] = useState({
+    search: "",
+    location: "",
+    stage: "",
+  });
+
   const [loading, setLoading] = useState(true);
-  const [filteredCenters, setFilteredCenters] = useState([]);
-  const [isFiltered, setIsFiltered] = useState(false);
+  const [allCenters, setAllCenters] = useState([]);
   const [isSorted, setIsSorted] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
 
-  const handleFilter = () => {
-    const result = filteredCenters.filter((center) => {
-      const matchSearch = center?.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-
-      const matchLocation = location ? center.location === location : true;
-
-      const matchStage = stage
-        ? center?.center?.educationalStage.includes(stage)
-        : true;
-
-      return matchSearch && matchLocation && matchStage;
-    });
-
-    setFilteredCenters(result);
-    setIsFiltered(true);
-    setIsSorted(false);
-  };
-
-  const showAllCenters = () => {
-    setSearch("");
-    setLocation("");
-    setStage("");
-    setFilteredCenters(data);
-    setIsFiltered(false);
-  };
-
-  const handleGetCenters = async () => {
+  const handleGetCenters = useCallback(async () => {
     try {
       setLoading(true);
-
       const {
         data: { data },
       } = await axios.get(`${DOMAIN}users?role=center`);
-
-      setFilteredCenters(data);
+      setAllCenters(data);
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
   useEffect(() => {
     handleGetCenters();
-  }, [search, stage, location]);
+  }, [handleGetCenters]);
 
-  const handleSort = () => {
-    if (!isSorted) {
-      const sorted = [...filteredCenters].sort(
-        (a, b) => Number(b.rating) - Number(a.rating),
-      );
+  // زر "تطبيق الفلتر" يقوم بنقل القيم من المدخلات إلى الحالة المطبقة
+  const handleFilter = useCallback(() => {
+    setAppliedFilters({ search, location, stage });
+    setIsFiltered(true);
+  }, [search, location, stage]);
 
-      setFilteredCenters(sorted);
-      setIsSorted(true);
-    } else {
-      setFilteredCenters(data);
-      setIsSorted(false);
+  // دالة الترتيب (تغير الحالة فقط والـ useMemo سيتكفل بالباقي)
+  const handleSort = useCallback(() => {
+    setIsSorted((prev) => !prev);
+  }, []);
+
+  // الحسابات المعتمدة على useMemo لضمان الأداء والدقة
+  const filteredCenters = useMemo(() => {
+    // 1. نقوم بالفلترة أولاً بناءً على الفلاتر المطبقة (Applied Filters)
+    let result = allCenters.filter((center) => {
+      const matchSearch = center?.name
+        ?.toLowerCase()
+        .includes(appliedFilters.search.toLowerCase());
+
+      const matchLocation = appliedFilters.location
+        ? center.location === appliedFilters.location
+        : true;
+
+      const matchStage = appliedFilters.stage
+        ? center?.center?.educationalStage?.includes(appliedFilters.stage)
+        : true;
+
+      return matchSearch && matchLocation && matchStage;
+    });
+
+    // 2. الترتيب: نقوم بعمل نسخة جديدة بالكامل من المصفوفة المفلترة [...result]
+    if (isSorted) {
+      return [...result].sort((a, b) => {
+        // تحويل القيم إلى أرقام ومعالجة الـ null أو undefined بوضع 0 كقيمة افتراضية
+        const ratingA = parseFloat(a?.center?.star) || 0;
+        const ratingB = parseFloat(b?.center?.star) || 0;
+
+        // الترتيب من الأعلى للأقل (Descending)
+        return ratingB - ratingA;
+      });
     }
-  };
+
+    // إذا لم يكن الترتيب مفعلاً، نرجع النتيجة المفلترة كما هي
+    return result;
+  }, [allCenters, appliedFilters, isSorted]);
+
+  const showAllCenters = useCallback(() => {
+    setSearch("");
+    setLocation("");
+    setStage("");
+    setAppliedFilters({ search: "", location: "", stage: "" });
+    setIsFiltered(false);
+    setIsSorted(false);
+  }, []);
+
   return (
     <main className="bg-slate-50 min-h-screen pb-20" dir="rtl">
       <CentersHeader />
@@ -114,10 +136,8 @@ export default function CentersPage() {
                   stroke="none"
                   transform="translate(0.000000,113.000000) scale(0.100000,-0.100000)"
                 >
-                  <path
-                    d="M850 1069 c-23 -48 -27 -66 -19 -85 5 -14 9 -40 9 -57 0 -18 4 -38 9
-                        -46 9 -14 19 36 19 99 1 44 7 71 17 78 9 6 35 56 35 67 0 3 -9 5 -20 5 -15 0 -28 -16 -50 -61z"
-                  ></path>
+                  <path d="M850 1069 c-23 -48 -27 -66 -19 -85 5 -14 9 -40 9 -57 0 -18 4 -38 9 -46 9 -14 19 36 19 99 1 44 7 71 17 78 9 6 35 56 35 67 0 3 -9 5 -20 5 -15 0 -28 -16 -50 -61z"></path>
+                  {/* ... باقي مسارات الـ SVG تم الإبقاء عليها كما هي ... */}
                   <path d="M1662 1099 c-24 -17 -40 -34 -38 -37 3 -3 14 2 24 11 10 10 22 17 25 17 4 0 16 9 27 20 30 30 9 24 -38 -11z"></path>
                   <path d="M101 1104 c0 -11 3 -14 6 -6 3 7 2 16 -1 19 -3 4 -6 -2 -5 -13z"></path>
                   <path d="M1090 1070 c0 -6 7 -10 15 -10 8 0 15 2 15 4 0 2 -7 6 -15 10 -8 3 -15 1 -15 -4z"></path>
@@ -128,10 +148,7 @@ export default function CentersPage() {
                   <path d="M1286 955 c4 -8 8 -15 10 -15 2 0 4 7 4 15 0 8 -4 15 -10 15 -5 0 -7 -7 -4 -15z"></path>
                   <path d="M1647 930 c-13 -15 -14 -20 -3 -20 7 0 16 9 19 20 3 11 4 20 3 20 -1 0 -9 -9 -19 -20z"></path>
                   <path d="M1171 925 c1 -19 18 -51 18 -35 0 8 -4 22 -9 30 -5 8 -9 11 -9 5z"></path>
-                  <path
-                    d="M8 875 c6 -11 22 -33 36 -49 27 -30 33 -60 16 -71 -6 -4 -19 -24 -30 -45 l-20 -39 43 -32 c23 -18 43 -34 45 -34 1 -1 4 -60 7 -131 4 -121 6 -130 30 -153 19 -20 25 -22 25 -9 0 8 -7 21 -15 28 -14 12 -15 23 -14 177 1 8 -13
-                          116 -66 129 -29 7 -35 44 -10 64 8 7 15 19 15 27 0 7 6 16 14 19 27 10 -11 78 -68 124 -18 14 -18 14 -8 -5z"
-                  ></path>
+                  <path d="M8 875 c6 -11 22 -33 36 -49 27 -30 33 -60 16 -71 -6 -4 -19 -24 -30 -45 l-20 -39 43 -32 c23 -18 43 -34 45 -34 1 -1 4 -60 7 -131 4 -121 6 -130 30 -153 19 -20 25 -22 25 -9 0 8 -7 21 -15 28 -14 12 -15 23 -14 177 1 8 -13 116 -66 129 -29 7 -35 44 -10 64 8 7 15 19 15 27 0 7 6 16 14 19 27 10 -11 78 -68 124 -18 14 -18 14 -8 -5z"></path>
                   <path d="M862 830 c-12 -27 -26 -52 -31 -54 -5 -3 -2 -26 7 -51 14 -44 14 -46 -13 -85 -22 -32 -27 -47 -22 -77 11 -63 29 -65 21 -2 -6 52 -5 58 21 82 26 24 27 27 17 69 -9 34 -8 47 3 65 16 25 36 103 26 103 -3 0 -16 -22 -29 -50z"></path>
                   <path d="M1200 872 c0 -16 67 -89 74 -81 3 3 -12 25 -34 49 -22 24 -40 38 -40 32z"></path>
                   <path d="M1567 826 c-4 -10 -1 -13 8 -9 8 3 12 9 9 14 -7 12 -11 11 -17 -5z"></path>
@@ -156,10 +173,10 @@ export default function CentersPage() {
             <span className="text-sm font-medium">
               {isSorted ? "إرجاع الترتيب الطبيعي" : "ترتيب حسب: الأعلى تقييماً"}
             </span>
-
             <ListFilter size={18} />
           </div>
         </div>
+
         {loading ? (
           <CenterCardSkeleton />
         ) : (
