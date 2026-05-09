@@ -107,7 +107,7 @@ export default function PureWSChat() {
     >
       <div className="max-w-7xl mx-auto w-full flex bg-white md:rounded-3xl shadow-2xl overflow-hidden border border-white/50 relative">
         <div
-          className={`w-full md:w-[350px] lg:w-[400px] border-l border-gray-100 ${dataHeader ? "hidden md:block" : "block"}`}
+          className={`w-full md:w-[350px] lg:w-[320px] border-l border-gray-100 ${dataHeader ? "hidden md:block" : "block"}`}
         >
           <ChatSidebar isTyping={isTyping} />
         </div>
