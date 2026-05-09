@@ -83,12 +83,12 @@ const TeachersPage = () => {
           />
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto pb-2">
+        <div className="flex items-center gap-2 pb-2">
           {[
             "الكل",
-            "المرحلة الأبتدائية",
-            "المرحلة الأعدادية",
-            "المرحلة الثانوية",
+            "ابتدائي",
+            "اعدادي",
+            "ثانوي",
           ].map((cat) => (
             <button
               key={cat}
@@ -105,7 +105,7 @@ const TeachersPage = () => {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#F97216] text-white px-5 py-2 rounded-lg flex items-center gap-2"
+            className="bg-[#F97216] text-white px-5 py-2 rounded-lg flex items-center whitespace-nowrap gap-2"
           >
             إضافة مدرس <Plus size={18} />
           </button>

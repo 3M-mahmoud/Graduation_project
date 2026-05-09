@@ -42,7 +42,9 @@ export default function TeacherCard({ teacher }: any) {
         </div>
         <div className="flex items-start gap-2 text-slate-500 text-sm leading-relaxed">
           <Pencil size={16} className="mt-1 shrink-0" />
-          <span className="text-right overflow-hidden text-ellipsis line-clamp-2">{teacher?.teacher?.bio}</span>
+          <span className="text-right overflow-hidden text-ellipsis line-clamp-2">
+            {teacher?.teacher?.bio}
+          </span>
         </div>
 
         <div>

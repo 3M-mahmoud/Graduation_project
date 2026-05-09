@@ -12,6 +12,7 @@ export const ProfileHeader = ({ data }: any) => {
     setDataHeader(data);
   }, [data]);
   return (
+<<<<<<< Updated upstream
     <div className="relative bg-white shadow-sm pb-4">
       <div className="h-48 md:h-72 w-full overflow-hidden">
         {/* <Image
@@ -19,6 +20,19 @@ export const ProfileHeader = ({ data }: any) => {
           alt="Cover"
           className="w-full h-full object-cover"
         /> */}
+=======
+    <div className="relative bg-white shadow-sm pb-6">
+      <div className="relative h-48 md:h-72 overflow-hidden">
+        {dataHeader?.imageUrl && (
+          <Image
+            src={dataHeader?.imageUrl}
+            alt={dataHeader?.name}
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        )}
+>>>>>>> Stashed changes
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative">
