@@ -1,14 +1,11 @@
 "use client";
-import { useMemo, useState } from "react";
-import { ChevronDown, GraduationCap } from "lucide-react";
-import { scheduleData } from "@/data/centerProfile";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { ChevronDown, GraduationCap } from "lucide-react";
 import { scheduleData } from "@/data/centerProfile";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
 import Image from "next/image";
-import { formatDate, formatDateTime } from "../helper";
+import { formatDateTime } from "../helper";
 
 const stageConfig: Record<string, string[]> = {
   "المرحلة الثانوية": [
@@ -50,12 +47,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
     setIsStageOpen(false);
   };
 
-  const filteredSchedule = useMemo(() => {
-    if (selectedGrade === "الصف التعليمي") return [];
-
-  useEffect(() => {
-    hadleGetWeeks();
-  }, [selectedGrade]);
   // 1. استخدام useCallback لجلب البيانات لضمان عدم تكرار الدالة في كل رندرة
   const handleGetWeeks = useCallback(async () => {
     if (selectedGrade === "الصف التعليمي") return;
@@ -180,8 +171,7 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-px p-3 border-t overflow-hidden">
             {days.map((day) => {
-              const dayGroup = filteredSchedule.find((d) => d.day === day);
-              const lessons = dayGroup?.lessons || [];
+              const dayLessons = currentSchedule[day] || []; // الوصول للبيانات بأمان
 
               return (
                 <div key={day} className="flex flex-col min-h-[400px]">
@@ -195,11 +185,8 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
                   <div className="flex-1">
                     {isFilterSelected &&
-                      lessons.map((lesson, index) => {
-                        const isLastLesson = index === lessons.length - 1;
-                      cashWeeks[day]?.map((lesson, index) => {
-                        const isLastLesson =
-                          index === cashWeeks[day]?.length - 1;
+                      dayLessons.map((lesson: any, index: number) => {
+                        const isLastLesson = index === dayLessons.length - 1;
                         return (
                           <div
                             key={lesson?.id}
@@ -231,15 +218,11 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
                             <button
                               className={`w-full py-2 rounded-xl text-[10px] font-black transition-all active:scale-95 ${
-                                lesson.status === "booked"
-                                lesson?.isBooked === true
+                                lesson?.isBooked
                                   ? "bg-slate-700/50 text-white/30 cursor-not-allowed"
                                   : "bg-orange-500 text-white hover:bg-orange-600 cursor-pointer"
                               }`}
                             >
-                              {lesson.status === "booked"
-                                ? "تم الحجز"
-                                : "احجز الحصة"}
                               {lesson?.isBooked ? "تم الحجز" : "احجز الحصة"}
                             </button>
                           </div>
