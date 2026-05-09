@@ -34,6 +34,7 @@ const StudentSidebar = () => {
             alt={"username"}
             fill
             className="object-contain"
+            unoptimized
           />
         </div>
         <div className="flex flex-col items-start w-20 md:w-full">

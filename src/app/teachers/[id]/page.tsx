@@ -29,7 +29,10 @@ export default function TeacherProfile() {
       case "المنشورات":
         return (
           <ProfileFeed
-            teacherId={data?.id}
+            userName={data?.name}
+            userImage={data?.imageUrl}
+            role="teacher"
+            userId={data?.id}
             setCachePosts={setCachePosts}
             cachePosts={cachePosts || []}
           />
@@ -67,7 +70,7 @@ export default function TeacherProfile() {
     if (param?.id) getData();
 
     if (!socket || !param.id) return;
-    socket.send(
+    socket?.send(
       JSON.stringify({
         type: "get_user_presence",
         payload: {

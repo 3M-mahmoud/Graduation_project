@@ -107,6 +107,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
                 alt={userName}
                 fill
                 className="object-contain"
+                unoptimized
               />
             </div>
             <div className="flex items-center gap-2">
@@ -132,6 +133,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
                       alt="user"
                       fill
                       className="object-contain"
+                      unoptimized
                     />
                   </div>
                   <h3 className="text-xl font-black text-slate-800">
@@ -207,6 +209,7 @@ export const UserMenu = ({ userName, userImage, closeMenu }: UserMenuProps) => {
                 alt={userName}
                 fill
                 className="object-cover"
+                unoptimized
               />
             </div>
 

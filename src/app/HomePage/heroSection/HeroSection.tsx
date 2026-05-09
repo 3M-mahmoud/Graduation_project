@@ -10,7 +10,7 @@ const HeroSection: React.FC = () => {
         <Image src={background} alt="background" />
       </div>
 
-      <div  data-aos="fade-up" className="relative md:absolute z-10 max-w-3xl">
+      <div data-aos="fade-up" className="relative md:absolute z-10 max-w-3xl">
         <h1 className="text-3xl md:text-5xl font-black text-[#204658] mb-6 leading-tight">
           منصة سنتر مصر التعليمية
         </h1>
@@ -27,6 +27,7 @@ const HeroSection: React.FC = () => {
             fill
             className="object-contain"
             priority
+            unoptimized
           />
         </div>
       </div>

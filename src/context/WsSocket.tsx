@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   Dispatch,
@@ -62,22 +63,41 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
   const [senderId, setSenderId] = useState<string | null>(null);
   const [AllOnline, setAllOnline] = useState<Set<string>>(new Set());
   const [conversations, setConversations] = useState<ConversationsType[]>([]);
-  const [token, setToken] = useState<string | null>(null);
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const Router = useRouter();
+
   useEffect(() => {
     setSenderId(localStorage.getItem("userId"));
   }, []);
 
   useEffect(() => {
+    if (
+      socket?.readyState === WebSocket.OPEN &&
+      conversations.length > 0 &&
+      senderId
+    ) {
+      socket?.send(
+        JSON.stringify({
+          type: "init_conversations",
+          payload: conversations.map((c) => ({
+            conversationId: c.id,
+            receiverId: c.senderId === senderId ? c.receiverId : c.senderId,
+          })),
+        }),
+      );
+    }
+  }, [socket, conversations, senderId]);
+
+  useEffect(() => {
     if (!senderId) return;
 
     const ws = new WebSocket(
-      `wss://centermasrbackendgraduationproject-production-92c6.up.railway.app/api/v1/ws?userId=${
-        senderId || ""
-      }`,
+      `${process.env.NEXT_PUBLIC_WS_URL}${senderId || ""}`,
     );
-    // const ws = new WebSocket(`ws://localhost:3001?userId=${senderId}`);
-    // setSocket(ws);
+    // const ws = new WebSocket(
+    //   `ws://localhost:3001/api/v1/ws?userId=${senderId}`,
+    // );
+    setSocket(ws);
 
     ws.onopen = () => {
       console.log("✅ Socket Connected");
@@ -124,8 +144,11 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    ws.onclose = () => console.log("❌ Socket Disconnected");
-
+    ws.onclose = () => {
+      setTimeout(() => {
+        Router.refresh();
+      }, 30000);
+    };
     return () => {
       ws.close();
     };

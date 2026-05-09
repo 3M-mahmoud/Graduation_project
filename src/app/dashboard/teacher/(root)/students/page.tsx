@@ -73,7 +73,6 @@ const students = [
     time: "01:20 م",
   },
 ];
-import { useSocket } from "@/context/WsSocket";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
 import { Search, MoreVertical, Users } from "lucide-react";
@@ -83,7 +82,6 @@ import { useEffect, useState } from "react";
 const LIMIT_PER_PAGE = 5;
 
 const StudentsTable = () => {
-  const { senderId } = useSocket();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [coursesCount, setCoursesCount] = useState(0);
   const [coursesData, setCoursesData] = useState([]);
@@ -108,6 +106,15 @@ const StudentsTable = () => {
   }, []);
 
   const totalPages = Math.ceil(coursesCount / LIMIT_PER_PAGE);
+  const visiblePages = 3;
+
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+  const pages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, i) => startPage + i,
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 lg:p-12 font-sans" dir="rtl">
@@ -146,12 +153,10 @@ const StudentsTable = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
-              <tr className="text-[#204658] text-sm font-bold bg-white">
-                <th className="px-6 py-5 min-w-64">اسم الطالب</th>
+              <tr className="text-[#204658] text-center text-sm font-bold bg-white">
+                <th className="px-6 py-5 min-w-64 text-start">اسم الطالب</th>
                 <th className="px-6 py-5 min-w-40">الصف</th>
                 <th className="px-6 py-5 min-w-56">الدورة</th>
-                <th className="px-6 py-5 min-w-56">تاريخ الدفع</th>
-                <th className="px-6 py-5 min-w-56">توقيت الدفع</th>
                 <th className="px-6 py-5 min-w-10"></th>
               </tr>
             </thead>
@@ -164,24 +169,27 @@ const StudentsTable = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="size-10 rounded-xl bg-[#204658] flex items-center justify-center text-white font-bold overflow-hidden">
-                        <Image src="" alt={student.name} />
+                        {student?.student?.user?.imageUrl && (
+                          <Image
+                            src={student?.student?.user?.imageUrl}
+                            alt={student?.student?.user?.name}
+                            width={40}
+                            height={40}
+                            className="w-full h-full object-cover"
+                            unoptimized
+                          />
+                        )}
                       </div>
                       <span className="font-bold text-gray-800 text-sm">
-                        {student.name}
+                        {student?.student?.user?.name}
                       </span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {student.grade}
+                    {student?.lesson?.course?.classRoom}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {student.course}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {student.date}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 font-medium">
-                    {student.time}
+                    {student?.lesson?.course?.title}
                   </td>
                   <td className="px-6 py-4">
                     <button className="text-gray-400 hover:text-[#204658] p-1 rounded-lg transition-colors">
@@ -201,35 +209,38 @@ const StudentsTable = () => {
             أصل <span className="text-gray-800">{coursesCount}</span> طلاب
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-black">
             <button
               onClick={() => setCurrentPage((p) => p - 1)}
               disabled={currentPage === 1}
-              className={`${currentPage === 1 ? "disabled:cursor-not-allowed" : ""} px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
+              className={`${
+                currentPage === 1 ? "disabled:cursor-not-allowed" : ""
+              } px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
             >
               {"<"}
             </button>
-            {Array.from({ length: totalPages }).map((_, i) => (
+
+            {pages.map((page) => (
               <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
+                key={page}
+                onClick={() => setCurrentPage(page)}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === i + 1 ? "bg-green-600" : "bg-gray-100"
+                  currentPage === page ? "bg-green-600" : "bg-gray-100"
                 } cursor-pointer`}
               >
-                {i + 1}
+                {page}
               </button>
             ))}
+
             <button
               onClick={() => setCurrentPage((p) => p + 1)}
               disabled={currentPage === totalPages}
-              className={`${currentPage === totalPages ? "disabled:cursor-not-allowed" : ""} px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
+              className={`${
+                currentPage === totalPages ? "disabled:cursor-not-allowed" : ""
+              } px-3 py-1 rounded-md bg-gray-100 disabled:opacity-50 cursor-pointer`}
             >
               {">"}
             </button>
-            {/* <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-400 transition-all">
-              <ChevronLeft size={18} />
-            </button> */}
           </div>
         </div>
       </div>

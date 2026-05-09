@@ -1,27 +1,25 @@
 "use client";
-<<<<<<< Updated upstream
 import { useMemo, useState } from "react";
 import { ChevronDown, GraduationCap } from "lucide-react";
 import { scheduleData } from "@/data/centerProfile";
-=======
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, GraduationCap } from "lucide-react";
+import { scheduleData } from "@/data/centerProfile";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
 import Image from "next/image";
-import { formatDateTime } from "../helper";
->>>>>>> Stashed changes
+import { formatDate, formatDateTime } from "../helper";
 
 const stageConfig: Record<string, string[]> = {
   "المرحلة الثانوية": [
-    "الصف الأول الثانوي",
+    "الصف الاول الثانوي",
     "الصف الثاني الثانوي",
     "الصف الثالث الثانوي",
   ],
   "المرحلة الإعدادية": [
-    "الصف الأول الإعدادي",
-    "الصف الثاني الإعدادي",
-    "الصف الثالث الإعدادي",
+    "الصف الاول الاعدادي",
+    "الصف الثاني الاعدادي",
+    "الصف الثالث الاعدادي",
   ],
   "المرحلة الابتدائية": [
     "الصف الرابع الابتدائي",
@@ -32,17 +30,17 @@ const stageConfig: Record<string, string[]> = {
 
 const days = [
   "السبت",
-  "الأحد",
-  "الإثنين",
+  "الاحد",
+  "الاثنين",
   "الثلاثاء",
-  "الأربعاء",
+  "الاربعاء",
   "الخميس",
   "الجمعة",
 ];
 
-export default function ScheduleTab() {
-  const [selectedStage, setSelectedStage] = useState("المرحلة التعليمية");
-  const [selectedGrade, setSelectedGrade] = useState("الصف التعليمي");
+export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
+  const [selectedStage, setSelectedStage] = useState("المرحلة الثانوية");
+  const [selectedGrade, setSelectedGrade] = useState("الصف الثالث الثانوي");
   const [isStageOpen, setIsStageOpen] = useState(false);
   const [isGradeOpen, setIsGradeOpen] = useState(false);
 
@@ -52,18 +50,12 @@ export default function ScheduleTab() {
     setIsStageOpen(false);
   };
 
-<<<<<<< Updated upstream
   const filteredSchedule = useMemo(() => {
     if (selectedGrade === "الصف التعليمي") return [];
 
-    return scheduleData.map((dayGroup) => ({
-      ...dayGroup,
-      lessons: dayGroup.lessons.filter(
-        (lesson: any) => lesson.grade === selectedGrade,
-      ),
-    }));
+  useEffect(() => {
+    hadleGetWeeks();
   }, [selectedGrade]);
-=======
   // 1. استخدام useCallback لجلب البيانات لضمان عدم تكرار الدالة في كل رندرة
   const handleGetWeeks = useCallback(async () => {
     if (selectedGrade === "الصف التعليمي") return;
@@ -93,7 +85,6 @@ export default function ScheduleTab() {
   useEffect(() => {
     handleGetWeeks();
   }, [handleGetWeeks]);
->>>>>>> Stashed changes
 
   const isFilterSelected = selectedGrade !== "الصف التعليمي";
 
@@ -189,12 +180,8 @@ export default function ScheduleTab() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-px p-3 border-t overflow-hidden">
             {days.map((day) => {
-<<<<<<< Updated upstream
               const dayGroup = filteredSchedule.find((d) => d.day === day);
               const lessons = dayGroup?.lessons || [];
-=======
-              const dayLessons = currentSchedule[day] || []; // الوصول للبيانات بأمان
->>>>>>> Stashed changes
 
               return (
                 <div key={day} className="flex flex-col min-h-[400px]">
@@ -208,55 +195,52 @@ export default function ScheduleTab() {
 
                   <div className="flex-1">
                     {isFilterSelected &&
-<<<<<<< Updated upstream
                       lessons.map((lesson, index) => {
                         const isLastLesson = index === lessons.length - 1;
-=======
-                      dayLessons.map((lesson: any, index: number) => {
-                        const isLastLesson = index === dayLessons.length - 1;
->>>>>>> Stashed changes
+                      cashWeeks[day]?.map((lesson, index) => {
+                        const isLastLesson =
+                          index === cashWeeks[day]?.length - 1;
                         return (
                           <div
-                            key={lesson.id}
-                            className={`p-4 text-center group transition-all hover:bg-white/5 
-                            ${day !== "الجمعة" ? "md:border-l" : ""} 
+                            key={lesson?.id}
+                            className={`p-4 text-center group transition-all hover:bg-white/5
+                            ${day !== "الجمعة" ? "md:border-l" : ""}
                             ${isLastLesson ? "border-b-0" : "border-b"}`}
                           >
                             <div className="w-15 h-15 rounded-full overflow-hidden mx-auto mb-3 shadow-lg shadow-black/20">
-                              <img
-                                src="https://i.pravatar.cc/150"
-                                alt=""
-                                className="w-full h-full object-cover"
-                              />
+                              {lesson?.teacher?.imageUrl && (
+                                <Image
+                                  src={lesson?.teacher?.imageUrl}
+                                  alt={lesson?.teacher?.name}
+                                  width={60}
+                                  height={60}
+                                  className="w-full h-full object-cover"
+                                  unoptimized
+                                />
+                              )}
                             </div>
                             <p className="text-[10px] text-white/80 truncate font-medium">
-                              {lesson.teacher}
+                              {lesson?.teacher?.name}
                             </p>
                             <h4 className="text-white font-black text-[11px] my-1.5">
-                              {lesson.subject}
+                              {lesson?.teacher?.classRoom}
                             </h4>
                             <p className="text-white font-black text-[10px] mb-3">
-                              {lesson.time}
+                              {formatDateTime(lesson?.time)}
                             </p>
 
                             <button
                               className={`w-full py-2 rounded-xl text-[10px] font-black transition-all active:scale-95 ${
-<<<<<<< Updated upstream
                                 lesson.status === "booked"
-=======
-                                lesson?.isBooked
->>>>>>> Stashed changes
+                                lesson?.isBooked === true
                                   ? "bg-slate-700/50 text-white/30 cursor-not-allowed"
                                   : "bg-orange-500 text-white hover:bg-orange-600 cursor-pointer"
                               }`}
                             >
-<<<<<<< Updated upstream
                               {lesson.status === "booked"
                                 ? "تم الحجز"
                                 : "احجز الحصة"}
-=======
                               {lesson?.isBooked ? "تم الحجز" : "احجز الحصة"}
->>>>>>> Stashed changes
                             </button>
                           </div>
                         );

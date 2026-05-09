@@ -61,7 +61,7 @@ const PersonalDataPage = () => {
 
       setUserId(user.id);
       setValue("name", user.name);
-      // setValue("imageUrl", user.imageUrl);
+      setValue("imageUrl", user.imageUrl);
       setValue("email", user.email);
       setValue("educationalStage", user.teacher.educationalStage);
       setValue("classRoom", user.teacher.classRoom[0]);
@@ -115,21 +115,23 @@ const PersonalDataPage = () => {
       <div className="max-w-4xl mx-auto space-y-8 text-black">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Image
-              width={80}
-              height={80}
-              src=""
-              // src={watch("imageUrl") || ""}
-              alt={watch("name")}
-              className="rounded-full size-20 object-cover"
-            />
+            {watch("imageUrl") && (
+              <Image
+                width={80}
+                height={80}
+                src={watch("imageUrl")}
+                alt={watch("name")}
+                className="rounded-full size-20 object-cover"
+                unoptimized
+              />
+            )}
             <div className="flex flex-col">
               <button
                 type="button"
                 onClick={() =>
                   openCloudinaryWidget((url) => {
                     // setImageValue(url); // 👈 يحط الصورة في الفورم
-                    // setValue("imageUrl", url);
+                    setValue("imageUrl", url);
                   })
                 }
                 className="absolute bottom-0 left-0 p-0.5 rounded-sm bg-[#003F87] cursor-pointer"

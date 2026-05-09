@@ -5,10 +5,10 @@ import { Heart } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const ButtonLikes = ({ likesCount, id }: any) => {
+const ButtonLikes = ({ isLiked: liked, likesCount, id }: any) => {
   const [loading, setLoading] = useState(false);
   const [likesCounts, setLikesCounts] = useState(likesCount);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(liked);
 
   const handleLike = async () => {
     if (loading) return;
