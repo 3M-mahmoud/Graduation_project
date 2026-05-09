@@ -1,4 +1,7 @@
 "use client";
+import { useMemo, useState } from "react";
+import { ChevronDown, GraduationCap } from "lucide-react";
+import { scheduleData } from "@/data/centerProfile";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, GraduationCap } from "lucide-react";
 import { scheduleData } from "@/data/centerProfile";
@@ -24,6 +27,7 @@ const stageConfig: Record<string, string[]> = {
     "الصف السادس الابتدائي",
   ],
 };
+
 const days = [
   "السبت",
   "الاحد",
@@ -42,49 +46,54 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
   const handleStageSelect = (stage: string) => {
     setSelectedStage(stage);
-    setSelectedGrade("الصف التعليمي");
+    setSelectedGrade("الصف التعليمي"); // لإجبار المستخدم على اختيار الصف بعد تغيير المرحلة
     setIsStageOpen(false);
   };
 
-  // const filteredSchedule = useMemo(() => {
-  //   if (selectedGrade === "الصف التعليمي") return [];
-
-  //   return scheduleData.map((dayGroup) => ({
-  //     ...dayGroup,
-  //     lessons: dayGroup.lessons.filter(
-  //       (lesson: any) => lesson.grade === selectedGrade,
-  //     ),
-  //   }));
-  // }, [selectedGrade]);
-
-  const hadleGetWeeks = async () => {
-    if (selectedGrade === "الصف التعليمي") return;
-    const token = localStorage.getItem("token");
-    const res = await axios.get(
-      `${DOMAIN}weekly-schedule/${centerId}?classRoom=${selectedGrade}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    setCache((pre) => {
-      return {
-        ...pre,
-        weeks: res?.data?.data?.schedule,
-      };
-    });
-  };
+  const filteredSchedule = useMemo(() => {
+    if (selectedGrade === "الصف التعليمي") return [];
 
   useEffect(() => {
     hadleGetWeeks();
   }, [selectedGrade]);
+  // 1. استخدام useCallback لجلب البيانات لضمان عدم تكرار الدالة في كل رندرة
+  const handleGetWeeks = useCallback(async () => {
+    if (selectedGrade === "الصف التعليمي") return;
+    
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        `${DOMAIN}weekly-schedule/${centerId}?classRoom=${selectedGrade}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // تحديث الكاش
+      setCache((pre: any) => ({
+        ...pre,
+        weeks: res?.data?.data?.schedule || {},
+      }));
+    } catch (error) {
+      console.error("Error fetching schedule:", error);
+    }
+  }, [centerId, selectedGrade, setCache]);
+
+  // 2. تشغيل جلب البيانات عند تغيير الصف المختار
+  useEffect(() => {
+    handleGetWeeks();
+  }, [handleGetWeeks]);
 
   const isFilterSelected = selectedGrade !== "الصف التعليمي";
 
+  // 3. استخدام useMemo للوصول السريع للبيانات (اختياري ولكن يحسن الأداء)
+  const currentSchedule = useMemo(() => cashWeeks || {}, [cashWeeks]);
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500" dir="rtl">
+      {/* قسم الفلاتر - التنسيق الأصلي تماماً */}
       <div className="max-w-6xl mx-auto bg-white p-4 rounded-xl border border-[#eee] flex items-center justify-between gap-4 shadow-sm">
         <div className="relative md:flex-none">
           <button
@@ -97,9 +106,7 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
             <span>{selectedStage}</span>
             <ChevronDown
               size={20}
-              className={`transition-transform ${
-                isStageOpen ? "rotate-180" : ""
-              }`}
+              className={`transition-transform ${isStageOpen ? "rotate-180" : ""}`}
             />
           </button>
 
@@ -134,15 +141,13 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
             <span>{selectedGrade}</span>
             <ChevronDown
               size={20}
-              className={`transition-transform ${
-                isGradeOpen ? "rotate-180" : ""
-              }`}
+              className={`transition-transform ${isGradeOpen ? "rotate-180" : ""}`}
             />
           </button>
 
-          {isGradeOpen && selectedStage !== "المرحلة التعليمية" && (
+          {isGradeOpen && (
             <div className="absolute top-full left-0 mt-3 w-56 bg-white border border-slate-100 shadow-xl rounded-2xl z-50 overflow-hidden py-2 animate-in slide-in-from-top-2">
-              {stageConfig[selectedStage].map((g) => (
+              {(stageConfig[selectedStage] || []).map((g) => (
                 <button
                   key={g}
                   className="w-full text-right px-6 py-3 text-sm font-bold text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
@@ -159,6 +164,7 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
         </div>
       </div>
 
+      {/* الجدول الدراسي - الحفاظ على التنسيق والـ Grid */}
       <div
         data-aos="fade-up"
         className="bg-[#22432D] rounded-2xl p-4 md:p-8 shadow-2xl min-h-[500px]"
@@ -174,6 +180,9 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-px p-3 border-t overflow-hidden">
             {days.map((day) => {
+              const dayGroup = filteredSchedule.find((d) => d.day === day);
+              const lessons = dayGroup?.lessons || [];
+
               return (
                 <div key={day} className="flex flex-col min-h-[400px]">
                   <div
@@ -186,6 +195,8 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
                   <div className="flex-1">
                     {isFilterSelected &&
+                      lessons.map((lesson, index) => {
+                        const isLastLesson = index === lessons.length - 1;
                       cashWeeks[day]?.map((lesson, index) => {
                         const isLastLesson =
                           index === cashWeeks[day]?.length - 1;
@@ -220,14 +231,16 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
                             <button
                               className={`w-full py-2 rounded-xl text-[10px] font-black transition-all active:scale-95 ${
+                                lesson.status === "booked"
                                 lesson?.isBooked === true
                                   ? "bg-slate-700/50 text-white/30 cursor-not-allowed"
                                   : "bg-orange-500 text-white hover:bg-orange-600 cursor-pointer"
                               }`}
                             >
-                              {lesson?.isBooked === true
+                              {lesson.status === "booked"
                                 ? "تم الحجز"
                                 : "احجز الحصة"}
+                              {lesson?.isBooked ? "تم الحجز" : "احجز الحصة"}
                             </button>
                           </div>
                         );

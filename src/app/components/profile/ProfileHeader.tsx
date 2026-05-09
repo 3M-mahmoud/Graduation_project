@@ -14,6 +14,11 @@ export const ProfileHeader = ({ data }: any) => {
   return (
     <div className="relative bg-white shadow-sm pb-4">
       <div className="h-48 md:h-72 w-full overflow-hidden">
+        {/* <Image
+          src={dataHeader?.imageUrl || ""}
+          alt="Cover"
+          className="w-full h-full object-cover"
+        /> */}
         {dataHeader?.imageUrl && (
           <Image
             src={dataHeader?.imageUrl}

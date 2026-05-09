@@ -1,9 +1,10 @@
 "use client";
+import { useState } from "react";
+import { teachersData } from "@/data/centerProfile";
 import { useEffect, useState } from "react";
 // import { teachersData } from "@/data/centerProfile";
 import {
   GraduationCap,
-  Users,
   Clock,
   Facebook,
   Instagram,
@@ -35,6 +36,14 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
   const [isStageOpen, setIsStageOpen] = useState(false);
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
 
+  const filteredTeachers = teachersData.filter((teacher) => {
+    const stageMatch =
+      selectedStage === "المراحل التعليمية" || teacher.stage === selectedStage;
+    const subjectMatch =
+      selectedSubject === "المادة التعليمية" ||
+      teacher.subject === selectedSubject;
+    return stageMatch && subjectMatch;
+  });
   // const filteredTeachers = cache?.filter((teacher) => {
   //   const stageMatch =
   //     selectedStage === "المراحل التعليمية" ||
@@ -71,6 +80,7 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
   return (
     <div className="bg-[#f9fafb] min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-500">
       <div className="max-w-6xl mx-auto bg-white p-4 rounded border border-[#eee] flex items-center justify-between gap-4">
+        {/* قائمة المراحل - التنسيق كما هو */}
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsStageOpen(!isStageOpen)}
@@ -80,9 +90,7 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
               <span>{selectedStage}</span>
               <ChevronDown
                 size={18}
-                className={`transition-transform ${
-                  isStageOpen ? "rotate-180" : ""
-                }`}
+                className={`transition-transform ${isStageOpen ? "rotate-180" : ""}`}
               />
             </div>
           </button>
@@ -109,6 +117,7 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
           <GraduationCap size={35} />
         </div>
 
+        {/* قائمة المواد - التنسيق كما هو */}
         <div className="relative md:flex-none md:w-fit">
           <button
             onClick={() => setIsSubjectOpen(!isSubjectOpen)}
@@ -118,9 +127,7 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
               <span>{selectedSubject}</span>
               <ChevronDown
                 size={18}
-                className={`transition-transform ${
-                  isSubjectOpen ? "rotate-180" : ""
-                }`}
+                className={`transition-transform ${isSubjectOpen ? "rotate-180" : ""}`}
               />
             </div>
           </button>
@@ -144,12 +151,14 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
         </div>
       </div>
 
+      {/* عرض المدرسين - تم تغيير المصدر ليكون filteredTeachers */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {filteredTeachers.map((teacher) => (
         {cache?.map((teacher) => (
           <div
             data-aos="flip-left"
             key={teacher.id}
-            className="bg-white rounded-3xl p-8 border-[1.5px] border-[##BDBBBB] flex flex-col items-center group hover:translate-y-[-5px] transition-all duration-300"
+            className="bg-white rounded-3xl p-8 border-[1.5px] border-[#BDBBBB] flex flex-col items-center group hover:translate-y-[-5px] transition-all duration-300"
           >
             <div className="relative w-28 h-28 mb-4">
               <div className="absolute inset-0 rounded-full scale-110 opacity-50"></div>
@@ -177,6 +186,10 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
 
               <div className="flex items-center justify-center gap-4 text-[15px] text-[#5F5F60] mb-4">
                 <span className="flex items-center gap-1">
+                  <Users size={15} /> {teacher.experience}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock size={15} /> {teacher.yearsInCenter}
                   <Clock size={15} /> {teacher.classRoom[0]}
                 </span>
               </div>
@@ -191,28 +204,20 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
               </div>
 
               <div className="flex items-center justify-center gap-5 mt-4">
-                <Facebook
-                  size={18}
-                  className="text-slate-800 hover:text-blue-600 cursor-pointer transition-colors"
-                />
-                <Instagram
-                  size={18}
-                  className="text-slate-800 hover:text-pink-600 cursor-pointer transition-colors"
-                />
-                <Youtube
-                  size={18}
-                  className="text-slate-800 hover:text-red-600 cursor-pointer transition-colors"
-                />
+                <Facebook size={18} className="text-slate-800" />
+                <Instagram size={18} className="text-slate-800" />
+                <Youtube size={18} className="text-slate-800" />
               </div>
             </div>
           </div>
         ))}
       </div>
 
+      {filteredTeachers.length === 0 && (
       {cache?.length === 0 && (
         <div className="text-center h-80 flex items-center justify-center bg-white rounded-2xl border border-[#C0BEBE] max-w-3xl mx-auto">
           <p className="text-[#204658] text-2xl font-bold">
-            أختر المرحلة التعليمية والصف الدراسي لعرض مدرسين السناتر
+            لا يوجد مدرسين يطابقون الاختيارات الحالية
           </p>
         </div>
       )}

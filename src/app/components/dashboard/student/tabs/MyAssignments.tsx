@@ -63,11 +63,11 @@ const MyAssignments = ({ handleGetAssignments, cash }: any) => {
     handleGetAssignments();
   }, []);
 
-  const filteredAssignments = cash?.homework?.filter((item) =>
+  const filteredAssignments = allAssignments.filter((item) =>
     item.subject.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const filteredExams = cash?.exam?.filter((item) =>
+  const filteredExams = allExams.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 

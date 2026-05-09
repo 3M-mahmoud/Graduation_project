@@ -11,8 +11,10 @@ export default function CentersFilters({
 }: any) {
   return (
     <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-10">
-      <div data-aos="zoom-in" className="bg-white text-[#9CA3AF] rounded-2xl shadow-xl p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-       
+      <div
+        data-aos="zoom-in"
+        className="bg-white text-[#9CA3AF] rounded-2xl shadow-xl p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-4"
+      >
         <div className="relative">
           <Search className="absolute right-3 top-3" size={20} />
           <input
@@ -42,7 +44,6 @@ export default function CentersFilters({
           />
         </div>
 
-      
         <div className="relative">
           <GraduationCap className="absolute right-3 top-3" size={20} />
           <select
@@ -51,8 +52,8 @@ export default function CentersFilters({
             className="w-full pr-10 pl-4 py-2.5 border border-[#9CA3AF] text-black rounded-xl appearance-none focus:outline-none cursor-pointer"
           >
             <option>أختر المرحلة</option>
-            <option value="المرحلة الإبتدائية">ابتدائي</option>
-            <option value="المرحلة الإعدادية">إعدادي</option>
+            <option value="المرحلة الأبتدائية">ابتدائي</option>
+            <option value="المرحلة الأعدادية">إعدادي</option>
             <option value="المرحلة الثانوية">ثانوي</option>
           </select>
           <ChevronDown
@@ -61,7 +62,6 @@ export default function CentersFilters({
           />
         </div>
 
-   
         <button
           onClick={onFilter}
           className="bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl py-2.5 transition-colors cursor-pointer"

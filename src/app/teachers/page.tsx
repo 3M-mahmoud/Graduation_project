@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { ListFilter } from "lucide-react";
 import TeachersHeader from "../components/Teacher/TeachersHeader";
 import TeachersFilters from "../components/Teacher/TeachersFilters";
@@ -10,81 +10,101 @@ import { DOMAIN } from "@/utils/constants";
 import CenterCardSkeleton from "../components/Center/CenterCardSkeleton";
 
 export default function TeachersPage() {
+  // حالات الإدخال الحالية
   const [search, setSearch] = useState("");
   const [system, setSystem] = useState("");
   const [grade, setGrade] = useState("");
   const [subject, setSubject] = useState("");
+
+  // الحالات المطبقة (التي يتم الفلترة بناءً عليها عند الضغط على الزر)
+  const [appliedFilters, setAppliedFilters] = useState({
+    search: "",
+    system: "",
+    grade: "",
+    subject: "",
+  });
+
   const [loading, setLoading] = useState(true);
-  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [allTeachers, setAllTeachers] = useState([]); // تخزين البيانات الأصلية
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
 
-  const handleFilter = () => {
-    const result = filteredTeachers.filter((teacher) => {
-      const matchSearch = teacher.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-
-      const matchSystem = system
-        ? teacher?.teacher.studySystem.includes(system)
-        : true;
-
-      const matchSubject = subject
-        ? teacher.educationalStage === subject
-        : true;
-
-      const matchGrade = grade
-        ? teacher?.teacher?.classRoom.includes(grade)
-        : true;
-
-      return matchSearch && matchSystem && matchSubject && matchGrade;
-    });
-
-    setFilteredTeachers(result);
-    setIsFiltered(true);
-    setIsSorted(false);
-  };
-
-  const showAllTeachers = () => {
-    setSearch("");
-    setSystem("");
-    setGrade("");
-    setSubject("");
-    setFilteredTeachers(data);
-    setIsFiltered(false);
-  };
-
-  const handleSort = () => {
-    if (!isSorted) {
-      const sorted = [...filteredTeachers].sort(
-        (a, b) => Number(b.rating) - Number(a.rating),
-      );
-      setFilteredTeachers(sorted);
-      setIsSorted(true);
-    } else {
-      setFilteredTeachers(teachersData);
-      setIsSorted(false);
-    }
-  };
-
-  const handleGetTeachers = async () => {
+  // جلب البيانات من الـ API
+  const handleGetTeachers = useCallback(async () => {
     try {
       setLoading(true);
-
       const {
         data: { data },
       } = await axios.get(`${DOMAIN}users?role=teacher`);
-
-      setFilteredTeachers(data);
+      setAllTeachers(data);
     } catch (err) {
       console.log("");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
   useEffect(() => {
     handleGetTeachers();
-  }, [search]);
+  }, [handleGetTeachers]);
+
+  // منطق الفلترة والترتيب باستخدام useMemo
+  const filteredTeachers = useMemo(() => {
+    // 1. الفلترة بناءً على القيم المطبقة فقط
+    let result = allTeachers.filter((teacher) => {
+      const matchSearch = teacher?.name
+        ?.toLowerCase()
+        .includes(appliedFilters.search.toLowerCase());
+
+      const matchSystem = appliedFilters.system
+        ? teacher?.teacher?.studySystem?.includes(appliedFilters.system)
+        : true;
+
+      const matchSubject = appliedFilters.subject
+        ? teacher?.teacher?.studyMaterial === appliedFilters.subject
+        : true;
+
+      const matchGrade = appliedFilters.grade
+        ? teacher?.teacher?.classRoom?.includes(appliedFilters.grade)
+        : true;
+
+      return matchSearch && matchSystem && matchSubject && matchGrade;
+    });
+
+    // 2. الترتيب حسب التقييم (من الأعلى للأقل)
+    if (isSorted) {
+      console.log(result);
+      return [...result].sort((a, b) => {
+        const ratingA = parseFloat(a?.teacher?.star) || 0;
+        const ratingB = parseFloat(b?.teacher?.star) || 0;
+        return ratingB - ratingA;
+      });
+    }
+
+    return result;
+  }, [allTeachers, appliedFilters, isSorted]);
+
+  // دالة تطبيق الفلتر
+  const handleFilter = useCallback(() => {
+    setAppliedFilters({ search, system, grade, subject });
+    setIsFiltered(true);
+  }, [search, system, grade, subject]);
+
+  // دالة عرض الكل (إعادة ضبط كل شيء)
+  const showAllTeachers = useCallback(() => {
+    setSearch("");
+    setSystem("");
+    setGrade("");
+    setSubject("");
+    setAppliedFilters({ search: "", system: "", grade: "", subject: "" });
+    setIsFiltered(false);
+    setIsSorted(false);
+  }, []);
+
+  // دالة الترتيب
+  const handleSort = useCallback(() => {
+    setIsSorted((prev) => !prev);
+  }, []);
 
   return (
     <main className="bg-slate-50 min-h-screen pb-20" dir="rtl">
@@ -99,13 +119,14 @@ export default function TeachersPage() {
         subject={subject}
         setSubject={setSubject}
         onFilter={handleFilter}
+        data={allTeachers} // نمرر البيانات هنا لاستخراج الخيارات منها
       />
-
       <div className="max-w-7xl mx-auto px-6 mt-12">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl font-bold text-slate-700">
             النتائج ({filteredTeachers.length} مدرس)
           </h2>
+
           {isFiltered && (
             <button
               onClick={showAllTeachers}
@@ -124,6 +145,7 @@ export default function TeachersPage() {
                   transform="translate(0.000000,113.000000) scale(0.100000,-0.100000)"
                 >
                   <path d="M850 1069 c-23 -48 -27 -66 -19 -85 5 -14 9 -40 9 -57 0 -18 4 -38 9 -46 9 -14 19 36 19 99 1 44 7 71 17 78 9 6 35 56 35 67 0 3 -9 5 -20 5 -15 0 -28 -16 -50 -61z"></path>
+                  {/* ... باقي مسارات الـ SVG ... */}
                   <path d="M1662 1099 c-24 -17 -40 -34 -38 -37 3 -3 14 2 24 11 10 10 22 17 25 17 4 0 16 9 27 20 30 30 9 24 -38 -11z"></path>
                   <path d="M101 1104 c0 -11 3 -14 6 -6 3 7 2 16 -1 19 -3 4 -6 -2 -5 -13z"></path>
                   <path d="M1090 1070 c0 -6 7 -10 15 -10 8 0 15 2 15 4 0 2 -7 6 -15 10 -8 3 -15 1 -15 -4z"></path>
@@ -162,6 +184,7 @@ export default function TeachersPage() {
             <ListFilter size={18} />
           </div>
         </div>
+
         {loading ? (
           <CenterCardSkeleton />
         ) : (
