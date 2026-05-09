@@ -41,7 +41,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
           withCredentials: true,
         },
       );
-      console.log(DOMAIN);
       const { accessToken } = data.token;
       const { name, imageUrl, role, id } = data.data;
       localStorage.setItem("token", accessToken);
@@ -58,7 +57,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
         router.push("/");
       }, 500);
     } catch (error: any) {
-      console.log(error);
       const apiErrors = error.response?.data?.errors;
       if (Array.isArray(apiErrors)) {
         apiErrors.forEach((err: any) => toast.error(err.message));

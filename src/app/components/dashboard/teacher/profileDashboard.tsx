@@ -5,11 +5,7 @@ import { profileTeacher } from "./constant/constant";
 import { useDashboardTeacherContext } from "@/context/DashboardTeacher";
 
 const ProfileDashboardTeacher = () => {
-  const [imageUrl, name, studyMaterial, starts] = profileTeacher;
   const { dataProfile } = useDashboardTeacherContext();
-  console.log(dataProfile);
-
-  // const [data, setData] = useState({})
 
   return (
     <div className="flex flex-col items-center px-4">

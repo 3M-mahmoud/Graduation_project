@@ -72,7 +72,7 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
       },
     };
 
-    socket.send(JSON.stringify(messagePayload));
+    socket?.send(JSON.stringify(messagePayload));
     setInputValue("");
   }, [inputValue, dataHeader, socket, senderId]);
 

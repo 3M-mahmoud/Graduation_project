@@ -84,7 +84,6 @@ export default function CenterProfilePage() {
       });
       const json = await res.json();
       setCenterData(json.data);
-      console.log(json.data);
     };
 
     if (param) getData();

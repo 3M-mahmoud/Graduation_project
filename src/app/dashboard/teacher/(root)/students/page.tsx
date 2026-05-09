@@ -73,7 +73,6 @@ const students = [
     time: "01:20 م",
   },
 ];
-import { useSocket } from "@/context/WsSocket";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
 import { Search, MoreVertical, Users } from "lucide-react";
@@ -154,12 +153,10 @@ const StudentsTable = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
-              <tr className="text-[#204658] text-sm font-bold bg-white">
-                <th className="px-6 py-5 min-w-64">اسم الطالب</th>
+              <tr className="text-[#204658] text-center text-sm font-bold bg-white">
+                <th className="px-6 py-5 min-w-64 text-start">اسم الطالب</th>
                 <th className="px-6 py-5 min-w-40">الصف</th>
                 <th className="px-6 py-5 min-w-56">الدورة</th>
-                <th className="px-6 py-5 min-w-56">تاريخ الدفع</th>
-                <th className="px-6 py-5 min-w-56">توقيت الدفع</th>
                 <th className="px-6 py-5 min-w-10"></th>
               </tr>
             </thead>
@@ -172,24 +169,27 @@ const StudentsTable = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="size-10 rounded-xl bg-[#204658] flex items-center justify-center text-white font-bold overflow-hidden">
-                        <Image src="" alt={student.name} />
+                        {student?.student?.user?.imageUrl && (
+                          <Image
+                            src={student?.student?.user?.imageUrl}
+                            alt={student?.student?.user?.name}
+                            width={40}
+                            height={40}
+                            className="w-full h-full object-cover"
+                            unoptimized
+                          />
+                        )}
                       </div>
                       <span className="font-bold text-gray-800 text-sm">
-                        {student.name}
+                        {student?.student?.user?.name}
                       </span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {student.grade}
+                    {student?.lesson?.course?.classRoom}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {student.course}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {student.date}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 font-medium">
-                    {student.time}
+                    {student?.lesson?.course?.title}
                   </td>
                   <td className="px-6 py-4">
                     <button className="text-gray-400 hover:text-[#204658] p-1 rounded-lg transition-colors">

@@ -56,7 +56,6 @@ export default function CentersPage() {
 
       setFilteredCenters(data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

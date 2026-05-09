@@ -14,11 +14,14 @@ const CoursesTab = ({
 
   const getData = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${DOMAIN}courses?id=${teacherId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${DOMAIN}courses?id=${teacherId}&classRoom=الصف ${activeGrade}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const json = await res.json();
 
@@ -26,9 +29,9 @@ const CoursesTab = ({
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [activeGrade]);
 
-  const studeMaterial = ["الثالث الثانوي", "الثاني الثانوي", "الأول الثانوي"];
+  const studeMaterial = ["الثالث الثانوي", "الثاني الثانوي", "الاول الثانوي"];
   return (
     <div className="max-w-6xl mx-auto p-4 bg-white rounded-lg">
       <div

@@ -1,46 +1,73 @@
+"use client";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 import { Video, Lock } from "lucide-react";
+import { useEffect } from "react";
+const lessons = [
+  {
+    id: 1,
+    title: "الأعداد المركبة",
+    duration: "45 دقيقة",
+    date: "01 - 03 - 2025",
+    isLocked: false,
+  },
+  {
+    id: 2,
+    title: "الأعداد المركبة - خواص الوحدة التخيلية",
+    duration: "45 دقيقة",
+    date: "01 - 03 - 2025",
+    isLocked: false,
+  },
+  {
+    id: 3,
+    title: "تطبيقات علي خواص الوحدة التخيلية",
+    duration: "45 دقيقة",
+    date: "01 - 03 - 2025",
+    isLocked: true,
+  },
+];
 
-const LessonsTab = ({ searchQuery }: { searchQuery: string }) => {
-  const lessons = [
-    {
-      id: 1,
-      title: "الأعداد المركبة",
-      duration: "45 دقيقة",
-      date: "01 - 03 - 2025",
-      isLocked: false,
-    },
-    {
-      id: 2,
-      title: "الأعداد المركبة - خواص الوحدة التخيلية",
-      duration: "45 دقيقة",
-      date: "01 - 03 - 2025",
-      isLocked: false,
-    },
-    {
-      id: 3,
-      title: "تطبيقات علي خواص الوحدة التخيلية",
-      duration: "45 دقيقة",
-      date: "01 - 03 - 2025",
-      isLocked: true,
-    },
-  ];
-  const filtered = lessons.filter(l => l.title.includes(searchQuery));
+const LessonsTab = ({ searchQuery, setCache, cache, courseId }: any) => {
+  console.log(courseId);
+
+  const handleGetLessons = async () => {
+    if (cache?.length > 0) return;
+
+    console.log("cache");
+    const token = localStorage.getItem("token");
+    const res = await axios.get(`${DOMAIN}courses/lessons?id=${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setCache((pre) => {
+      return {
+        ...pre,
+        lessons: res.data?.data?.data || [],
+      };
+    });
+  };
+  useEffect(() => {
+    handleGetLessons();
+  }, []);
+
+  const filtered = cache?.filter((l) => l.title.includes(searchQuery));
   return (
     <div className="divide-y divide-[#F8FAFC]">
-      {filtered.map((lesson) => (
+      {filtered?.map((lesson, i: number) => (
         <div
-        data-aos="zoom-in"
+          data-aos="zoom-in"
           key={lesson.id}
           className="p-8 flex flex-col md:flex-row items-center justify-between group"
         >
-          
           <div className="flex items-center gap-8">
             <div className="text-center">
               <p className="text-[#9CA3AF] text-xs font-bold mb-1 uppercase">
                 حصة
               </p>
               <p className="text-3xl/relaxed font-bold text-[#9CA3AF] leading-none">
-                {lesson.id}
+                {++i}
               </p>
             </div>
             <div
@@ -61,7 +88,7 @@ const LessonsTab = ({ searchQuery }: { searchQuery: string }) => {
               </p>
             </div>
           </div>
-        
+
           <button
             className={`px-12 py-3.5 mt-4 md:mt-0 rounded-lg font-bold text-sm transition-all cursor-pointer ${
               lesson.isLocked

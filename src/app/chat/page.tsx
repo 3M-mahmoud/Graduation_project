@@ -21,7 +21,7 @@ export default function PureWSChat() {
 
   useEffect(() => {
     if (socket?.readyState === WebSocket.OPEN && conversations?.length > 0) {
-      socket.send(
+      socket?.send(
         JSON.stringify({
           type: "init_conversations",
           payload: conversations.map((c: any) => ({
@@ -43,7 +43,6 @@ export default function PureWSChat() {
         case "AllPresence": {
           const targetId = data.payload.receiverId;
           const isOnline = data.payload.isOnline;
-          console.log("AllPresence", data);
 
           if (data.payload.senderId === senderId) {
             setAllOnline((prevSet) => {
@@ -62,7 +61,6 @@ export default function PureWSChat() {
           const targetId = data.payload.senderId;
           const isOnline = data.payload.isOnline;
 
-          console.log("presence", data);
           if (data.payload.receiverId === senderId) {
             setAllOnline((prevSet) => {
               const newSet = new Set(prevSet);

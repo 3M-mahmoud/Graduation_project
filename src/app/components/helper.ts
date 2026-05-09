@@ -16,3 +16,9 @@ export const formatDateTime = (time: string) => {
     hour12: true,
   });
 };
+
+export const formatDateYear = (time: string) => {
+  return new Date(time).toLocaleString("en-EG", {
+    year: "numeric",
+  });
+};

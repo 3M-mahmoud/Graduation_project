@@ -1,6 +1,7 @@
 "use client";
 
 import HeroSectionDashboardTeacherCursers from "@/app/components/dashboard/teacher/HeroSectionDashboardTeacherCursers";
+import { formatDate } from "@/app/components/helper";
 import { useDashboardTeacherContext } from "@/context/DashboardTeacher";
 import { useSocket } from "@/context/WsSocket";
 import { DOMAIN } from "@/utils/constants";
@@ -29,18 +30,15 @@ const classRooms = [
 ];
 
 const CoursesPage = () => {
-  const { senderId } = useSocket();
-  const { dataProfile } = useDashboardTeacherContext();
   const [filter, setFilter] = useState<string>("الثالث الثانوي");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [coursesData, setCoursesData] = useState<Course[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleGetTeachers = async () => {
-    if (filter === "الكل" || !senderId) return;
     const token = localStorage.getItem("token");
     const { data } = await axios.get(
-      `${DOMAIN}courses?id=${senderId}&classRoom=الصف ${filter}&role=center`,
+      `${DOMAIN}teacher-dashboard/courses?classRoom=الصف ${filter}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,9 +80,7 @@ const CoursesPage = () => {
                 <th className="min-w-80 p-5">الدورة</th>
                 <th className={minWidthHeaders}>الصف</th>
                 <th className={minWidthHeaders}>الطلاب</th>
-                <th className={minWidthHeaders}>السعر</th>
-                <th className={minWidthHeaders}>التقييم</th>
-                <th className={minWidthHeaders}>المشتركين</th>
+                <th className={minWidthHeaders}>الحصص</th>
                 <th className="min-w-52 text-center">إجراءات</th>
               </tr>
             </thead>
@@ -98,25 +94,20 @@ const CoursesPage = () => {
                   <td className="p-3 flex flex-col gap-1">
                     <span className="font-semibold">{course.title}</span>
                     <span className="text-gray-400 text-xs font-medium">
-                      الثلاثاء . الساعة 8:00 م
+                      {formatDate(course.time)}
                     </span>
                   </td>
 
-                  <td className="text-center font-semibold">{course.grade}</td>
+                  <td className="text-center font-semibold">
+                    {course.classRoom}
+                  </td>
 
-                  <td className="text-center font-bold">{course.students}</td>
-
-                  <td className="text-green-600 text-center font-bold">
-                    {course.price}
-                    <span className="block text-xs font-bold">جنيه</span>
+                  <td className="text-center font-bold">
+                    {course.studentCounts}
                   </td>
 
                   <td className="text-center text-black font-bold">
-                    ⭐ {course.rating}
-                  </td>
-
-                  <td className="text-center text-black font-bold">
-                    {course.reviews}
+                    {course.studentCounts}
                   </td>
 
                   <td className="flex gap-2 p-3 justify-center">

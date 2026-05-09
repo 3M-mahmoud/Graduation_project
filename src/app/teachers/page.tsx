@@ -77,7 +77,7 @@ export default function TeachersPage() {
 
       setFilteredTeachers(data);
     } catch (err) {
-      console.log(err);
+      console.log("");
     } finally {
       setLoading(false);
     }
