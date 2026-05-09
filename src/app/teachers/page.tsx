@@ -29,11 +29,20 @@ export default function TeachersPage() {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
 
-  const handleFilter = () => {
-    const result = filteredTeachers.filter((teacher) => {
-      const matchSearch = teacher.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+  // جلب البيانات من الـ API
+  const handleGetTeachers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { data },
+      } = await axios.get(`${DOMAIN}users?role=teacher`);
+      setAllTeachers(data);
+    } catch (err) {
+      console.log("");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
       const matchSystem = appliedFilters.system
         ? teacher?.teacher?.studySystem?.includes(appliedFilters.system)
