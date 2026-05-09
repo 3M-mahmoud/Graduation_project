@@ -121,19 +121,19 @@ const ReviewsTab = ({ teacherId, setCacheReviews, cacheReviews }): any => {
             data-aos="fade-up"
             className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden"
           >
-            <div className="p-8 border-b border-slate-50 flex items-center justify-between">
-              <div className="flex items-center gap-4">
+            <div className="p-8 border-b border-slate-50 flex flex-col md:flex-row items-center justify-between">
+              <div className="flex items-center gap-4 mb-4 md:mb-0">
                 <div className="p-2 shadow-lg shadow-[0px_1px_2px_rgba(0, 0, 0, 0.05)] rounded-lg">
                   <Star
                     className="text-[#EAB308] fill-[#EAB308]"
                     size={24}
                   />{" "}
                 </div>
-                <h3 className="text-2xl font-semibold text-[#191C1D]">
+                <h3 className="text-lg md:text-2xl whitespace-nowrap font-semibold text-[#191C1D]">
                   تقييمات الطلاب
                 </h3>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col md:flex-row items-center gap-4">
                 <button className="py-2 px-4 rounded-xl bg-[#E1E3E4] hover:bg-[#c0c2c3] text-sm font-bold text-[#191C1D] cursor-pointer flex items-center gap-2">
                   <ListFilter size={16} />
                   الأحدث أولاً
@@ -151,8 +151,8 @@ const ReviewsTab = ({ teacherId, setCacheReviews, cacheReviews }): any => {
                   key={review.id}
                   className="p-8 hover:bg-slate-50/30 transition-colors"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-4">
+                  <div className="flex flex-col md:flex-row justify-between items-center md:items-start mb-4">
+                    <div className="flex items-center gap-4 mb-3">
                       <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 font-black text-lg">
                         {review.name[0]}
                       </div>
@@ -176,14 +176,14 @@ const ReviewsTab = ({ teacherId, setCacheReviews, cacheReviews }): any => {
                       ))}
                     </div>
                   </div>
-                  <p className="text-slate-500 font-bold leading-relaxed pr-16 text-sm">
+                  <p className="text-slate-500 font-bold leading-relaxed md:pr-16 text-sm">
                     "{review.comment}"
                   </p>
                 </div>
               ))}
             </div>
 
-            <button className="py-3 px-12 mb-8 border-2 border-[#003F87] bg-white rounded-xl text-[16px] font-bold text-[#003F87] hover:bg-[#003F87] hover:text-white cursor-pointer mt-5 mx-auto block">
+            <button className="py-3 px-3 md:px-12 mb-8 border-2 border-[#003F87] bg-white rounded-xl text-[16px] font-bold text-[#003F87] hover:bg-[#003F87] hover:text-white cursor-pointer mt-5 mx-auto block">
               أضف تقييمك الان
             </button>
           </div>

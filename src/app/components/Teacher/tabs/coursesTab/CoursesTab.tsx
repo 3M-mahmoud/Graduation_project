@@ -38,7 +38,7 @@ const CoursesTab = ({
         data-aos="fade-up"
         className="p-4 shadow-sm border border-[#E5E6EC] mb-4 flex flex-col md:flex-row items-center gap-8 rounded-lg"
       >
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 order-2 md:order-1">
+        <div className="flex flex-col md:flex-row items-center gap-2 overflow-x-auto pb-2 md:pb-0 order-2 md:order-1">
           {studeMaterial.map((grade) => (
             <button
               key={grade}
@@ -80,9 +80,7 @@ const CoursesTab = ({
         </div>
       ) : (
         <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
-          <p className="text-slate-400 font-bold text-lg">
-            لا توجد دورات تطابق بحثك في هذا الصف.
-          </p>
+          <p className="text-slate-400 font-bold text-lg">لا توجد دورات .</p>
         </div>
       )}
     </div>
