@@ -35,7 +35,6 @@ export default function CentersPage() {
       } = await axios.get(`${DOMAIN}users?role=center`);
       setAllCenters(data);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

@@ -76,7 +76,7 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
       conversations.length > 0 &&
       senderId
     ) {
-      socket.send(
+      socket?.send(
         JSON.stringify({
           type: "init_conversations",
           payload: conversations.map((c) => ({
@@ -111,7 +111,6 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
           const targetId = data.payload.receiverId;
           const isOnline = data.payload.isOnline;
 
-          console.log("AllPresence", data);
           if (data.payload.senderId === senderId) {
             setAllOnline((prevSet) => {
               const newSet = new Set(prevSet);
@@ -128,7 +127,6 @@ const WsSocket = ({ children }: { children: React.ReactNode }) => {
         case "presence": {
           const targetId = data.payload.senderId;
           const isOnline = data.payload.isOnline;
-          console.log("presence", data);
 
           if (data.payload.receiverId === senderId) {
             setAllOnline((prevSet) => {

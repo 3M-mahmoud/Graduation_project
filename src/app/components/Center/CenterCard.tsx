@@ -18,8 +18,6 @@ type Props = {
   };
 };
 export default function CenterCard({ center }: Props) {
-  console.log(center?.imageUrl);
-
   return (
     <div
       data-aos="zoom-out"

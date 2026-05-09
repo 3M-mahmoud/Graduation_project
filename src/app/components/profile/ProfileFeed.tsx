@@ -15,8 +15,6 @@ export const ProfileFeed = ({
 }: any) => {
   const [page, setPage] = useState(1);
 
-  console.log(cachePosts);
-  // console.log(json);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (cachePosts?.length > 0)
@@ -36,7 +34,6 @@ export const ProfileFeed = ({
         },
       );
       const json = await res.json();
-      console.log(json);
 
       setCachePosts({
         meta: json?.data?.meta,

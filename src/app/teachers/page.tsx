@@ -29,32 +29,11 @@ export default function TeachersPage() {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
 
-  // جلب البيانات من الـ API
-  const handleGetTeachers = useCallback(async () => {
-    try {
-      setLoading(true);
-      const {
-        data: { data },
-      } = await axios.get(`${DOMAIN}users?role=teacher`);
-      setAllTeachers(data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    handleGetTeachers();
-  }, [handleGetTeachers]);
-
-  // منطق الفلترة والترتيب باستخدام useMemo
-  const filteredTeachers = useMemo(() => {
-    // 1. الفلترة بناءً على القيم المطبقة فقط
-    let result = allTeachers.filter((teacher) => {
-      const matchSearch = teacher?.name
-        ?.toLowerCase()
-        .includes(appliedFilters.search.toLowerCase());
+  const handleFilter = () => {
+    const result = filteredTeachers.filter((teacher) => {
+      const matchSearch = teacher.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
 
       const matchSystem = appliedFilters.system
         ? teacher?.teacher?.studySystem?.includes(appliedFilters.system)
