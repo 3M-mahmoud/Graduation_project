@@ -6,15 +6,6 @@ import { Loader2 } from "lucide-react"; // 👈 علشان الزرار
 import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
 
 const EditProfilePage = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm(); // 👈 هنا التعريف
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
   return (
     <div>
       <div className="text-right mb-6 font-normal text-black">
@@ -25,7 +16,7 @@ const EditProfilePage = () => {
         className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-sm"
         dir="rtl"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+        <form className="space-y-10">
           {/* الصورة الشخصية */}
           <div className="flex flex-col md:flex-row gap-4 items-center relative">
             <div className="relative w-28 h-28 rounded-full overflow-hidden">

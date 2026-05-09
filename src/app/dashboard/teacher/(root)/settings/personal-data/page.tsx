@@ -61,7 +61,7 @@ const PersonalDataPage = () => {
 
       setUserId(user.id);
       setValue("name", user.name);
-      // setValue("imageUrl", user.imageUrl);
+      setValue("imageUrl", user.imageUrl);
       setValue("email", user.email);
       setValue("educationalStage", user.teacher.educationalStage);
       setValue("classRoom", user.teacher.classRoom[0]);

@@ -57,8 +57,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
   //   }));
   // }, [selectedGrade]);
 
-  console.log(cashWeeks);
-
   const hadleGetWeeks = async () => {
     if (selectedGrade === "الصف التعليمي") return;
     const token = localStorage.getItem("token");
@@ -70,8 +68,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
         },
       },
     );
-
-    console.log(res?.data?.data?.schedule);
 
     setCache((pre) => {
       return {
@@ -178,12 +174,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-px p-3 border-t overflow-hidden">
             {days.map((day) => {
-              // const dayGroup = cashWeeks[day]?.find((d) => d.day === day);
-
-              // console.log(dayGroup);
-              // console.log(cashWeeks[day]);
-              // const lessons = dayGroup?.lessons || [];
-
               return (
                 <div key={day} className="flex flex-col min-h-[400px]">
                   <div
@@ -197,7 +187,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
                   <div className="flex-1">
                     {isFilterSelected &&
                       cashWeeks[day]?.map((lesson, index) => {
-                        console.log(lesson);
                         const isLastLesson =
                           index === cashWeeks[day]?.length - 1;
                         return (

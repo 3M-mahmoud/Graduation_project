@@ -1,95 +1,118 @@
+"use client";
+import { formatDate } from "@/app/components/helper";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
 import { FileText, Lock, Download, FolderOpen } from "lucide-react";
+import { useEffect } from "react";
 
-const NotesTab = ({
-  searchQuery,
-  mode,
-}: {
-  searchQuery: string;
-  mode: string;
-}) => {
-  const notes = [
-    {
-      id: 1,
-      title: "الأعداد المركبة",
-      info: "32 MB . 45 صفحة",
-      date: "02 - 03 - 2026",
-      isLocked: false,
-    },
-    {
-      id: 2,
-      title: "الأعداد المركبة - خواص الوحدة التخيلية",
-      info: "12 MB . 21 صفحة",
-      date: "09 - 03 - 2026",
-      isLocked: false,
-    },
-    {
-      id: 3,
-      title: "الصورة الجبرية للعدد المركب",
-      info: "احجز الحصة لفتح المذكرة",
-      date: "16 - 03 - 2026",
-      isLocked: true,
-    },
-  ];
-  const homework = [
-    {
-      id: 1,
-      title: "واجب علي الأعداد المركبة",
-      info: "32 MB . 22 صفحة",
-      date: "12 - 04 - 2026",
-      isLocked: false,
-    },
-    {
-      id: 2,
-      title: "الأعداد المركبة - خواص الوحدة التخيلية",
-      info: "12 MB . 21 صفحة",
-      date: "09 - 03 - 2026",
-      isLocked: false,
-    },
-    {
-      id: 3,
-      title: "الصورة الجبرية للعدد المركب",
-      info: "احجز الحصة لفتح المذكرة",
-      date: "16 - 03 - 2026",
-      isLocked: true,
-    },
-  ];
-  const exam = [
-    {
-      id: 1,
-      title: "امتحان علي الأعداد المركبة",
-      info: "32 MB . 45 صفحة",
-      date: "22 - 02 - 2026",
-      isLocked: false,
-    },
-    {
-      id: 2,
-      title: "الأعداد المركبة - خواص الوحدة التخيلية",
-      info: "12 MB . 21 صفحة",
-      date: "09 - 03 - 2026",
-      isLocked: true,
-    },
-    {
-      id: 3,
-      title: "الصورة الجبرية للعدد المركب",
-      info: "احجز الحصة لفتح المذكرة",
-      date: "16 - 03 - 2026",
-      isLocked: true,
-    },
-  ];
-  const data = mode == "Notes" ? notes : mode == "homework" ? homework : exam;
+//   {
+//     id: 1,
+//     title: "الأعداد المركبة",
+//     info: "32 MB . 45 صفحة",
+//     date: "02 - 03 - 2026",
+//     isLocked: false,
+//   },
+//   {
+//     id: 2,
+//     title: "الأعداد المركبة - خواص الوحدة التخيلية",
+//     info: "12 MB . 21 صفحة",
+//     date: "09 - 03 - 2026",
+//     isLocked: false,
+//   },
+//   {
+//     id: 3,
+//     title: "الصورة الجبرية للعدد المركب",
+//     info: "احجز الحصة لفتح المذكرة",
+//     date: "16 - 03 - 2026",
+//     isLocked: true,
+//   },
+// ];
+// const homework = [
+//   {
+//     id: 1,
+//     title: "واجب علي الأعداد المركبة",
+//     info: "32 MB . 22 صفحة",
+//     date: "12 - 04 - 2026",
+//     isLocked: false,
+//   },
+//   {
+//     id: 2,
+//     title: "الأعداد المركبة - خواص الوحدة التخيلية",
+//     info: "12 MB . 21 صفحة",
+//     date: "09 - 03 - 2026",
+//     isLocked: false,
+//   },
+//   {
+//     id: 3,
+//     title: "الصورة الجبرية للعدد المركب",
+//     info: "احجز الحصة لفتح المذكرة",
+//     date: "16 - 03 - 2026",
+//     isLocked: true,
+//   },
+// ];
+// const exam = [
+//   {
+//     id: 1,
+//     title: "امتحان علي الأعداد المركبة",
+//     info: "32 MB . 45 صفحة",
+//     date: "22 - 02 - 2026",
+//     isLocked: false,
+//   },
+//   {
+//     id: 2,
+//     title: "الأعداد المركبة - خواص الوحدة التخيلية",
+//     info: "12 MB . 21 صفحة",
+//     date: "09 - 03 - 2026",
+//     isLocked: true,
+//   },
+//   {
+//     id: 3,
+//     title: "الصورة الجبرية للعدد المركب",
+//     info: "احجز الحصة لفتح المذكرة",
+//     date: "16 - 03 - 2026",
+//     isLocked: true,
+//   },
+// ];
+const NotesTab = ({ cache, setCache, courseId, searchQuery, mode }: any) => {
+  const data = cache[mode] || [];
 
-  const filtered = data.filter((n) => n.title.includes(searchQuery));
+  const handleGetLessons = async () => {
+    if (cache[mode]?.length > 0) return;
+
+    const token = localStorage.getItem("token");
+    const res = await axios.get(`${DOMAIN}${mode}?id=${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setCache((pre) => {
+      return {
+        ...pre,
+        [mode]: res.data?.data || [],
+      };
+    });
+  };
+  useEffect(() => {
+    handleGetLessons();
+  }, []);
+
+  const filtered = data?.filter((n) => n.title.includes(searchQuery));
   return (
     <div className="divide-y divide-[#F8FAFC]">
-      {filtered.map((note) => (
-        <div data-aos="zoom-in" key={note.id} className="p-8 flex flex-col md:flex-row items-center justify-between">
+      {filtered.map((note: any, i: number) => (
+        <div
+          data-aos="zoom-in"
+          key={note.id}
+          className="p-8 flex flex-col md:flex-row items-center justify-between"
+        >
           <div className="flex items-center gap-8">
             <div className="text-center">
               <p className="text-[#9CA3AF] text-[10px] font-bold mb-1 uppercase">
                 حصة
               </p>
               <p className="text-[32px] font-black text-[#9CA3AF] leading-none">
-                {note.id}
+                {++i}
               </p>
             </div>
             <div
@@ -106,8 +129,10 @@ const NotesTab = ({
                 {note.title}
               </h3>
               <p className="text-[#94A3B8] text-xs font-bold tracking-wide">
-                <span className="ml-2">{note.date}</span>{" "}
-                {note.isLocked ? "" : note.info + " ."}
+                {mode === "exams"
+                  ? formatDate(note.duration)
+                  : formatDate(note.createdAt)}
+                {/* {note.isLocked ? "" : note.info + " ."} */}
               </p>
             </div>
           </div>
@@ -116,18 +141,18 @@ const NotesTab = ({
             {note.isLocked ? (
               <span className="text-[#94A3B8] font-bold text-sm ml-4 mt-3 md:mt-0">
                 احجز الحصة لفتح{" "}
-                {mode == "Notes"
+                {mode == "notes"
                   ? "المذكرة"
-                  : mode == "homework"
-                  ? "الواجب"
-                  : "الامتحان"}
+                  : mode == "homeWorks"
+                    ? "الواجب"
+                    : "الامتحان"}
               </span>
             ) : (
               <div className="flex gap-4">
                 <button className="p-3 text-[#94A3B8] hover:text-[#1E293B] transition-colors bg-[#F8FAFC] rounded-lg border border-[#F1F5F9] cursor-pointer">
                   <FolderOpen size={20} />
                 </button>
-                {mode == "exam" ? (
+                {mode == "exams" ? (
                   ""
                 ) : (
                   <button className="p-3 text-[#94A3B8] hover:text-[#1E293B] transition-colors bg-[#F8FAFC] rounded-lg border border-[#F1F5F9] cursor-pointer">

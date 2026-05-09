@@ -31,7 +31,7 @@ export default function RootLayout({
     if (param?.id) getData();
 
     if (!socket || !param.id) return;
-    socket.send(
+    socket?.send(
       JSON.stringify({
         type: "get_user_presence",
         payload: {

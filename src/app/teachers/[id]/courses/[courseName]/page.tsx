@@ -1,19 +1,48 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { ArrowRight, Search, Settings2, Video, ShieldUser } from "lucide-react";
 import LessonsTab from "./tabs/LessosTab";
 import NotesTab from "./tabs/NotesTab";
+import { DOMAIN } from "@/utils/constants";
+import axios from "axios";
+import { formatDate, formatDateYear } from "@/app/components/helper";
 
 const CourseContentContainer = () => {
   const [activeTab, setActiveTab] = useState("الحصص");
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  const params = useParams();
   const tabs = ["الحصص", "المذكرات", "الواجبات", "الامتحانات"];
+  const [cache, setCache] = useState({
+    lessons: [],
+    notes: [],
+    homeWorks: [],
+    exams: [],
+  });
+  const courseId = params?.courseName || "";
+  const [course, setCourse] = useState({});
+
+  const handleGetCourse = async () => {
+    const token = localStorage.getItem("token");
+    const res = await axios.get(`${DOMAIN}courses/${courseId}?id=${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setCourse(res.data.data);
+  };
+  useEffect(() => {
+    handleGetCourse();
+  }, []);
 
   return (
     <div className="min-h-scree pb-20">
-      <div data-aos="zoom-in" className="max-w-6xl mx-auto bg-white px-4 pt-8 pb-12 shadow-md mb-6">
+      <div
+        data-aos="zoom-in"
+        className="max-w-6xl mx-auto bg-white px-4 pt-8 pb-12 shadow-md mb-6"
+      >
         <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-[#191C1D] font-bold mb-10 text-sm hover:opacity-70 cursor-pointer"
@@ -24,33 +53,34 @@ const CourseContentContainer = () => {
         <div className="flex flex-col">
           <div className="flex items-center gap-2 mb-6">
             <span className="px-3 py-1 bg-[#F9F9F9] text-[#5C5D5D] text-xs font bold rounded-xl">
-              الثالث الثانوي
+              {course?.classRoom}
             </span>
             <span className="px-3 py-1 bg-[#F9F9F9] text-[#5C5D5D] text-xs font bold rounded-xl">
-              مادة الجبر
+              {course?.studyMaterial}
             </span>
             <span className="px-3 py-1 bg-[#F9F9F9] text-[#5C5D5D] text-xs font bold rounded-xl">
-              2026
+              {formatDateYear(course?.createdAt)}
             </span>
           </div>
           <h1 className="text-[32px] font-semibold text-[#191C1D] mb-4">
-            دورة الجبر للصف الثالث الثانوي
+            {course?.title}
           </h1>
           <div className="flex items-center gap-6 text-[#656768] font-semibold text-[16px]">
             <span className="flex items-center gap-2 tracking-wide">
-              <ShieldUser size={18} /> أ. حسن علي عبدالله
+              <ShieldUser size={18} /> {course?.teacher?.user?.name}
             </span>
             <span className="flex items-center gap-2 tracking-wide">
-              <Video size={18} /> 6 حصص
+              <Video size={18} /> {course?.lessonCounts} حصص
             </span>
           </div>
         </div>
       </div>
 
-
       <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
-    
-        <div data-aos="fade-up" className="flex flex-col md:flex-row border-b border-[#F8FAFC]">
+        <div
+          data-aos="fade-up"
+          className="flex flex-col md:flex-row border-b border-[#F8FAFC]"
+        >
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -64,7 +94,7 @@ const CourseContentContainer = () => {
               {tab}
             </button>
           ))}
-       
+
           <div className="p-5  flex items-center gap-4 w-full">
             <div className="relative flex-1">
               <input
@@ -85,12 +115,42 @@ const CourseContentContainer = () => {
           </button>
         </div>
 
-     
         <div className="bg-white">
-          {activeTab === "الحصص" && <LessonsTab searchQuery={searchQuery} />}
-          {activeTab === "المذكرات" && <NotesTab searchQuery={searchQuery} mode="Notes" />}
-          {activeTab === "الواجبات" && <NotesTab searchQuery={searchQuery} mode="homework" />}
-          {activeTab === "الامتحانات" && <NotesTab searchQuery={searchQuery} mode="exam" />}
+          {activeTab === "الحصص" && (
+            <LessonsTab
+              cache={cache.lessons || []}
+              setCache={setCache}
+              searchQuery={searchQuery}
+              courseId={courseId}
+            />
+          )}
+          {activeTab === "المذكرات" && (
+            <NotesTab
+              cache={cache}
+              setCache={setCache}
+              searchQuery={searchQuery}
+              courseId={courseId}
+              mode="notes"
+            />
+          )}
+          {activeTab === "الواجبات" && (
+            <NotesTab
+              cache={cache}
+              setCache={setCache}
+              searchQuery={searchQuery}
+              courseId={courseId}
+              mode="homeWorks"
+            />
+          )}
+          {activeTab === "الامتحانات" && (
+            <NotesTab
+              cache={cache}
+              setCache={setCache}
+              searchQuery={searchQuery}
+              courseId={courseId}
+              mode="exams"
+            />
+          )}
         </div>
       </div>
     </div>
