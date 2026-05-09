@@ -30,7 +30,6 @@ const subjects = [
 export default function TeachersTab({ centerId, cache, setsetCache }: any) {
   const [selectedStage, setSelectedStage] = useState("المراحل التعليمية");
   const [selectedSubject, setSelectedSubject] = useState("المادة التعليمية");
-  // const [teachersData, setTeachersData] = useState(cache || []);
 
   const [isStageOpen, setIsStageOpen] = useState(false);
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
@@ -73,13 +72,19 @@ export default function TeachersTab({ centerId, cache, setsetCache }: any) {
         },
       );
 
-    setsetCache((pre) => {
-      return {
-        ...pre,
-        students: res.data.data,
-      };
-    });
-  };
+      // تحديث الكاش بالبيانات الجديدة
+      setsetCache((pre: any) => {
+        // إذا كان pre مصفوفة نحدثها مباشرة، إذا كان كائن نحدث المفتاح المطلوب
+        if (Array.isArray(pre)) return res.data.data;
+        return {
+          ...pre,
+          students: res.data.data, // حافظت على كلمة students بناءً على كودك الأصلي
+        };
+      });
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  }, [centerId, setsetCache]);
 
   useEffect(() => {
     handleGetTeachers();
