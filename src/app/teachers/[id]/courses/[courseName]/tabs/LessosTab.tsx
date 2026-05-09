@@ -28,12 +28,9 @@ const lessons = [
 ];
 
 const LessonsTab = ({ searchQuery, setCache, cache, courseId }: any) => {
-  console.log(courseId);
-
   const handleGetLessons = async () => {
     if (cache?.length > 0) return;
 
-    console.log("cache");
     const token = localStorage.getItem("token");
     const res = await axios.get(`${DOMAIN}courses/lessons?id=${courseId}`, {
       headers: {
