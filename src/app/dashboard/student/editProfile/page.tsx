@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
-import { DOMAIN } from "@/utils/constants";
-import { useForm } from "react-hook-form"; // 👈 مهم
 import { Loader2 } from "lucide-react"; // 👈 علشان الزرار
 import avatarImage from "../../../../assets/ceterProfile/teacherTap1.jpeg";
+import { useForm } from "react-hook-form";
+import { ProfileFormValues } from "@/lib/ProfileSchema";
 
 const EditProfilePage = () => {
+  const { register, handleSubmit, formState } = useForm<ProfileFormValues>();
+  const { isSubmitting } = formState;
   return (
     <div>
       <div className="text-right mb-6 font-normal text-black">
@@ -47,15 +49,9 @@ const EditProfilePage = () => {
                   الاسم
                 </label>
                 <input
-                  {...register("name")}
                   placeholder="الاسم"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
                 />
-                {errors.name && (
-                  <span className="text-red-500 text-xs pr-2">
-                    {errors.name.message}
-                  </span>
-                )}
               </div>
               {/* <div className="flex flex-col gap-2">
                 <label className="font-medium text-black pr-2 text-[16px]">
@@ -81,7 +77,6 @@ const EditProfilePage = () => {
                   المرحلة الدراسية
                 </label>
                 <input
-                  {...register("educationalStage")}
                   placeholder="مثال: الثانوي"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
                 />
@@ -91,7 +86,6 @@ const EditProfilePage = () => {
                   الصف الدراسي
                 </label>
                 <input
-                  {...register("classRoom")}
                   placeholder="مثال: الثالث الثانوي"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
                 />
@@ -110,7 +104,6 @@ const EditProfilePage = () => {
                   رقم الهاتف
                 </label>
                 <input
-                  {...register("phone")}
                   dir="ltr"
                   placeholder="+20*** **** ***"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
@@ -121,7 +114,6 @@ const EditProfilePage = () => {
                   البريد الإلكتروني
                 </label>
                 <input
-                  {...register("email")}
                   dir="ltr"
                   placeholder="example@gmail.com"
                   className="p-4 border border-[#9CA3AF] rounded-2xl text-right text-[#9CA3AF] text-[16px] focus:ring-2 focus:ring-slate-200 outline-none transition-all font-bold"
@@ -134,7 +126,6 @@ const EditProfilePage = () => {
           <div className="flex justify-center md:justify-start pt-6">
             <button
               type="submit"
-              disabled={isSubmitting}
               className="px-16 py-4 bg-[#F59E0B] text-white font-black rounded-2xl hover:bg-[#db8c05] shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? (
