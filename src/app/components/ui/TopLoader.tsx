@@ -17,11 +17,9 @@ export default function TopLoader() {
   useEffect(() => {
     const currentPath = pathname + searchParams.toString();
 
-    // أول تحميل للصفحة
     if (prevPath.current === "") {
       NProgress.done();
     }
-    // التنقل بين الصفحات
     else if (prevPath.current !== currentPath) {
       NProgress.start();
 

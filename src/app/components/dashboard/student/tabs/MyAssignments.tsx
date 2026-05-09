@@ -73,7 +73,6 @@ const MyAssignments = ({ handleGetAssignments, cash }: any) => {
 
   return (
     <div className="animate-in fade-in zoom-in duration-500">
-      {/* شريط البحث */}
       <div className="relative mb-10">
         <input
           type="text"
@@ -88,7 +87,6 @@ const MyAssignments = ({ handleGetAssignments, cash }: any) => {
         />
       </div>
 
-      {/* قسم الواجبات */}
       <div className="mb-12">
         <h3 className="text-xl font-bold text-slate-800 mb-6 text-right">
           الواجبات
@@ -119,7 +117,6 @@ const MyAssignments = ({ handleGetAssignments, cash }: any) => {
           ))}
         </div>
 
-        {/* زر عرض المزيد للواجبات */}
         {visibleAssignments < filteredAssignments?.length && (
           <button
             onClick={() => setVisibleAssignments((prev) => prev + 2)}
@@ -130,7 +127,6 @@ const MyAssignments = ({ handleGetAssignments, cash }: any) => {
         )}
       </div>
 
-      {/* قسم الامتحانات */}
       <div>
         <h3 className="text-xl font-bold text-slate-800 mb-6 text-right">
           الامتحانات
@@ -163,7 +159,6 @@ const MyAssignments = ({ handleGetAssignments, cash }: any) => {
           ))}
         </div>
 
-        {/* زر عرض المزيد للامتحانات */}
         {visibleExams < filteredExams?.length && (
           <button
             onClick={() => setVisibleExams((prev) => prev + 2)}

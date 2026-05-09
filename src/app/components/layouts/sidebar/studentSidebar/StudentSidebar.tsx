@@ -26,7 +26,6 @@ const StudentSidebar = () => {
 
   return (
     <div className="bg-white h-screen p-3 md:p-8 border border-slate-100 shadow-sm sticky top-1">
-      {/* بروفايل الطالب */}
       <div className="flex flex-col lg:flex-row items-center gap-3 text-center mb-10">
         <div className="relative w-12 md:w-24 h-12 md:h-24 rounded-full overflow-hidden">
           <Image
@@ -47,7 +46,6 @@ const StudentSidebar = () => {
         </div>
       </div>
 
-      {/* الروابط */}
       <nav className="space-y-3">
         {menuItems.map((item) => (
           <Link

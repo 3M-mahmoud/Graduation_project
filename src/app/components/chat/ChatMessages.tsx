@@ -1,6 +1,6 @@
 "use client";
 
-import { useSocket } from "@/context/WsSocket"; // تغيير السياق هنا
+import { useSocket } from "@/context/WsSocket";
 import { Send, X, User } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -92,7 +92,6 @@ const ChatMessages = ({ setAllMessages, AllMessages, isTyping }: any) => {
       className="flex-1 flex flex-col bg-[#F5F7F9] h-full overflow-hidden"
       dir="rtl"
     >
-      {/* HEADER */}
       <header className="p-4 bg-white border-b flex items-center justify-between shadow-sm z-10">
         <div className="flex items-center gap-3">
           <div className="relative">

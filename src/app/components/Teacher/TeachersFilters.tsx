@@ -18,21 +18,16 @@ export default function TeachersFilters({
   subject,
   setSubject,
   onFilter,
-  data = [], // استلام البيانات الأصلية
+  data = [],
 }: any) {
-  // استخراج الخيارات الفريدة ديناميكياً
   const options = useMemo(() => {
     const systems = new Set<string>();
     const grades = new Set<string>();
     const subjects = new Set<string>();
 
     data.forEach((teacher: any) => {
-      console.log(teacher);
-      // النظام الدراسي
       teacher?.teacher?.studySystem?.forEach((s: string) => systems.add(s));
-      // الصفوف الدراسية
       teacher?.teacher?.classRoom?.forEach((g: string) => grades.add(g));
-      // المادة (educationalStage في الكود الخاص بك)
       subjects.add(teacher?.teacher?.studyMaterial);
     });
 
@@ -49,7 +44,6 @@ export default function TeachersFilters({
         data-aos="fade-up"
         className="bg-white text-[#9CA3AF] rounded-2xl shadow-xl p-4 md:p-6 grid grid-cols-1 md:grid-cols-5 gap-4"
       >
-        {/* حقل البحث */}
         <div className="relative">
           <Search className="absolute right-3 top-3" size={20} />
           <input
@@ -61,7 +55,6 @@ export default function TeachersFilters({
           />
         </div>
 
-        {/* نظام الدراسة - ديناميكي */}
         <div className="relative">
           <Globe className="absolute right-3 top-3" size={20} />
           <select
@@ -82,7 +75,6 @@ export default function TeachersFilters({
           />
         </div>
 
-        {/* الصف الدراسي - ديناميكي */}
         <div className="relative">
           <GraduationCap className="absolute right-3 top-3" size={20} />
           <select
@@ -103,7 +95,6 @@ export default function TeachersFilters({
           />
         </div>
 
-        {/* المادة - ديناميكي */}
         <div className="relative">
           <BookOpen className="absolute right-3 top-3" size={20} />
           <select

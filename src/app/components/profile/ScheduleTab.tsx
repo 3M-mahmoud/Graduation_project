@@ -43,11 +43,10 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
   const handleStageSelect = (stage: string) => {
     setSelectedStage(stage);
-    setSelectedGrade("الصف التعليمي"); // لإجبار المستخدم على اختيار الصف بعد تغيير المرحلة
+    setSelectedGrade("الصف التعليمي"); 
     setIsStageOpen(false);
   };
 
-  // 1. استخدام useCallback لجلب البيانات لضمان عدم تكرار الدالة في كل رندرة
   const handleGetWeeks = useCallback(async () => {
     if (selectedGrade === "الصف التعليمي") return;
     
@@ -62,7 +61,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
         }
       );
 
-      // تحديث الكاش
       setCache((pre: any) => ({
         ...pre,
         weeks: res?.data?.data?.schedule || {},
@@ -72,19 +70,16 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
     }
   }, [centerId, selectedGrade, setCache]);
 
-  // 2. تشغيل جلب البيانات عند تغيير الصف المختار
   useEffect(() => {
     handleGetWeeks();
   }, [handleGetWeeks]);
 
   const isFilterSelected = selectedGrade !== "الصف التعليمي";
 
-  // 3. استخدام useMemo للوصول السريع للبيانات (اختياري ولكن يحسن الأداء)
   const currentSchedule = useMemo(() => cashWeeks || {}, [cashWeeks]);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500" dir="rtl">
-      {/* قسم الفلاتر - التنسيق الأصلي تماماً */}
       <div className="max-w-6xl mx-auto bg-white p-4 rounded-xl border border-[#eee] flex items-center justify-between gap-4 shadow-sm">
         <div className="relative md:flex-none">
           <button
@@ -155,7 +150,6 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
         </div>
       </div>
 
-      {/* الجدول الدراسي - الحفاظ على التنسيق والـ Grid */}
       <div
         data-aos="fade-up"
         className="bg-[#22432D] rounded-2xl p-4 md:p-8 shadow-2xl min-h-[500px]"
@@ -171,7 +165,7 @@ export default function ScheduleTab({ centerId, setCache, cashWeeks }: any) {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-px p-3 border-t overflow-hidden">
             {days.map((day) => {
-              const dayLessons = currentSchedule[day] || []; // الوصول للبيانات بأمان
+              const dayLessons = currentSchedule[day] || []; 
 
               return (
                 <div key={day} className="flex flex-col min-h-[400px]">

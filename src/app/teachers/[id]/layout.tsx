@@ -50,7 +50,6 @@ export default function RootLayout({
       <div className="max-w-6xl mx-auto px-4 md:px-8 pb-6">
         <div className="flex flex-col md:flex-row items-center gap-6 mt-12 relative z-10">
           <div className="w-60 h-60 mb-3 group">
-            {/* إطار الصورة */}
             <div className="w-full h-full rounded-full p-1 border-2 border-[#2E637C]/10 group-hover:border-[#2E637C]/30 transition-all duration-500">
               <div className="relative w-full h-full rounded-full overflow-hidden shadow-inner">
                 {data?.imageUrl && (
